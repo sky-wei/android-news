@@ -17,15 +17,39 @@
 package com.sky.android.news
 
 import android.app.Application
+import com.sky.android.news.data.cache.CacheManager
+import com.sky.android.news.data.cache.impl.CacheManagerImpl
 
 /**
  * Created by sky on 17-9-21.
  */
 class VApplication : Application() {
 
+    companion object {
+
+        private var mCacheManager: CacheManager? = null
+
+        fun getCacheManager(): CacheManager? {
+            return mCacheManager
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
 
+        if (mCacheManager == null) {
+            // 创建缓存
+            mCacheManager = CacheManagerImpl(applicationContext)
+        }
+    }
 
+    override fun onTerminate() {
+        super.onTerminate()
+
+        if (mCacheManager != null) {
+            // 关闭缓存
+            mCacheManager!!.close()
+            mCacheManager = null
+        }
     }
 }

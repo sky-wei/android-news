@@ -18,20 +18,16 @@ package com.sky.android.news.base
 
 import com.sky.android.common.utils.Alog
 import com.sky.android.news.data.DataException
-import org.reactivestreams.Subscriber
-import org.reactivestreams.Subscription
+import rx.Subscriber
 
 /**
  * Created by sky on 17-9-21.
  */
-abstract class BaseSubscriber<T> : Subscriber<T> {
+abstract class BaseSubscriber<T> : Subscriber<T>() {
 
     private val TAG = BaseSubscriber::class.java.simpleName
 
-    override fun onSubscribe(s: Subscription?) {
-    }
-
-    override fun onComplete() {
+    override fun onCompleted() {
     }
 
     override fun onError(e: Throwable) {
@@ -57,5 +53,8 @@ abstract class BaseSubscriber<T> : Subscriber<T> {
 
     protected fun onError(msg: String, tr: Throwable): Boolean {
         return false
+    }
+
+    override fun onNext(t: T) {
     }
 }
