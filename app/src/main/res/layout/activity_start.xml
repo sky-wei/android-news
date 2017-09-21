@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (c) 2017 The sky Authors.
   ~
@@ -14,16 +15,8 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <string name="app_name">android-news</string>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="exit_app">再按一次退出程序</string>
-
-    <string name="about">关于</string>
-    <string name="version_x">版本 v%s</string>
-    <string name="mail">邮箱：jingcai.wei@163.com</string>
-    <string name="source">源项目：<u>https://github.com/jingcai-wei</u></string>
-</resources>
+</LinearLayout>

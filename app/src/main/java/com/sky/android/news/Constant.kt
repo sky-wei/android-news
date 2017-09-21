@@ -16,13 +16,13 @@
 
 package com.sky.android.news
 
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
+/**
+ * Created by sky on 17-9-21.
+ */
+object Constant {
 
-class MainActivity : AppCompatActivity() {
+    object Category {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val NEWS = 0x01
     }
 }
