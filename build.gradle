@@ -34,6 +34,7 @@ allprojects {
     repositories {
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'https://oss.jfrog.org/libs-snapshot' }
+        maven { url 'https://maven.google.com' }
         jcenter()
     }
 }
