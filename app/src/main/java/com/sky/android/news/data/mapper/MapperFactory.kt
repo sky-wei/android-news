@@ -14,31 +14,14 @@
  * limitations under the License.
  */
 
-package com.sky.android.news
-
-import android.app.Application
-import com.sky.android.common.utils.Alog
-import com.sky.android.news.data.cache.CacheManager
-import com.sky.android.news.data.cache.impl.CacheManagerImpl
+package com.sky.android.news.data.mapper
 
 /**
- * Created by sky on 17-9-21.
+ * Created by sky on 17-9-22.
  */
-class VApplication : Application() {
+object MapperFactory {
 
-    override fun onCreate() {
-        super.onCreate()
+    fun createHeadLineMapper()= HeadLineMapper()
 
-        Alog.setDebug(BuildConfig.DEBUG)
-
-        // 初始化...
-        CacheManagerImpl.getInstance(this)
-    }
-
-    override fun onTerminate() {
-        super.onTerminate()
-
-        // 关闭
-        CacheManagerImpl.getInstance(this).close()
-    }
+    fun createDetailsMapper()= DetailsMapper()
 }

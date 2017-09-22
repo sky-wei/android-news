@@ -3,6 +3,7 @@ package com.sky.android.news.data.source
 import android.content.Context
 import com.sky.android.news.VApplication
 import com.sky.android.news.data.cache.NewsCache
+import com.sky.android.news.data.cache.impl.CacheManagerImpl
 import com.sky.android.news.data.cache.impl.NewsCacheImpl
 import com.sky.android.news.data.source.cloud.CloudNewsDataSource
 import com.sky.android.news.data.source.disk.DiskNewsDataSource
@@ -12,7 +13,7 @@ import com.sky.android.news.data.source.disk.DiskNewsDataSource
  */
 class NewsSourceFactory(private val mContext: Context) {
 
-    private var mCache: NewsCache = NewsCacheImpl(VApplication.getCacheManager()!!)
+    private var mCache: NewsCache = NewsCacheImpl(CacheManagerImpl.getInstance(mContext))
 
     fun create(): NewsDataSource {
         return createRemoteSource()

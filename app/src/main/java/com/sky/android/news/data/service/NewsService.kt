@@ -29,10 +29,10 @@ interface NewsService {
 
 //    fun getCategory(): Observable<Category>
 
-    @GET("/nc/article/headline/{tid}/{start}-{end}.html")
+    @GET("nc/article/headline/{tid}/{start}-{end}.html")
     fun getHeadLine(@Path("tid") tid: String,
                     @Path("start") start: Int, @Path("end") end: Int): Observable<HeadLine>
 
-    @GET("/nc/article/{docId}/full.html")
+    @GET("nc/article/{docId}/full.html")
     fun getDetails(@Path("docId") docId: String): Observable<Details>
 }

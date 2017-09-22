@@ -14,31 +14,33 @@
  * limitations under the License.
  */
 
-package com.sky.android.news
+package com.sky.android.news.presenter
 
-import android.app.Application
-import com.sky.android.common.utils.Alog
-import com.sky.android.news.data.cache.CacheManager
-import com.sky.android.news.data.cache.impl.CacheManagerImpl
+import com.sky.android.news.base.BasePresenter
+import rx.Observable
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 /**
- * Created by sky on 17-9-21.
+ * Created by sky on 17-9-22.
  */
-class VApplication : Application() {
+abstract class AbstractPresenter : BasePresenter {
 
-    override fun onCreate() {
-        super.onCreate()
+    override fun resume() {
 
-        Alog.setDebug(BuildConfig.DEBUG)
-
-        // 初始化...
-        CacheManagerImpl.getInstance(this)
     }
 
-    override fun onTerminate() {
-        super.onTerminate()
+    override fun pause() {
 
-        // 关闭
-        CacheManagerImpl.getInstance(this).close()
+    }
+
+    override fun destroy() {
+
+    }
+
+    fun <T> ioToMain(observable: Observable<T>): Observable<T> {
+        return observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 }

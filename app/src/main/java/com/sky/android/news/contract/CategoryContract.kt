@@ -14,31 +14,26 @@
  * limitations under the License.
  */
 
-package com.sky.android.news
+package com.sky.android.news.contract
 
-import android.app.Application
-import com.sky.android.common.utils.Alog
-import com.sky.android.news.data.cache.CacheManager
-import com.sky.android.news.data.cache.impl.CacheManagerImpl
+import com.sky.android.news.base.BasePresenter
+import com.sky.android.news.base.BaseView
+import com.sky.android.news.data.model.CategoryModel
 
 /**
- * Created by sky on 17-9-21.
+ * Created by sky on 17-9-22.
  */
-class VApplication : Application() {
+interface CategoryContract {
 
-    override fun onCreate() {
-        super.onCreate()
+    interface View : BaseView {
 
-        Alog.setDebug(BuildConfig.DEBUG)
+        fun onLoadCategory(model: CategoryModel)
 
-        // 初始化...
-        CacheManagerImpl.getInstance(this)
+        fun onLoadFailed(msg: String)
     }
 
-    override fun onTerminate() {
-        super.onTerminate()
+    interface Presenter : BasePresenter {
 
-        // 关闭
-        CacheManagerImpl.getInstance(this).close()
+        fun loadCategory()
     }
 }

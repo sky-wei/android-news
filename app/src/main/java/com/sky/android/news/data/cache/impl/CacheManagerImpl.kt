@@ -1,6 +1,7 @@
 package com.sky.android.news.data.cache.impl
 
 import android.content.Context
+import android.os.Environment
 import com.google.gson.Gson
 import com.jakewharton.disklrucache.DiskLruCache
 import com.sky.android.common.utils.Alog
@@ -14,7 +15,7 @@ import java.io.IOException
 /**
  * Created by sky on 17-9-21.
  */
-class CacheManagerImpl(private val mContext: Context) : CacheManager {
+class CacheManagerImpl private constructor(mContext: Context): CacheManager {
 
     private val TAG = CacheManagerImpl::class.java.simpleName
 
@@ -22,6 +23,24 @@ class CacheManagerImpl(private val mContext: Context) : CacheManager {
 
     private var mDiskLruCache: DiskLruCache? = null
     private var mGson: Gson = Gson()
+
+    companion object {
+
+        @Volatile
+        private var instance: CacheManager? = null
+
+        fun getInstance(context: Context): CacheManager {
+
+            if (instance == null) {
+                synchronized(CacheManagerImpl::class) {
+                    if (instance == null) {
+                        instance = CacheManagerImpl(context)
+                    }
+                }
+            }
+            return instance!!
+        }
+    }
 
     init {
         val version = BuildConfig.VERSION_CODE

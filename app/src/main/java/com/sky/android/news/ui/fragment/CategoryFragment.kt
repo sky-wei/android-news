@@ -27,17 +27,23 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems
 import com.sky.android.news.R
 import com.sky.android.news.base.VBaseFragment
+import com.sky.android.news.contract.CategoryContract
+import com.sky.android.news.data.model.CategoryModel
+import com.sky.android.news.data.source.NewsDataRepository
+import com.sky.android.news.data.source.NewsSourceFactory
+import com.sky.android.news.presenter.CategoryPresenter
 
 /**
  * Created by sky on 17-9-21.
  */
-class CategoryFragment : VBaseFragment() {
+class CategoryFragment : VBaseFragment(), CategoryContract.View {
 
     @BindView(R.id.viewpagertab)
     lateinit var smartTabLayout: SmartTabLayout
-
     @BindView(R.id.viewpager)
     lateinit var viewPager: ViewPager
+
+    lateinit var mCategoryPresenter: CategoryContract.Presenter
 
     override fun createView(inflater: LayoutInflater, container: ViewGroup?): View {
         return inflater.inflate(R.layout.fragment_category, container, false)
@@ -45,16 +51,35 @@ class CategoryFragment : VBaseFragment() {
 
     override fun initView(view: View, args: Bundle?) {
 
+        val repository = NewsDataRepository(NewsSourceFactory(context))
+        mCategoryPresenter = CategoryPresenter(repository, this)
+
+        // 加载类别
+        mCategoryPresenter.loadCategory()
+    }
+
+    override fun onLoadCategory(model: CategoryModel) {
+
         val creator = FragmentPagerItems.with(context)
 
-        creator.add("头条", NewsFragment::class.java, args)
-        creator.add("热点", NewsFragment::class.java, args)
-        creator.add("科技", NewsFragment::class.java, args)
+        model.items.forEach {
+
+            val args = Bundle().apply {
+                putSerializable("item", it)
+            }
+
+            // 添加类型
+            creator.add(it.name, NewsFragment::class.java, args)
+        }
 
         val adapter = FragmentPagerItemAdapter(
                 childFragmentManager, creator.create())
 
         viewPager.adapter = adapter
         smartTabLayout.setViewPager(viewPager)
+    }
+
+    override fun onLoadFailed(msg: String) {
+        showMessage(msg)
     }
 }

@@ -20,13 +20,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import butterknife.ButterKnife
 import com.sky.android.common.base.BaseFragment
 
 /**
  * Created by sky on 17-9-21.
  */
-abstract class VBaseFragment : BaseFragment() {
+abstract class VBaseFragment : BaseFragment(), BaseView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
@@ -46,4 +47,16 @@ abstract class VBaseFragment : BaseFragment() {
     protected abstract fun createView(inflater: LayoutInflater, container: ViewGroup?): View
 
     protected abstract fun initView(view: View, args: Bundle?)
+
+    override fun showLoading() {
+
+    }
+
+    override fun cancelLoading() {
+
+    }
+
+    override fun showMessage(msg: String) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    }
 }

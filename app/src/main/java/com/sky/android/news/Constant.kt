@@ -23,7 +23,7 @@ object Constant {
 
     object Service {
 
-        val BASE_URL = "http://c.m.163.com"
+        val BASE_URL = "http://c.m.163.com/"
     }
 
     object Category {

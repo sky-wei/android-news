@@ -17,11 +17,12 @@
 package com.sky.android.news.data.news
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 /**
  * Created by sky on 17-9-22.
  */
-data class Details(@SerializedName("CUU3HCLM0001899N") val content: Content)
+data class Details(@SerializedName("CUU3HCLM0001899N") val content: Content) : Serializable
 
 data class Content(val template: String, val img: List<Image>, val shareLink: String,
                    val source: String, val threadVote: Int, val title: String,
@@ -29,11 +30,11 @@ data class Content(val template: String, val img: List<Image>, val shareLink: St
                    val relative_sys: List<Relative>, val articleType: String, val digest: String,
                    val ptime: String, val ec: String, val docid: String, val threadAgainst: Int,
                    val hasNext: String, val dkeys: String, val replyCount: Int, val voicecomment: String,
-                   val replyBoard: String, val category: String)
+                   val replyBoard: String, val category: String) : Serializable
 
-data class Image(val ref: String, val src: String, val alt: String, val pixel: String)
+data class Image(val ref: String, val src: String, val alt: String, val pixel: String) : Serializable
 
-data class SpInfo(val ref: String, val spcontent: String, val sptype: String)
+data class SpInfo(val ref: String, val spcontent: String, val sptype: String) : Serializable
 
 data class Relative(val docID: String, val from: String, val href: String, val id: String,
-                    val imgsrc: String, val title: String, val ptime: String)
+                    val imgsrc: String, val title: String, val ptime: String) : Serializable
