@@ -1,6 +1,7 @@
 package com.sky.android.news.data.source
 
 import com.sky.android.news.data.model.CategoryModel
+import com.sky.android.news.data.model.DetailsModel
 import com.sky.android.news.data.model.HeadLineModel
 import rx.Observable
 
@@ -26,6 +27,16 @@ class NewsDataRepository(sourceFactory: NewsSourceFactory) : NewsDataSource {
 
         val localObservable = mLocal.getHeadLine(tid, start, end)
         val remoteObservable = mRemote.getHeadLine(tid, start, end)
+
+        return Observable
+                .concat(localObservable, remoteObservable)
+                .takeFirst { model -> model != null }
+    }
+
+    override fun getDetails(docId: String): Observable<DetailsModel> {
+
+        val localObservable = mLocal.getDetails(docId)
+        val remoteObservable = mRemote.getDetails(docId)
 
         return Observable
                 .concat(localObservable, remoteObservable)

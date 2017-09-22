@@ -16,7 +16,7 @@
 
 package com.sky.android.news.data.service
 
-import com.sky.android.news.data.news.Category
+import com.sky.android.news.data.news.Details
 import com.sky.android.news.data.news.HeadLine
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -27,9 +27,12 @@ import rx.Observable
  */
 interface NewsService {
 
-    fun getCategory(): Observable<Category>
+//    fun getCategory(): Observable<Category>
 
-    @GET("http://c.m.163.com/nc/article/headline/{tid}/{start}-{end}.html")
+    @GET("/nc/article/headline/{tid}/{start}-{end}.html")
     fun getHeadLine(@Path("tid") tid: String,
                     @Path("start") start: Int, @Path("end") end: Int): Observable<HeadLine>
+
+    @GET("/nc/article/{docId}/full.html")
+    fun getDetails(@Path("docId") docId: String): Observable<Details>
 }

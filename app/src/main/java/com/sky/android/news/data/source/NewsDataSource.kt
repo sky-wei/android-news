@@ -1,6 +1,7 @@
 package com.sky.android.news.data.source
 
 import com.sky.android.news.data.model.CategoryModel
+import com.sky.android.news.data.model.DetailsModel
 import com.sky.android.news.data.model.HeadLineModel
 import rx.Observable
 
@@ -20,4 +21,9 @@ interface NewsDataSource {
      */
     fun getHeadLine(tid: String,
                     start: Int, end: Int): Observable<HeadLineModel>
+
+    /**
+     * 获取详情信息
+     */
+    fun getDetails(docId: String): Observable<DetailsModel>
 }

@@ -14,20 +14,11 @@
  * limitations under the License.
  */
 
-package com.sky.android.news
+package com.sky.android.news.data.model
 
 /**
- * Created by sky on 17-9-21.
+ * Created by sky on 17-9-22.
  */
-object Constant {
+data class DetailsModel(val models: List<ContentModel>)
 
-    object Service {
-
-        val BASE_URL = "http://c.m.163.com"
-    }
-
-    object Category {
-
-        val NEWS = 0x01
-    }
-}
+data class ContentModel(val template: String)
