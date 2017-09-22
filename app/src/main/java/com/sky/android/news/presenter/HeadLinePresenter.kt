@@ -19,7 +19,9 @@ package com.sky.android.news.presenter
 import com.sky.android.common.utils.Alog
 import com.sky.android.news.contract.HeadLineContract
 import com.sky.android.news.data.model.CategoryItemModel
+import com.sky.android.news.data.model.LineItemModel
 import com.sky.android.news.data.source.NewsDataSource
+import com.sky.android.news.ui.helper.PageHelper
 
 /**
  * Created by sky on 17-9-22.
@@ -30,28 +32,60 @@ class HeadLinePresenter(val source: NewsDataSource,
     private val TAG = "HeadLinePresenter"
 
     private lateinit var mItem: CategoryItemModel
+    private val mPageHelper = PageHelper<LineItemModel>()
+
+    init {
+        mPageHelper.notFixed = true
+    }
 
     override fun setCategoryItem(item: CategoryItemModel) {
         mItem = item
     }
 
     override fun loadHeadLine() {
-
-        ioToMain(source.getHeadLine(mItem.tid, 0, 20))
-                .subscribe(
-                        {
-                            // 加载完成
-                            view.onHeadLine(it)
-                        },
-                        {
-                            // 加载失败
-                            view.showMessage("加载列表信息失败")
-                            Alog.e(TAG, "加载列表信息异常", it)
-                        }
-                )
+        // 加载
+        loadHeadLine(0, false)
     }
 
     override fun loadMoreHeadLine() {
 
+        if (!mPageHelper.isNextPage()) {
+            view.cancelLoading()
+            return
+        }
+
+        // 加载更多数据
+        loadHeadLine(mPageHelper.getCurPage() + 1, true)
+    }
+
+    private fun loadHeadLine(curPage: Int, loadMore: Boolean) {
+
+        view.showLoading()
+
+        val start = curPage * PageHelper.PAGE_SIZE
+
+        ioToMain(source.getHeadLine(mItem.tid,
+                start, start + PageHelper.PAGE_SIZE))
+                .subscribe(
+                        {
+                            // 加载完成
+                            view.cancelLoading()
+
+                            if (loadMore) {
+                                // 追加数据
+                                mPageHelper.appendData(it.lineItems)
+                            } else {
+                                // 设置数据
+                                mPageHelper.setData(it.lineItems)
+                            }
+                            view.onHeadLine(mPageHelper.getData())
+                        },
+                        {
+                            // 加载失败
+                            view.cancelLoading()
+                            view.showMessage("加载列表信息失败")
+                            Alog.e(TAG, "加载列表信息异常", it)
+                        }
+                )
     }
 }

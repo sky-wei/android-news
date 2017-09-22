@@ -20,6 +20,7 @@ import com.sky.android.news.base.BasePresenter
 import com.sky.android.news.base.BaseView
 import com.sky.android.news.data.model.CategoryItemModel
 import com.sky.android.news.data.model.HeadLineModel
+import com.sky.android.news.data.model.LineItemModel
 
 /**
  * Created by sky on 17-9-22.
@@ -28,7 +29,7 @@ interface HeadLineContract {
 
     interface View : BaseView {
 
-        fun onHeadLine(model: HeadLineModel)
+        fun onHeadLine(model: List<LineItemModel>)
 
         fun onLoadFailed(msg: String)
     }
