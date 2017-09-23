@@ -27,10 +27,10 @@ import android.view.ViewGroup
 import butterknife.BindView
 import com.sky.android.common.interfaces.OnItemEventListener
 import com.sky.android.news.R
+import com.sky.android.news.R2
 import com.sky.android.news.base.VBaseFragment
 import com.sky.android.news.contract.HeadLineContract
 import com.sky.android.news.data.model.CategoryItemModel
-import com.sky.android.news.data.model.HeadLineModel
 import com.sky.android.news.data.model.LineItemModel
 import com.sky.android.news.data.source.NewsDataRepository
 import com.sky.android.news.data.source.NewsSourceFactory
@@ -43,9 +43,9 @@ import com.sky.android.news.ui.helper.RecyclerHelper
  */
 class NewsFragment : VBaseFragment(), HeadLineContract.View, OnItemEventListener, RecyclerHelper.OnCallback {
 
-    @BindView(R.id.swip_refresh_layout)
+    @BindView(R2.id.swip_refresh_layout)
     lateinit var swipRefreshLayout: SwipeRefreshLayout
-    @BindView(R.id.recycler_view)
+    @BindView(R2.id.recycler_view)
     lateinit var recyclerView: RecyclerView
 
     lateinit var mHeadLinePresenter: HeadLineContract.Presenter

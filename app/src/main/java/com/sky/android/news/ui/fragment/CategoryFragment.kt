@@ -26,6 +26,7 @@ import com.ogaclejapan.smarttablayout.SmartTabLayout
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems
 import com.sky.android.news.R
+import com.sky.android.news.R2
 import com.sky.android.news.base.VBaseFragment
 import com.sky.android.news.contract.CategoryContract
 import com.sky.android.news.data.model.CategoryModel
@@ -38,12 +39,12 @@ import com.sky.android.news.presenter.CategoryPresenter
  */
 class CategoryFragment : VBaseFragment(), CategoryContract.View {
 
-    @BindView(R.id.viewpagertab)
+    @BindView(R2.id.viewpagertab)
     lateinit var smartTabLayout: SmartTabLayout
-    @BindView(R.id.viewpager)
+    @BindView(R2.id.viewpager)
     lateinit var viewPager: ViewPager
 
-    lateinit var mCategoryPresenter: CategoryContract.Presenter
+    private lateinit var mCategoryPresenter: CategoryContract.Presenter
 
     override fun createView(inflater: LayoutInflater, container: ViewGroup?): View {
         return inflater.inflate(R.layout.fragment_category, container, false)

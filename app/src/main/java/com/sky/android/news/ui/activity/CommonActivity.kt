@@ -21,6 +21,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.Toolbar
 import butterknife.BindView
 import com.sky.android.news.R
+import com.sky.android.news.R2
 import com.sky.android.news.base.VBaseActivity
 
 /**
@@ -34,7 +35,7 @@ class CommonActivity : VBaseActivity() {
         val SUPPORT_FRAGMENT = "supportFragment"
     }
 
-    @BindView(R.id.toolbar)
+    @BindView(R2.id.toolbar)
     lateinit var toolbar: Toolbar
 
     override fun getLayoutId(): Int {

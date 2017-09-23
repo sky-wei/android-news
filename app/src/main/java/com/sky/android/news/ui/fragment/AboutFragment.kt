@@ -27,6 +27,7 @@ import butterknife.BindView
 import butterknife.OnClick
 import com.sky.android.news.BuildConfig
 import com.sky.android.news.R
+import com.sky.android.news.R2
 import com.sky.android.news.base.VBaseFragment
 import com.sky.android.news.util.ActivityUtil
 
@@ -35,7 +36,7 @@ import com.sky.android.news.util.ActivityUtil
  */
 class AboutFragment : VBaseFragment() {
 
-    @BindView(R.id.tv_version)
+    @BindView(R2.id.tv_version)
     lateinit var tvVersion: TextView
 
     override fun createView(inflater: LayoutInflater, container: ViewGroup?): View {

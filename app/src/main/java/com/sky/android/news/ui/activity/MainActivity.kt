@@ -30,6 +30,7 @@ import android.widget.Toast
 import butterknife.BindView
 import com.sky.android.news.Constant
 import com.sky.android.news.R
+import com.sky.android.news.R2
 import com.sky.android.news.base.VBaseActivity
 import com.sky.android.news.ui.fragment.AboutFragment
 import com.sky.android.news.ui.fragment.CategoryFragment
@@ -37,11 +38,11 @@ import com.sky.android.news.util.ActivityUtil
 
 class MainActivity : VBaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.toolbar)
+    @BindView(R2.id.toolbar)
     lateinit var toolbar: Toolbar
-    @BindView(R.id.drawer_layout)
+    @BindView(R2.id.drawer_layout)
     lateinit var drawer: DrawerLayout
-    @BindView(R.id.nav_view)
+    @BindView(R2.id.nav_view)
     lateinit var navigationView: NavigationView
 
     private var mKeyTime: Long = 0
