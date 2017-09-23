@@ -29,7 +29,7 @@ interface HeadLineContract {
 
     interface View : BaseView {
 
-        fun onHeadLine(model: List<LineItemModel>)
+        fun onLoadHeadLine(model: List<LineItemModel>)
 
         fun onLoadFailed(msg: String)
     }

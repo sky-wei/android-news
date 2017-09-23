@@ -16,6 +16,8 @@
 
 package com.sky.android.news.data.mapper
 
+import com.sky.android.common.utils.CollectionUtils
+import com.sky.android.common.utils.ConversionUtils
 import com.sky.android.news.data.model.*
 import com.sky.android.news.data.news.*
 
@@ -30,16 +32,18 @@ class DetailsMapper {
 
     private fun transform(content: Content): ContentModel {
 
-        val image = transformImage(content.img)
-        val spInfo = transformSpInfo(content.spinfo)
-        val relative = transformRelative(content.relative_sys)
+        val image = transformImage(if (CollectionUtils.isEmpty(content.img)) listOf() else content.img)
+        val spInfo = transformSpInfo(if (CollectionUtils.isEmpty(content.spinfo)) listOf() else content.spinfo)
+        val relative = transformRelative(if (CollectionUtils.isEmpty(content.relative_sys)) listOf() else content.relative_sys)
 
-        return ContentModel(content.template, image, content.shareLink, content.source,
-                content.threadVote, content.title, content.body, content.tid, content.picnews,
-                spInfo, relative, content.articleType, content.digest, content.ptime,
-                content.ec, content.docid, content.threadAgainst, content.hasNext,
-                content.dkeys, content.replyCount, content.voicecomment, content.replyBoard,
-                content.category)
+        return ContentModel(ConversionUtils.toString(content.template), image, ConversionUtils.toString(content.shareLink),
+                ConversionUtils.toString(content.source), content.threadVote, ConversionUtils.toString(content.title),
+                ConversionUtils.toString(content.body), ConversionUtils.toString(content.tid), content.picnews,
+                spInfo, relative, ConversionUtils.toString(content.articleType), ConversionUtils.toString(content.digest),
+                ConversionUtils.toString(content.ptime), ConversionUtils.toString(content.ec), ConversionUtils.toString(content.docid),
+                content.threadAgainst, ConversionUtils.toString(content.hasNext), ConversionUtils.toString(content.dkeys),
+                content.replyCount, ConversionUtils.toString(content.voicecomment), ConversionUtils.toString(content.replyBoard),
+                ConversionUtils.toString(content.category))
     }
 
     private fun transformImage(image: List<Image>): List<ImageModel> {
@@ -47,7 +51,10 @@ class DetailsMapper {
     }
 
     private fun transformImage(image: Image): ImageModel {
-        return ImageModel(image.ref, image.src, image.alt, image.pixel)
+        return ImageModel(ConversionUtils.toString(image.ref),
+                ConversionUtils.toString(image.src),
+                ConversionUtils.toString(image.alt),
+                ConversionUtils.toString(image.pixel))
     }
 
     private fun transformSpInfo(spInfo: List<SpInfo>): List<SpInfoModel> {
@@ -55,7 +62,9 @@ class DetailsMapper {
     }
 
     private fun transformSpInfo(spInfo: SpInfo): SpInfoModel {
-        return SpInfoModel(spInfo.ref, spInfo.spcontent, spInfo.sptype)
+        return SpInfoModel(ConversionUtils.toString(spInfo.ref),
+                ConversionUtils.toString(spInfo.spcontent),
+                ConversionUtils.toString(spInfo.sptype))
     }
 
     private fun transformRelative(relatives: List<Relative>): List<RelativeModel> {
@@ -63,7 +72,12 @@ class DetailsMapper {
     }
 
     private fun transformRelative(relative: Relative): RelativeModel {
-        return RelativeModel(relative.docID, relative.from, relative.href,
-                relative.id, relative.imgsrc, relative.title, relative.ptime)
+        return RelativeModel(ConversionUtils.toString(relative.docID),
+                ConversionUtils.toString(relative.from),
+                ConversionUtils.toString(relative.href),
+                ConversionUtils.toString(relative.id),
+                ConversionUtils.toString(relative.imgsrc),
+                ConversionUtils.toString(relative.title),
+                ConversionUtils.toString(relative.ptime))
     }
 }

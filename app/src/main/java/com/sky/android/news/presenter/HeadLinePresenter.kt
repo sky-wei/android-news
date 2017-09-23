@@ -78,7 +78,7 @@ class HeadLinePresenter(val source: NewsDataSource,
                                 // 设置数据
                                 mPageHelper.setData(it.lineItems)
                             }
-                            view.onHeadLine(mPageHelper.getData())
+                            view.onLoadHeadLine(mPageHelper.getData())
                         },
                         {
                             // 加载失败

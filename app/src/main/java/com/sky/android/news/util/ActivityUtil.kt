@@ -59,7 +59,7 @@ object ActivityUtil {
                     && !TextUtils.equals(packageName, context.packageName)) {
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
             // 启动Activity
             context.startActivity(intent)
@@ -74,7 +74,7 @@ object ActivityUtil {
 
         try {
             // 添加参数
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
             // 启动Activity
             activity.startActivityForResult(intent, requestCode)

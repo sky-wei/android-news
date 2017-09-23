@@ -44,6 +44,10 @@
         <activity android:name=".ui.activity.CommonActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".ui.activity.DetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

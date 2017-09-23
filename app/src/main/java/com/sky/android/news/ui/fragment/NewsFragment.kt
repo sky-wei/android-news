@@ -16,6 +16,7 @@
 
 package com.sky.android.news.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
@@ -35,8 +36,10 @@ import com.sky.android.news.data.model.LineItemModel
 import com.sky.android.news.data.source.NewsDataRepository
 import com.sky.android.news.data.source.NewsSourceFactory
 import com.sky.android.news.presenter.HeadLinePresenter
+import com.sky.android.news.ui.activity.DetailsActivity
 import com.sky.android.news.ui.adapter.NewsAdapter
 import com.sky.android.news.ui.helper.RecyclerHelper
+import com.sky.android.news.util.ActivityUtil
 
 /**
  * Created by sky on 17-9-21.
@@ -88,7 +91,7 @@ class NewsFragment : VBaseFragment(), HeadLineContract.View, OnItemEventListener
         mRecyclerHelper.cancelRefreshing()
     }
 
-    override fun onHeadLine(model: List<LineItemModel>) {
+    override fun onLoadHeadLine(model: List<LineItemModel>) {
 
         // 更新列表信息
         mNewsAdapter.items = model
@@ -101,6 +104,12 @@ class NewsFragment : VBaseFragment(), HeadLineContract.View, OnItemEventListener
 
     override fun onItemEvent(event: Int, view: View, position: Int, vararg args: Any?) {
 
+        val intent = Intent(context, DetailsActivity::class.java).apply {
+            putExtra("item", mNewsAdapter.getItem(position))
+        }
+
+        // 进入详情界面
+        ActivityUtil.startActivity(context, intent)
     }
 
     override fun onRefresh() {

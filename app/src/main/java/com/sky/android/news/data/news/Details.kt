@@ -16,13 +16,12 @@
 
 package com.sky.android.news.data.news
 
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 /**
  * Created by sky on 17-9-22.
  */
-data class Details(@SerializedName("CUU3HCLM0001899N") val content: Content) : Serializable
+data class Details(var content: Content) : Serializable
 
 data class Content(val template: String, val img: List<Image>, val shareLink: String,
                    val source: String, val threadVote: Int, val title: String,
