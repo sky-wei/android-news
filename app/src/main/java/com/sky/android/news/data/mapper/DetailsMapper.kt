@@ -18,6 +18,7 @@ package com.sky.android.news.data.mapper
 
 import com.sky.android.common.utils.CollectionUtils
 import com.sky.android.common.utils.ConversionUtils
+import com.sky.android.news.base.toExtString
 import com.sky.android.news.data.model.*
 import com.sky.android.news.data.news.*
 
@@ -33,6 +34,7 @@ class DetailsMapper {
     private fun transform(content: Content): ContentModel {
 
         val image = transformImage(if (CollectionUtils.isEmpty(content.img)) listOf() else content.img)
+        val video = transformVideo(if (CollectionUtils.isEmpty(content.video)) listOf() else content.video)
         val spInfo = transformSpInfo(if (CollectionUtils.isEmpty(content.spinfo)) listOf() else content.spinfo)
         val relative = transformRelative(if (CollectionUtils.isEmpty(content.relative_sys)) listOf() else content.relative_sys)
 
@@ -43,7 +45,7 @@ class DetailsMapper {
                 ConversionUtils.toString(content.ptime), ConversionUtils.toString(content.ec), ConversionUtils.toString(content.docid),
                 content.threadAgainst, ConversionUtils.toString(content.hasNext), ConversionUtils.toString(content.dkeys),
                 content.replyCount, ConversionUtils.toString(content.voicecomment), ConversionUtils.toString(content.replyBoard),
-                ConversionUtils.toString(content.category))
+                ConversionUtils.toString(content.category), video)
     }
 
     private fun transformImage(image: List<Image>): List<ImageModel> {
@@ -55,6 +57,21 @@ class DetailsMapper {
                 ConversionUtils.toString(image.src),
                 ConversionUtils.toString(image.alt),
                 ConversionUtils.toString(image.pixel))
+    }
+
+    private fun transformVideo(image: List<Video>): List<VideoModel> {
+        return image.map { it -> transformVideo(it) }
+    }
+
+    private fun transformVideo(image: Video): VideoModel {
+        return VideoModel(ConversionUtils.toString(image.broadcast), ConversionUtils.toString(image.sizeHD),
+                ConversionUtils.toString(image.url_mp4), ConversionUtils.toString(image.alt),
+                image.length.toExtString(), image.videosource.toExtString(), image.appurl.toExtString(),
+                image.m3u8Hd_url.toExtString(), image.mp4_url.toExtString(), image.sizeSD.toExtString(),
+                image.sid.toExtString(), image.cover.toExtString(), image.vid.toExtString(),
+                image.url_m3u8.toExtString(), image.sizeSHD.toExtString(), image.ref.toExtString(),
+                image.topicid.toExtString(), image.commentboard.toExtString(),
+                image.size.toExtString(), image.commentid.toExtString(), image.m3u8_url.toExtString())
     }
 
     private fun transformSpInfo(spInfo: List<SpInfo>): List<SpInfoModel> {

@@ -25,7 +25,7 @@ class DetailsActivity : VBaseActivity() {
     override fun initView(intent: Intent) {
 
         // 设置ActionBar
-        setSupportActionBar(toolbar, "", true)
+        setSupportActionBar(toolbar, "返回", true)
 
         val args = Bundle().apply {
             putSerializable("item", intent.getSerializableExtra("item"))

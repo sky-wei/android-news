@@ -29,9 +29,16 @@ data class Content(val template: String, val img: List<Image>, val shareLink: St
                    val relative_sys: List<Relative>, val articleType: String, val digest: String,
                    val ptime: String, val ec: String, val docid: String, val threadAgainst: Int,
                    val hasNext: String, val dkeys: String, val replyCount: Int, val voicecomment: String,
-                   val replyBoard: String, val category: String) : Serializable
+                   val replyBoard: String, val category: String, val video: List<Video>) : Serializable
 
 data class Image(val ref: String, val src: String, val alt: String, val pixel: String) : Serializable
+
+data class Video(val broadcast: String, val sizeHD: String, val url_mp4: String, val alt: String,
+                 val length: String, val videosource: String, val appurl: String, val m3u8Hd_url: String,
+                 val mp4_url: String, val sizeSD: String, val sid: String, val cover: String,
+                 val vid: String, val url_m3u8: String, val sizeSHD: String, val ref: String,
+                 val topicid: String, val commentboard: String, val size: String, val commentid: String,
+                 val m3u8_url: String) : Serializable
 
 data class SpInfo(val ref: String, val spcontent: String, val sptype: String) : Serializable
 

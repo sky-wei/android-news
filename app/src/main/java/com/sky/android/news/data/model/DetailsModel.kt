@@ -25,13 +25,20 @@ data class DetailsModel(val models: ContentModel) : Serializable
 
 data class ContentModel(val template: String, val img: List<ImageModel>, val shareLink: String,
                         val source: String, val threadVote: Int, val title: String,
-                        val body: String, val tid: String, val picNews: Boolean, val spInfo: List<SpInfoModel>,
+                        var body: String, val tid: String, val picNews: Boolean, val spInfo: List<SpInfoModel>,
                         val relative: List<RelativeModel>, val articleType: String, val digest: String,
                         val pTime: String, val ec: String, val docId: String, val threadAgainst: Int,
                         val hasNext: String, val dKeys: String, val replyCount: Int, val voiceComment: String,
-                        val replyBoard: String, val category: String)
+                        val replyBoard: String, val category: String, val video: List<VideoModel>) : Serializable
 
 data class ImageModel(val ref: String, val src: String, val alt: String, val pixel: String) : Serializable
+
+data class VideoModel(val broadcast: String, val sizeHD: String, val url_mp4: String, val alt: String,
+                 val length: String, val videoSource: String, val appUrl: String, val m3u8HdUrl: String,
+                 val mp4_url: String, val sizeSD: String, val sid: String, val cover: String,
+                 val vid: String, val url_m3u8: String, val sizeSHD: String, val ref: String,
+                 val topicId: String, val commentBoard: String, val size: String, val commentId: String,
+                 val m3u8Url: String) : Serializable
 
 data class SpInfoModel(val ref: String, val spContent: String, val spType: String) : Serializable
 

@@ -51,7 +51,7 @@ abstract class CloudDataSource {
 
             var request = chain!!.request()
 
-            val url = request.url().url().path
+            val url = request.url().url()
 
             Alog.d("RequestUrl: $url")
 
@@ -69,17 +69,12 @@ abstract class CloudDataSource {
 
         override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): HeadLine {
 
-            val model = HeadLine(listOf())
-
             json.asJsonObject.entrySet().forEach {
-
-                if (it.key.startsWith("T")) {
-                    // 转换
-                    model.lineItems = context.deserialize<List<LineItem>>(
-                            it.value, object: TypeToken<List<LineItem>>() {}.type)
-                }
+                // 转换
+                return HeadLine(context.deserialize<List<LineItem>>(
+                        it.value, object: TypeToken<List<LineItem>>() {}.type))
             }
-            return model
+            throw DataException("解析信息异常")
         }
     }
 

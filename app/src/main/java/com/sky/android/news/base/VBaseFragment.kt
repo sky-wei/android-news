@@ -23,11 +23,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import butterknife.ButterKnife
 import com.sky.android.common.base.BaseFragment
+import com.sky.android.news.R
+import com.sky.android.news.ui.diglog.LoadingDialog
 
 /**
  * Created by sky on 17-9-21.
  */
 abstract class VBaseFragment : BaseFragment(), BaseView {
+
+    private var mLoadingDialog: LoadingDialog? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
@@ -50,10 +54,21 @@ abstract class VBaseFragment : BaseFragment(), BaseView {
 
     override fun showLoading() {
 
+        if (mLoadingDialog != null) return
+
+        mLoadingDialog = LoadingDialog(context)
+        mLoadingDialog!!.setTipText(R.string.loading)
+        mLoadingDialog!!.setCancelable(false)
+        mLoadingDialog!!.show()
     }
 
     override fun cancelLoading() {
 
+        if (mLoadingDialog == null) return
+
+        // 隐藏
+        mLoadingDialog!!.dismiss()
+        mLoadingDialog = null
     }
 
     override fun showMessage(msg: String) {

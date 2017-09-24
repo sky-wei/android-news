@@ -16,6 +16,7 @@
 
 package com.sky.android.news.presenter
 
+import android.text.TextUtils
 import com.sky.android.common.utils.Alog
 import com.sky.android.news.contract.HeadLineContract
 import com.sky.android.news.data.model.CategoryItemModel
@@ -64,8 +65,22 @@ class HeadLinePresenter(val source: NewsDataSource,
 
         val start = curPage * PageHelper.PAGE_SIZE
 
-        ioToMain(source.getHeadLine(mItem.tid,
-                start, start + PageHelper.PAGE_SIZE))
+        val observable = source.getHeadLine(mItem.tid,
+                start, start + PageHelper.PAGE_SIZE)
+                .doOnNext {
+
+                    // 删除不运行的新闻
+                    var tempList = ArrayList<LineItemModel>()
+
+                    it.lineItems.forEach {
+                        // 添加有效的新闻
+                        if (TextUtils.isEmpty(it.template)) tempList.add(it)
+                    }
+
+                    it.lineItems = tempList
+                }
+
+        ioToMain(observable)
                 .subscribe(
                         {
                             // 加载完成

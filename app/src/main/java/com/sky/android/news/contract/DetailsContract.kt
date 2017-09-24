@@ -2,7 +2,6 @@ package com.sky.android.news.contract
 
 import com.sky.android.news.base.BasePresenter
 import com.sky.android.news.base.BaseView
-import com.sky.android.news.data.model.CategoryItemModel
 import com.sky.android.news.data.model.DetailsModel
 import com.sky.android.news.data.model.LineItemModel
 

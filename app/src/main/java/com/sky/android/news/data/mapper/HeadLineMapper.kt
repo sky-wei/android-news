@@ -17,6 +17,7 @@
 package com.sky.android.news.data.mapper
 
 import com.sky.android.common.utils.ConversionUtils
+import com.sky.android.news.base.toExtString
 import com.sky.android.news.data.model.HeadLineModel
 import com.sky.android.news.data.model.LineItemModel
 import com.sky.android.news.data.news.HeadLine
@@ -43,6 +44,6 @@ class HeadLineMapper {
                 ConversionUtils.toString(item.ltitle), ConversionUtils.toString(item.subtitle),
                 ConversionUtils.toString(item.digest), ConversionUtils.toString(item.boardid),
                 ConversionUtils.toString(item.imgsrc), ConversionUtils.toString(item.ptime),
-                ConversionUtils.toString(item.daynum))
+                ConversionUtils.toString(item.daynum), item.template.toExtString())
     }
 }

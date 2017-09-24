@@ -18,7 +18,6 @@ package com.sky.android.news
 
 import android.app.Application
 import com.sky.android.common.utils.Alog
-import com.sky.android.news.data.cache.CacheManager
 import com.sky.android.news.data.cache.impl.CacheManagerImpl
 
 /**
