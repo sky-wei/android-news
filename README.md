@@ -1,5 +1,12 @@
 ### 手机端的新闻客户端
 
+使用 __Kotlin__ 语言编写的 __Android__ 新闻客户端，数据来源与 __网易新闻__
+
+### 截图
+![](screenshot/device-2017-09-24-234127.jpg)
+![](screenshot/device-2017-09-24-234155.jpg)
+![](screenshot/device-2017-09-24-234224.jpg)
+
 ## License
 
     Copyright 2017 The sky Authors
