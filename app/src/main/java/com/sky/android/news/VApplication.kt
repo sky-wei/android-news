@@ -17,6 +17,7 @@
 package com.sky.android.news
 
 import android.app.Application
+import com.iflytek.cloud.SpeechUtility
 import com.sky.android.common.utils.Alog
 import com.sky.android.news.data.cache.impl.CacheManagerImpl
 
@@ -26,9 +27,11 @@ import com.sky.android.news.data.cache.impl.CacheManagerImpl
 class VApplication : Application() {
 
     override fun onCreate() {
+        SpeechUtility.createUtility(this, "appid=59c8c734")
         super.onCreate()
 
         Alog.setDebug(BuildConfig.DEBUG)
+//        Setting.setShowLog(BuildConfig.DEBUG)
 
         // 初始化...
         CacheManagerImpl.getInstance(this)
