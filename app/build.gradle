@@ -77,6 +77,7 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:support-vector-drawable:25.3.1'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.4@aar'
+    compile 'com.jaeger.statusbarutil:library:1.4.0'
     testCompile 'junit:junit:4.12'
     kapt 'com.github.bumptech.glide:compiler:4.1.1'
     kapt 'com.jakewharton:butterknife-compiler:8.8.1'

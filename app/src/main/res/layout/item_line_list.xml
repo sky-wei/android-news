@@ -19,7 +19,7 @@
             android:layout_height="80dp"
             android:layout_marginLeft="5dp"
             android:layout_centerVertical="true"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:background="@color/background"/>
 
         <TextView
@@ -30,7 +30,7 @@
             android:layout_alignTop="@id/iv_image"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="5dp"
-            android:textColor="@color/black"
+            android:textColor="@color/colorText"
             android:textSize="16sp"
             android:maxLines="3"
             />

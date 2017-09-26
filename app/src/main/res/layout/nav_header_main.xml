@@ -16,14 +16,14 @@
         android:id="@+id/imageView"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@drawable/ic_account_circle_white" />
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/ic_side_nav_head" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Sky"
+        android:layout_marginTop="6dp"
+        android:text="sky"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
