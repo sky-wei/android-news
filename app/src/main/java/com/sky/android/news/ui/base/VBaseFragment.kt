@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.base
+package com.sky.android.news.ui.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,6 +24,7 @@ import android.widget.Toast
 import butterknife.ButterKnife
 import com.sky.android.common.base.BaseFragment
 import com.sky.android.news.R
+import com.sky.android.news.base.BaseView
 import com.sky.android.news.ui.diglog.LoadingDialog
 
 /**

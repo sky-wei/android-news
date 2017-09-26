@@ -20,7 +20,7 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
 import com.sky.android.news.R
-import com.sky.android.news.base.VBaseActivity
+import com.sky.android.news.ui.base.VBaseActivity
 import com.sky.android.news.util.ActivityUtil
 import com.tbruyelle.rxpermissions.RxPermissions
 

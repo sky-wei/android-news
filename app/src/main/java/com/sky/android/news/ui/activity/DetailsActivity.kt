@@ -7,7 +7,7 @@ import android.support.v7.widget.Toolbar
 import butterknife.BindView
 import com.sky.android.news.R
 import com.sky.android.news.R2
-import com.sky.android.news.base.VBaseActivity
+import com.sky.android.news.ui.base.VBaseActivity
 import com.sky.android.news.ui.fragment.DetailsFragment
 
 /**

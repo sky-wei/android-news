@@ -8,7 +8,7 @@ import butterknife.BindView
 import com.iflytek.cloud.*
 import com.sky.android.news.R
 import com.sky.android.news.R2
-import com.sky.android.news.base.VBaseFragment
+import com.sky.android.news.ui.base.VBaseFragment
 import com.sky.android.news.contract.DetailsContract
 import com.sky.android.news.data.model.ContentModel
 import com.sky.android.news.data.model.DetailsModel

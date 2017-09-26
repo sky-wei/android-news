@@ -29,7 +29,7 @@ import butterknife.BindView
 import com.sky.android.common.interfaces.OnItemEventListener
 import com.sky.android.news.R
 import com.sky.android.news.R2
-import com.sky.android.news.base.VBaseFragment
+import com.sky.android.news.ui.base.VBaseFragment
 import com.sky.android.news.contract.HeadLineContract
 import com.sky.android.news.data.model.CategoryItemModel
 import com.sky.android.news.data.model.LineItemModel

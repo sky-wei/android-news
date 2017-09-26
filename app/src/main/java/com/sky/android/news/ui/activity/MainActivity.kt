@@ -32,7 +32,7 @@ import com.jaeger.library.StatusBarUtil
 import com.sky.android.news.Constant
 import com.sky.android.news.R
 import com.sky.android.news.R2
-import com.sky.android.news.base.VBaseActivity
+import com.sky.android.news.ui.base.VBaseActivity
 import com.sky.android.news.ui.fragment.AboutFragment
 import com.sky.android.news.ui.fragment.CategoryFragment
 import com.sky.android.news.util.ActivityUtil
