@@ -44,3 +44,5 @@ data class SpInfoModel(val ref: String, val spContent: String, val spType: Strin
 
 data class RelativeModel(val docID: String, val from: String, val href: String, val id: String,
                     val imgSrc: String, val title: String, val pTime: String) : Serializable
+
+data class DetailsPackageModel(val lastTime: Long, val model: DetailsModel) : Serializable

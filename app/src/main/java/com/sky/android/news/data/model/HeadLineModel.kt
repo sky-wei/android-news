@@ -13,3 +13,5 @@ data class LineItemModel(val voteCount: Int, val docId: String, val lModify: Str
                          val lTitle: String, val subtitle: String, val digest: String,
                          val boardId: String, val imgSrc: String, val pTime: String,
                          val dayNum: String, val template: String /** 特殊的字段，用于区分不支持的新闻 */) : Serializable
+
+data class LinePackageModel(val lastTime: Long, val model: HeadLineModel) : Serializable

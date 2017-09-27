@@ -14,6 +14,7 @@ import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import rx.Subscriber
 import java.lang.reflect.Type
 
 /**
@@ -43,6 +44,20 @@ abstract class CloudDataSource {
                 .registerTypeAdapter(HeadLine::class.java, HeadLineJsonDeserializer())
                 .registerTypeAdapter(Details::class.java, DetailsJsonDeserializer())
                 .create()
+    }
+
+    fun <T> handler(subscriber: Subscriber<in T>, model: T?) {
+
+        try {
+            // 处理下一步
+            subscriber.onNext(model)
+
+            // 完成
+            subscriber.onCompleted()
+        } catch (e: Throwable) {
+            // 出错了
+            subscriber.onError(e)
+        }
     }
 
     class RequestInterceptor : Interceptor {
