@@ -18,8 +18,10 @@ package com.sky.android.news.presenter
 
 import android.text.TextUtils
 import com.sky.android.common.utils.Alog
+import com.sky.android.news.base.BaseSubscriber
 import com.sky.android.news.contract.HeadLineContract
 import com.sky.android.news.data.model.CategoryItemModel
+import com.sky.android.news.data.model.HeadLineModel
 import com.sky.android.news.data.model.LineItemModel
 import com.sky.android.news.data.source.NewsDataSource
 import com.sky.android.news.ui.helper.PageHelper
@@ -29,8 +31,6 @@ import com.sky.android.news.ui.helper.PageHelper
  */
 class HeadLinePresenter(val source: NewsDataSource,
                         val view: HeadLineContract.View) : AbstractPresenter(), HeadLineContract.Presenter {
-
-    private val TAG = "HeadLinePresenter"
 
     private lateinit var mItem: CategoryItemModel
     private val mPageHelper = PageHelper<LineItemModel>()
@@ -81,26 +81,38 @@ class HeadLinePresenter(val source: NewsDataSource,
                 }
 
         ioToMain(observable)
-                .subscribe(
-                        {
-                            // 加载完成
-                            view.cancelLoading()
+                .subscribe(HeadLineSubscriber(curPage, loadMore))
+    }
 
-                            if (loadMore) {
-                                // 追加数据
-                                mPageHelper.appendData(it.lineItems)
-                            } else {
-                                // 设置数据
-                                mPageHelper.setData(it.lineItems)
-                            }
-                            view.onLoadHeadLine(mPageHelper.getData())
-                        },
-                        {
-                            // 加载失败
-                            view.cancelLoading()
-                            view.showMessage("加载列表信息失败")
-                            Alog.e(TAG, "加载列表信息异常", it)
-                        }
-                )
+    private inner class HeadLineSubscriber(val curPage: Int, val loadMore: Boolean) : BaseSubscriber<HeadLineModel>() {
+
+        override fun onError(msg: String, tr: Throwable): Boolean {
+            // 加载失败
+            Alog.e(msg, tr)
+            view.cancelLoading()
+            view.showMessage("加载列表信息失败")
+            return true
+        }
+
+        override fun onNext(model: HeadLineModel?) {
+
+            if (model == null) {
+                // 返回数据为空
+                view.onLoadFailed("服务返回数据为空")
+                return
+            }
+
+            // 加载完成
+            view.cancelLoading()
+
+            if (loadMore) {
+                // 追加数据
+                mPageHelper.appendData(model.lineItems)
+            } else {
+                // 设置数据
+                mPageHelper.setData(model.lineItems)
+            }
+            view.onLoadHeadLine(mPageHelper.getData())
+        }
     }
 }

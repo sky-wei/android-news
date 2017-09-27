@@ -51,10 +51,7 @@ abstract class BaseSubscriber<T> : Subscriber<T>() {
         Alog.e(TAG, "数据处理异常", tr)
     }
 
-    protected fun onError(msg: String, tr: Throwable): Boolean {
+    open fun onError(msg: String, tr: Throwable): Boolean {
         return false
-    }
-
-    override fun onNext(t: T) {
     }
 }
