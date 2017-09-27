@@ -28,10 +28,11 @@ import android.view.KeyEvent
 import android.view.MenuItem
 import android.widget.Toast
 import butterknife.BindView
+import com.jaeger.library.StatusBarUtil
 import com.sky.android.news.Constant
 import com.sky.android.news.R
 import com.sky.android.news.R2
-import com.sky.android.news.base.VBaseActivity
+import com.sky.android.news.ui.base.VBaseActivity
 import com.sky.android.news.ui.fragment.AboutFragment
 import com.sky.android.news.ui.fragment.CategoryFragment
 import com.sky.android.news.util.ActivityUtil
@@ -54,6 +55,8 @@ class MainActivity : VBaseActivity(), NavigationView.OnNavigationItemSelectedLis
     override fun initView(intent: Intent) {
 
         setSupportActionBar(toolbar)
+        StatusBarUtil.setColorForDrawerLayout(
+                this, drawer, resources.getColor(R.color.transparent))
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)

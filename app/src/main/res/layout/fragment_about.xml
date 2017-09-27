@@ -17,8 +17,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,14 +36,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:textSize="24sp"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorText"
             android:text="@string/app_name"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorText"
             android:text="@string/mail"/>
 
         <TextView
@@ -52,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorText"
             android:text="@string/source"/>
 
     </LinearLayout>
@@ -70,8 +69,7 @@
             android:id="@+id/tv_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="10sp"
-            android:textColor="@color/colorPrimary"/>
+            android:textSize="10sp" />
 
         <TextView
             android:layout_width="wrap_content"

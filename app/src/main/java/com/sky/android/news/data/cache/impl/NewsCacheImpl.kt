@@ -1,11 +1,24 @@
+/*
+ * Copyright (c) 2017 The sky Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.sky.android.news.data.cache.impl
 
 import com.sky.android.news.data.cache.CacheManager
 import com.sky.android.news.data.cache.NewsCache
-import com.sky.android.news.data.model.CategoryModel
-import com.sky.android.news.data.model.HeadLineModel
-import rx.Observable
-import rx.Subscriber
+import com.sky.android.news.data.model.*
 
 /**
  * Created by sky on 17-9-21.
@@ -15,45 +28,57 @@ class NewsCacheImpl(private val mCacheManager: CacheManager) : NewsCache {
     private var mCategoryKey = mCacheManager.buildKey(
             NewsCacheImpl::class.java.name + ":getCategory()")
 
-    override fun getCategory(): Observable<CategoryModel> {
-
-        return Observable.unsafeCreate<CategoryModel> {
-            subscriber -> handler(subscriber,
-                mCacheManager.get(mCategoryKey, CategoryModel::class.java))
-        }
+    override fun getCategory(): CategoryModel? {
+        return mCacheManager.get(mCategoryKey, CategoryModel::class.java)
     }
 
     override fun saveCategory(model: CategoryModel) {
         mCacheManager.put(mCategoryKey, model)
     }
 
-    override fun getHeadLine(path: String): Observable<HeadLineModel> {
+    override fun getHeadLine(tid: String, start: Int, end: Int): HeadLineModel? {
 
-        return Observable.unsafeCreate<HeadLineModel> { subscriber ->
-            val key = mCacheManager.buildKey(path)
+        val key = mCacheManager.buildKey("$tid-$start-$end")
+        val model = mCacheManager.get(key, LinePackageModel::class.java)
 
-            handler(subscriber, mCacheManager.get(key, HeadLineModel::class.java))
+        if (model != null
+                && !isExpired(model.lastTime, 1000 * 60 * 10)) {
+            // 返回缓存数据
+            return model.model
         }
+        return null
     }
 
-    override fun saveHeadLine(path: String, model: HeadLineModel) {
-
-        val key = mCacheManager.buildKey(path)
-
-        mCacheManager.put(key, model)
+    override fun saveHeadLine(tid: String, start: Int, end: Int, model: HeadLineModel) {
+        mCacheManager.put(
+                mCacheManager.buildKey("$tid-$start-$end"),
+                LinePackageModel(System.currentTimeMillis(), model))
     }
 
-    private fun <T> handler(subscriber: Subscriber<in T>, model: T) {
+    override fun getDetails(docId: String): DetailsModel? {
 
-        try {
-            // 处理下一步
-            subscriber.onNext(model)
-        } catch (e: Exception) {
-            // 出错了
-            subscriber.onError(e)
-            return
+        val key = mCacheManager.buildKey(docId)
+        var model = mCacheManager.get(key, DetailsPackageModel::class.java)
+
+        if (model != null
+                && !isExpired(model.lastTime, 1000 * 60 * 60 * 24)) {
+            // 返回缓存数据
+            return model.model
         }
-        // 完成
-        subscriber.onCompleted()
+        return null
+    }
+
+    override fun saveDetails(docId: String, model: DetailsModel) {
+        mCacheManager.put(
+                mCacheManager.buildKey(docId),
+                DetailsPackageModel(System.currentTimeMillis(), model))
+    }
+
+    private fun isExpired(lastTime: Long, timeout: Long): Boolean {
+
+        val curTime = System.currentTimeMillis()
+
+        // 当前时间-最后时间>=超时时间 || 异常情况: 当前时间 < 最后时间
+        return curTime - lastTime >= timeout || curTime < lastTime
     }
 }

@@ -28,7 +28,7 @@ import butterknife.OnClick
 import com.sky.android.news.BuildConfig
 import com.sky.android.news.R
 import com.sky.android.news.R2
-import com.sky.android.news.base.VBaseFragment
+import com.sky.android.news.ui.base.VBaseFragment
 import com.sky.android.news.util.ActivityUtil
 
 /**

@@ -16,7 +16,10 @@
 
 package com.sky.android.news.presenter
 
+import com.sky.android.common.utils.Alog
+import com.sky.android.news.base.BaseSubscriber
 import com.sky.android.news.contract.CategoryContract
+import com.sky.android.news.data.model.CategoryModel
 import com.sky.android.news.data.source.NewsDataSource
 
 /**
@@ -29,15 +32,28 @@ class CategoryPresenter(val source: NewsDataSource,
 
         // 加载类别
         ioToMain(source.getCategory())
-                .subscribe(
-                        {
-                            // 加载成功
-                            view.onLoadCategory(it)
-                        },
-                        {
-                            // 加载失败
-                            view.onLoadFailed("加载分类列表失败")
-                        }
-                )
+                .subscribe(CategorySubscriber())
+    }
+
+    private inner class CategorySubscriber : BaseSubscriber<CategoryModel>() {
+
+        override fun onError(msg: String, tr: Throwable): Boolean {
+            // 加载失败
+            Alog.e(msg, tr)
+            view.onLoadFailed("加载分类列表失败")
+            return true
+        }
+
+        override fun onNext(model: CategoryModel?) {
+
+            if (model == null) {
+                // 返回数据为空
+                view.onLoadFailed("服务返回数据为空")
+                return
+            }
+
+            // 加载成功
+            view.onLoadCategory(model)
+        }
     }
 }

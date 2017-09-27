@@ -1,14 +1,32 @@
+/*
+ * Copyright (c) 2017 The sky Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.sky.android.news.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
+import android.text.Html
 import android.text.TextUtils
 import android.view.*
 import android.widget.TextView
 import butterknife.BindView
 import com.iflytek.cloud.*
+import com.sky.android.common.utils.ViewUtils
 import com.sky.android.news.R
 import com.sky.android.news.R2
-import com.sky.android.news.base.VBaseFragment
 import com.sky.android.news.contract.DetailsContract
 import com.sky.android.news.data.model.ContentModel
 import com.sky.android.news.data.model.DetailsModel
@@ -16,8 +34,9 @@ import com.sky.android.news.data.model.LineItemModel
 import com.sky.android.news.data.source.NewsDataRepository
 import com.sky.android.news.data.source.NewsSourceFactory
 import com.sky.android.news.presenter.DetailsPresenter
+import com.sky.android.news.ui.base.VBaseFragment
 import com.sky.android.news.ui.helper.VImageGetter
-import org.sufficientlysecure.htmltextview.HtmlTextView
+import com.sky.android.news.util.ActivityUtil
 
 
 /**
@@ -27,10 +46,16 @@ class DetailsFragment : VBaseFragment(), DetailsContract.View, InitListener, Syn
 
     @BindView(R2.id.tv_title)
     lateinit var tvTitle: TextView
+    @BindView(R2.id.tv_summary)
+    lateinit var tvSummary: TextView
+    @BindView(R2.id.tv_loading)
+    lateinit var tvLoading: TextView
     @BindView(R2.id.tv_body)
-    lateinit var tvBody: HtmlTextView
+    lateinit var tvBody: TextView
+//    @BindView(R2.id.web_view)
+//    lateinit var webView: WebView
 
-    	// 语音合成对象
+    // 语音合成对象
 	private var mTts: SpeechSynthesizer? = null
     private lateinit var mContent: ContentModel
     private lateinit var mDetailsPresenter: DetailsContract.Presenter
@@ -42,6 +67,8 @@ class DetailsFragment : VBaseFragment(), DetailsContract.View, InitListener, Syn
     override fun initView(view: View, args: Bundle?) {
 
         setHasOptionsMenu(true)
+
+//        webView.settings.defaultTextEncodingName = "UTF -8"
 
         val repository = NewsDataRepository(NewsSourceFactory(context))
         mDetailsPresenter = DetailsPresenter(context, repository, this)
@@ -72,8 +99,28 @@ class DetailsFragment : VBaseFragment(), DetailsContract.View, InitListener, Syn
                 startBroadcast()
                 return true
             }
+            R.id.menu_share -> {
+                // 分享
+                shareNews()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    /**
+     * 分享这个新闻连接,使用系统分享功能
+     */
+    private fun shareNews() {
+
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TITLE, "link")
+            putExtra(Intent.EXTRA_TEXT, mContent.shareLink)
+        }
+
+        ActivityUtil.startActivity(
+                context, Intent.createChooser(intent, "分享到"))
     }
 
     override fun onLoadDetails(model: DetailsModel) {
@@ -82,7 +129,11 @@ class DetailsFragment : VBaseFragment(), DetailsContract.View, InitListener, Syn
 
         // 设置标题
         tvTitle.text = mContent.title
-        tvBody.setHtml(mContent.body, VImageGetter(context, tvBody))
+        tvSummary.text = "${mContent.source}  ${mContent.pTime}"
+        tvBody.text = Html.fromHtml(mContent.body, VImageGetter(context, tvBody), null)
+
+        // 使用WebView来处理
+//        webView.loadData(mContent.body, "text/html; charset=UTF-8", null)
     }
 
     override fun onLoadFailed(msg: String) {
@@ -90,9 +141,11 @@ class DetailsFragment : VBaseFragment(), DetailsContract.View, InitListener, Syn
     }
 
     override fun showLoading() {
+        ViewUtils.setVisibility(tvLoading, View.VISIBLE)
     }
 
     override fun cancelLoading() {
+        ViewUtils.setVisibility(tvLoading, View.INVISIBLE)
     }
 
     override fun onInit(code: Int) {

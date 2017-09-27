@@ -27,7 +27,7 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems
 import com.sky.android.news.R
 import com.sky.android.news.R2
-import com.sky.android.news.base.VBaseFragment
+import com.sky.android.news.ui.base.VBaseFragment
 import com.sky.android.news.contract.CategoryContract
 import com.sky.android.news.data.model.CategoryModel
 import com.sky.android.news.data.source.NewsDataRepository

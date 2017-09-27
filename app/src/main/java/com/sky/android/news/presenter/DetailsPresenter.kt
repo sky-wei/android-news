@@ -1,9 +1,26 @@
+/*
+ * Copyright (c) 2017 The sky Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.sky.android.news.presenter
 
 import android.content.Context
 import com.sky.android.common.utils.Alog
+import com.sky.android.news.base.BaseSubscriber
 import com.sky.android.news.contract.DetailsContract
-import com.sky.android.news.data.model.ContentModel
+import com.sky.android.news.data.model.DetailsModel
 import com.sky.android.news.data.model.LineItemModel
 import com.sky.android.news.data.source.NewsDataSource
 import com.sky.android.news.ui.helper.DetailsHelper
@@ -14,8 +31,6 @@ import com.sky.android.news.ui.helper.DetailsHelper
 class DetailsPresenter(val context: Context,
                        val source: NewsDataSource,
                        val view: DetailsContract.View) : AbstractPresenter(), DetailsContract.Presenter {
-
-    private val TAG = "HeadLinePresenter"
 
     private lateinit var mItem: LineItemModel
     private val mDetailsHelper = DetailsHelper(context)
@@ -35,21 +50,40 @@ class DetailsPresenter(val context: Context,
             // 转换结果
             content.body = mDetailsHelper.replaceImage(content.body, content.img)
             content.body = mDetailsHelper.replaceVideo(content.body, content.video)
+
+            // 截取时间
+            val index = content.pTime.indexOf(" ")
+
+            if (index != -1) {
+                content.pTime = content.pTime.substring(0, index)
+            }
         }
 
         ioToMain(observable)
-                .subscribe(
-                        {
-                            // 加载成功
-                            view.cancelLoading()
-                            view.onLoadDetails(it)
-                        },
-                        {
-                            // 加载失败
-                            view.cancelLoading()
-                            view.onLoadFailed("加载详情内容失败")
-                            Alog.e(TAG, "加载详情内容异常", it)
-                        }
-                )
+                .subscribe(DetailsSubscriber())
+    }
+
+    private inner class DetailsSubscriber : BaseSubscriber<DetailsModel>() {
+
+        override fun onError(msg: String, tr: Throwable): Boolean {
+            // 加载失败
+            Alog.e(msg, tr)
+            view.cancelLoading()
+            view.onLoadFailed("加载详情内容失败")
+            return true
+        }
+
+        override fun onNext(model: DetailsModel?) {
+
+            if (model == null) {
+                // 返回数据为空
+                view.onLoadFailed("服务返回数据为空")
+                return
+            }
+
+            // 加载成功
+            view.cancelLoading()
+            view.onLoadDetails(model)
+        }
     }
 }

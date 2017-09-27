@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2017 The sky Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.sky.android.news.data.source.cloud
 
 import com.sky.android.news.Constant
@@ -17,13 +33,8 @@ class CloudNewsDataSource(private val mCache: NewsCache) : CloudDataSource(), Ne
 
     override fun getCategory(): Observable<CategoryModel> {
         // 服务器没有这个功能
-        return Observable.unsafeCreate<CategoryModel> {
-            try {
-                it.onNext(null)
-                it.onCompleted()
-            } catch (tr: Throwable) {
-                it.onError(tr)
-            }
+        return Observable.unsafeCreate<CategoryModel> { subscriber ->
+            handler(subscriber, null)
         }
     }
 
@@ -31,16 +42,24 @@ class CloudNewsDataSource(private val mCache: NewsCache) : CloudDataSource(), Ne
 
         val service = buildVideoService()
 
-        return service.getHeadLine(tid, start, end)
-                .map { it -> MapperFactory.createHeadLineMapper().transform(it) }
+        return service.getHeadLine(tid, start, end).map { it ->
+            val model = MapperFactory.createHeadLineMapper().transform(it)
+            // 保存到本地缓存
+            mCache.saveHeadLine(tid, start, end, model)
+            model
+        }
     }
 
     override fun getDetails(docId: String): Observable<DetailsModel> {
 
         val service = buildVideoService()
 
-        return service.getDetails(docId)
-                .map { it -> MapperFactory.createDetailsMapper().transform(it) }
+        return service.getDetails(docId).map { it ->
+            val model = MapperFactory.createDetailsMapper().transform(it)
+            // 保存到本地缓存
+            mCache.saveDetails(docId, model)
+            model
+        }
     }
 
     private fun buildVideoService(): NewsService {

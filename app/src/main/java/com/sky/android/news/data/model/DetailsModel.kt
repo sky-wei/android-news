@@ -27,7 +27,7 @@ data class ContentModel(val template: String, val img: List<ImageModel>, val sha
                         val source: String, val threadVote: Int, val title: String,
                         var body: String, val tid: String, val picNews: Boolean, val spInfo: List<SpInfoModel>,
                         val relative: List<RelativeModel>, val articleType: String, val digest: String,
-                        val pTime: String, val ec: String, val docId: String, val threadAgainst: Int,
+                        var pTime: String, val ec: String, val docId: String, val threadAgainst: Int,
                         val hasNext: String, val dKeys: String, val replyCount: Int, val voiceComment: String,
                         val replyBoard: String, val category: String, val video: List<VideoModel>) : Serializable
 
@@ -44,3 +44,5 @@ data class SpInfoModel(val ref: String, val spContent: String, val spType: Strin
 
 data class RelativeModel(val docID: String, val from: String, val href: String, val id: String,
                     val imgSrc: String, val title: String, val pTime: String) : Serializable
+
+data class DetailsPackageModel(val lastTime: Long, val model: DetailsModel) : Serializable

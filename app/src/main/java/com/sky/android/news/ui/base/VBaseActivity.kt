@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.base
+package com.sky.android.news.ui.base
 
 import android.content.Context
 import android.content.Intent

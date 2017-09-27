@@ -29,7 +29,7 @@ import butterknife.BindView
 import com.sky.android.common.interfaces.OnItemEventListener
 import com.sky.android.news.R
 import com.sky.android.news.R2
-import com.sky.android.news.base.VBaseFragment
+import com.sky.android.news.ui.base.VBaseFragment
 import com.sky.android.news.contract.HeadLineContract
 import com.sky.android.news.data.model.CategoryItemModel
 import com.sky.android.news.data.model.LineItemModel
@@ -51,8 +51,8 @@ class NewsFragment : VBaseFragment(), HeadLineContract.View, OnItemEventListener
     @BindView(R2.id.recycler_view)
     lateinit var recyclerView: RecyclerView
 
-    lateinit var mHeadLinePresenter: HeadLineContract.Presenter
-    lateinit var mRecyclerHelper: RecyclerHelper
+    private lateinit var mHeadLinePresenter: HeadLineContract.Presenter
+    private lateinit var mRecyclerHelper: RecyclerHelper
 
     private lateinit var mNewsAdapter: NewsAdapter
 
