@@ -51,8 +51,8 @@ class NewsFragment : VBaseFragment(), HeadLineContract.View, OnItemEventListener
     @BindView(R2.id.recycler_view)
     lateinit var recyclerView: RecyclerView
 
-    lateinit var mHeadLinePresenter: HeadLineContract.Presenter
-    lateinit var mRecyclerHelper: RecyclerHelper
+    private lateinit var mHeadLinePresenter: HeadLineContract.Presenter
+    private lateinit var mRecyclerHelper: RecyclerHelper
 
     private lateinit var mNewsAdapter: NewsAdapter
 

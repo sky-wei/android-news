@@ -22,6 +22,7 @@ import android.view.*
 import android.widget.TextView
 import butterknife.BindView
 import com.iflytek.cloud.*
+import com.sky.android.common.utils.ViewUtils
 import com.sky.android.news.R
 import com.sky.android.news.R2
 import com.sky.android.news.ui.base.VBaseFragment
@@ -43,10 +44,16 @@ class DetailsFragment : VBaseFragment(), DetailsContract.View, InitListener, Syn
 
     @BindView(R2.id.tv_title)
     lateinit var tvTitle: TextView
+    @BindView(R2.id.tv_summary)
+    lateinit var tvSummary: TextView
+    @BindView(R2.id.tv_loading)
+    lateinit var tvLoading: TextView
     @BindView(R2.id.tv_body)
     lateinit var tvBody: HtmlTextView
+//    @BindView(R2.id.web_view)
+//    lateinit var webView: WebView
 
-    	// 语音合成对象
+    // 语音合成对象
 	private var mTts: SpeechSynthesizer? = null
     private lateinit var mContent: ContentModel
     private lateinit var mDetailsPresenter: DetailsContract.Presenter
@@ -58,6 +65,8 @@ class DetailsFragment : VBaseFragment(), DetailsContract.View, InitListener, Syn
     override fun initView(view: View, args: Bundle?) {
 
         setHasOptionsMenu(true)
+
+//        webView.settings.defaultTextEncodingName = "UTF -8"
 
         val repository = NewsDataRepository(NewsSourceFactory(context))
         mDetailsPresenter = DetailsPresenter(context, repository, this)
@@ -98,7 +107,11 @@ class DetailsFragment : VBaseFragment(), DetailsContract.View, InitListener, Syn
 
         // 设置标题
         tvTitle.text = mContent.title
+        tvSummary.text = "${mContent.source}  ${mContent.pTime}"
         tvBody.setHtml(mContent.body, VImageGetter(context, tvBody))
+
+        // 使用WebView来处理
+//        webView.loadData(mContent.body, "text/html; charset=UTF-8", null)
     }
 
     override fun onLoadFailed(msg: String) {
@@ -106,9 +119,11 @@ class DetailsFragment : VBaseFragment(), DetailsContract.View, InitListener, Syn
     }
 
     override fun showLoading() {
+        ViewUtils.setVisibility(tvLoading, View.VISIBLE)
     }
 
     override fun cancelLoading() {
+        ViewUtils.setVisibility(tvLoading, View.INVISIBLE)
     }
 
     override fun onInit(code: Int) {

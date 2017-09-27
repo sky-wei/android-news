@@ -66,7 +66,7 @@ class RecyclerHelper(private val refreshLayout: SwipeRefreshLayout,
         if (isRefreshing()) return
 
         // 显示加载进度
-        refreshLayout.setProgressViewOffset(false, 0,
+        refreshLayout.setProgressViewOffset(true, 0,
                 DisplayUtils.dip2px(refreshLayout.context, 60f))
         refreshLayout.isRefreshing = true
     }

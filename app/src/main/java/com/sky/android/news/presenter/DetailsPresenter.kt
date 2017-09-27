@@ -50,6 +50,13 @@ class DetailsPresenter(val context: Context,
             // 转换结果
             content.body = mDetailsHelper.replaceImage(content.body, content.img)
             content.body = mDetailsHelper.replaceVideo(content.body, content.video)
+
+            // 截取时间
+            val index = content.pTime.indexOf(" ")
+
+            if (index != -1) {
+                content.pTime = content.pTime.substring(0, index)
+            }
         }
 
         ioToMain(observable)
