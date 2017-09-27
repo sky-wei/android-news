@@ -44,7 +44,7 @@
                 android:textSize="12sp"
                 />
 
-            <org.sufficientlysecure.htmltextview.HtmlTextView
+            <TextView
                 android:id="@+id/tv_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
