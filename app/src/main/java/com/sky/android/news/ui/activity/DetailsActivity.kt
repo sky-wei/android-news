@@ -31,6 +31,10 @@ import com.sky.android.news.ui.fragment.DetailsFragment
  */
 class DetailsActivity : VBaseActivity() {
 
+    companion object {
+        val F_NAME = "fName"
+    }
+
     @BindView(R2.id.toolbar)
     lateinit var toolbar: Toolbar
 
@@ -43,12 +47,14 @@ class DetailsActivity : VBaseActivity() {
         // 设置ActionBar
         setSupportActionBar(toolbar, "返回", true)
 
+        val fName = intent.getStringExtra(CommonActivity.F_NAME)
+
         val args = Bundle().apply {
             putSerializable("item", intent.getSerializableExtra("item"))
         }
 
         val fragmentManager = supportFragmentManager
-        val fragment = Fragment.instantiate(this, DetailsFragment::class.java.name, args)
+        val fragment = Fragment.instantiate(this, fName, args)
         fragmentManager.beginTransaction().replace(R.id.frame, fragment).commit()
     }
 }

@@ -28,9 +28,9 @@ import com.sky.android.news.data.source.ZhiHuDataSource
 class StoryDetailsPresenter(val source: ZhiHuDataSource,
                             val view: StoryDetailsContract.View) : AbstractPresenter(), StoryDetailsContract.Presenter {
 
-    override fun loadDetails(id: String) {
+    override fun loadDetails(id: Long) {
 
-        ioToMain(source.getStory(id))
+        ioToMain(source.getStory(id.toString()))
                 .subscribe(DetailsSubscriber())
     }
 

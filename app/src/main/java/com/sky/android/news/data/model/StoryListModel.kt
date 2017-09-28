@@ -23,13 +23,16 @@ import java.io.Serializable
  */
 data class StoryListModel(val date: String, val stories: List<StoryItemModel>, val topStories: List<TopStoryModel>) : Serializable
 
-class StoryItemModel(val images: List<String>, type: Int,
-                          id: Long, gaPrefix: String, title: String) : ItemModel(type, id, gaPrefix, title, 0)
+data class TopStoryListModel(val topStories: List<TopStoryModel>, override val viewType: Int = 0) : BaseItemModel
 
-class TopStoryModel(val image: String, type: Int,
-                         id: Long, gaPrefix: String, title: String) : ItemModel(type, id, gaPrefix, title, 1)
+data class StoryItemModel(val images: List<String>, val type: Int,
+                          val id: Long, val gaPrefix: String, val title: String, override val viewType: Int = 1) : BaseItemModel
 
-open class ItemModel(var type: Int,
-                     val id: Long, val gaPrefix: String, val title: String, val viewType: Int) : Serializable
+data class TopStoryModel(val image: String, val type: Int,
+                         val id: Long, val gaPrefix: String, val title: String) : Serializable
+
+interface BaseItemModel : Serializable {
+    val viewType: Int
+}
 
 data class StoryListPackageModel(val lastTime: Long, val model: StoryListModel) : Serializable

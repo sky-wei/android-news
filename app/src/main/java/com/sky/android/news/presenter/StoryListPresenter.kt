@@ -19,8 +19,9 @@ package com.sky.android.news.presenter
 import com.sky.android.common.utils.Alog
 import com.sky.android.news.base.BaseSubscriber
 import com.sky.android.news.contract.StoryListContract
-import com.sky.android.news.data.model.ItemModel
+import com.sky.android.news.data.model.BaseItemModel
 import com.sky.android.news.data.model.StoryListModel
+import com.sky.android.news.data.model.TopStoryListModel
 import com.sky.android.news.data.source.ZhiHuDataSource
 import com.sky.android.news.ui.helper.PageHelper
 
@@ -30,7 +31,7 @@ import com.sky.android.news.ui.helper.PageHelper
 class StoryListPresenter(val source: ZhiHuDataSource,
                          val view: StoryListContract.View) : AbstractPresenter(), StoryListContract.Presenter {
 
-    private val mPageHelper = PageHelper<ItemModel>()
+    private val mPageHelper = PageHelper<BaseItemModel>()
     private var mDate = ""
 
     init {
@@ -78,7 +79,7 @@ class StoryListPresenter(val source: ZhiHuDataSource,
                 mPageHelper.appendData(model.stories)
             } else {
                 // 设置数据
-                mPageHelper.setData(model.topStories)
+                mPageHelper.setData(listOf(TopStoryListModel(model.topStories)))
                 mPageHelper.appendData(model.stories)
             }
             view.onLoadStories(mPageHelper.getData())

@@ -18,7 +18,7 @@ package com.sky.android.news.contract
 
 import com.sky.android.news.base.BasePresenter
 import com.sky.android.news.base.BaseView
-import com.sky.android.news.data.model.ItemModel
+import com.sky.android.news.data.model.BaseItemModel
 
 /**
  * Created by sky on 17-9-28.
@@ -27,7 +27,7 @@ interface StoryListContract {
 
     interface View : BaseView {
 
-        fun onLoadStories(model: List<ItemModel>)
+        fun onLoadStories(model: List<BaseItemModel>)
 
         fun onLoadFailed(msg: String)
     }

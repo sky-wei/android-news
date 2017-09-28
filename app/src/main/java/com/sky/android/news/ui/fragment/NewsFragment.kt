@@ -104,12 +104,9 @@ class NewsFragment : VBaseFragment(), HeadLineContract.View, OnItemEventListener
 
     override fun onItemEvent(event: Int, view: View, position: Int, vararg args: Any?) {
 
-        val intent = Intent(context, DetailsActivity::class.java).apply {
-            putExtra("item", mNewsAdapter.getItem(position))
-        }
-
         // 进入详情界面
-        ActivityUtil.startActivity(context, intent)
+        ActivityUtil.startDetailsActivity(context,
+                DetailsFragment::class.java, mNewsAdapter.getItem(position))
     }
 
     override fun onRefresh() {

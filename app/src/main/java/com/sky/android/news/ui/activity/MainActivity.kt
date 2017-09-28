@@ -37,7 +37,7 @@ import com.sky.android.news.R2
 import com.sky.android.news.ui.base.VBaseActivity
 import com.sky.android.news.ui.fragment.AboutFragment
 import com.sky.android.news.ui.fragment.CategoryFragment
-import com.sky.android.news.ui.fragment.ZhiHuFragment
+import com.sky.android.news.ui.fragment.StoryListFragment
 import com.sky.android.news.util.ActivityUtil
 
 class MainActivity : VBaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -89,16 +89,19 @@ class MainActivity : VBaseActivity(), NavigationView.OnNavigationItemSelectedLis
         when(item.itemId) {
             R.id.nav_news -> {
                 // 切换到网易新闻
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                    layoutAppBar.elevation = 0.0f
+                setAppBarLayoutElevation(0f)
+                setAppBarScrollFlags(
+                        AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                        or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
+                        or AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP)
                 switchFragment(CategoryFragment::class.java,
                         buildDefaultArgs(Constant.Category.NEWS))
             }
             R.id.nav_zhihu -> {
                 // 切换到知乎日报
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                    layoutAppBar.elevation = 15.0f
-                switchFragment(ZhiHuFragment::class.java,
+                setAppBarLayoutElevation(15.0f)
+                setAppBarScrollFlags(0)
+                switchFragment(StoryListFragment::class.java,
                         buildDefaultArgs(Constant.Category.ZHI_HU))
             }
             R.id.nav_settings -> {
@@ -148,5 +151,16 @@ class MainActivity : VBaseActivity(), NavigationView.OnNavigationItemSelectedLis
             return true
         }
         return super.onKeyDown(keyCode, event)
+    }
+
+    private fun setAppBarLayoutElevation(value: Float) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            layoutAppBar.elevation = value
+    }
+
+    private fun setAppBarScrollFlags(scrollFlags: Int) {
+        val params = toolbar.layoutParams as AppBarLayout.LayoutParams
+        params.scrollFlags = scrollFlags
+        toolbar.layoutParams = params
     }
 }

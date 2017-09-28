@@ -34,6 +34,6 @@ interface StoryDetailsContract {
 
     interface Presenter : BasePresenter {
 
-        fun loadDetails(id: String)
+        fun loadDetails(id: Long)
     }
 }

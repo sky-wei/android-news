@@ -16,6 +16,7 @@
 
 package com.sky.android.news.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
@@ -29,18 +30,19 @@ import com.sky.android.common.interfaces.OnItemEventListener
 import com.sky.android.news.R
 import com.sky.android.news.R2
 import com.sky.android.news.contract.StoryListContract
-import com.sky.android.news.data.model.ItemModel
+import com.sky.android.news.data.model.BaseItemModel
 import com.sky.android.news.data.source.ZhiHuDataRepository
 import com.sky.android.news.data.source.ZhiHuSourceFactory
 import com.sky.android.news.presenter.StoryListPresenter
 import com.sky.android.news.ui.adapter.StoryAdapter
 import com.sky.android.news.ui.base.VBaseFragment
 import com.sky.android.news.ui.helper.RecyclerHelper
+import com.sky.android.news.util.ActivityUtil
 
 /**
  * Created by sky on 17-9-28.
  */
-class ZhiHuFragment : VBaseFragment(), StoryListContract.View, OnItemEventListener, RecyclerHelper.OnCallback {
+class StoryListFragment : VBaseFragment(), StoryListContract.View, OnItemEventListener, RecyclerHelper.OnCallback {
 
     @BindView(R2.id.swipe_refresh_layout)
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -88,15 +90,12 @@ class ZhiHuFragment : VBaseFragment(), StoryListContract.View, OnItemEventListen
 
     override fun onItemEvent(event: Int, view: View, position: Int, vararg args: Any?) {
 
-//        val intent = Intent(context, DetailsActivity::class.java).apply {
-//            putExtra("item", mNewsAdapter.getItem(position))
-//        }
-
         // 进入详情界面
-//        ActivityUtil.startActivity(context, intent)
+        ActivityUtil.startDetailsActivity(context,
+                StoryDetailsFragment::class.java, mStoryAdapter.getItem(position))
     }
 
-    override fun onLoadStories(model: List<ItemModel>) {
+    override fun onLoadStories(model: List<BaseItemModel>) {
 
         mStoryAdapter.items = model
         mStoryAdapter.notifyDataSetChanged()
