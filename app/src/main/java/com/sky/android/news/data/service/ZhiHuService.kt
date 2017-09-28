@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-package com.sky.android.news
+package com.sky.android.news.data.service
+
+import com.sky.android.news.data.zhihu.StoryDetails
+import com.sky.android.news.data.zhihu.StoryList
+import retrofit2.http.GET
+import retrofit2.http.Path
+import rx.Observable
 
 /**
- * Created by sky on 17-9-21.
+ * Created by sky on 17-9-28.
  */
-object Constant {
+interface ZhiHuService {
 
-    object Service {
+    @GET("api/4/stories/latest")
+    fun getLatestStories(): Observable<StoryList>
 
-        val BASE_URL = "https://c.m.163.com/"
+    @GET("api/4/stories/before/{date}")
+    fun getStories(@Path("date") date: String): Observable<StoryList>
 
-        val ZH_BASE_URL = "https://news-at.zhihu.com/"
-    }
-
-    object Category {
-
-        val NEWS = 0x01
-
-        val ZHI_HU = 0x02
-    }
+    @GET("api/4/story/{id}")
+    fun getStory(@Path("id") id: String): Observable<StoryDetails>
 }

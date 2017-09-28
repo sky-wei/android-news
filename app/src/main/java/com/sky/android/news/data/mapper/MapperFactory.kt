@@ -24,4 +24,8 @@ object MapperFactory {
     fun createHeadLineMapper()= HeadLineMapper()
 
     fun createDetailsMapper()= DetailsMapper()
+
+    fun createStoryListMapper() = StoryListMapper()
+
+    fun createStoryDetailsMapper() = StoryDetailsMapper()
 }

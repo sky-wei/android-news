@@ -16,7 +16,6 @@
 
 package com.sky.android.news.ui.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
@@ -29,59 +28,55 @@ import butterknife.BindView
 import com.sky.android.common.interfaces.OnItemEventListener
 import com.sky.android.news.R
 import com.sky.android.news.R2
-import com.sky.android.news.contract.HeadLineContract
-import com.sky.android.news.data.model.CategoryItemModel
-import com.sky.android.news.data.model.LineItemModel
-import com.sky.android.news.data.source.NewsDataRepository
-import com.sky.android.news.data.source.NewsSourceFactory
-import com.sky.android.news.presenter.HeadLinePresenter
-import com.sky.android.news.ui.activity.DetailsActivity
-import com.sky.android.news.ui.adapter.NewsAdapter
+import com.sky.android.news.contract.StoryListContract
+import com.sky.android.news.data.model.ItemModel
+import com.sky.android.news.data.source.ZhiHuDataRepository
+import com.sky.android.news.data.source.ZhiHuSourceFactory
+import com.sky.android.news.presenter.StoryListPresenter
+import com.sky.android.news.ui.adapter.StoryAdapter
 import com.sky.android.news.ui.base.VBaseFragment
 import com.sky.android.news.ui.helper.RecyclerHelper
-import com.sky.android.news.util.ActivityUtil
 
 /**
- * Created by sky on 17-9-21.
+ * Created by sky on 17-9-28.
  */
-class NewsFragment : VBaseFragment(), HeadLineContract.View, OnItemEventListener, RecyclerHelper.OnCallback {
+class ZhiHuFragment : VBaseFragment(), StoryListContract.View, OnItemEventListener, RecyclerHelper.OnCallback {
 
     @BindView(R2.id.swipe_refresh_layout)
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
     @BindView(R2.id.recycler_view)
     lateinit var recyclerView: RecyclerView
 
-    private lateinit var mHeadLinePresenter: HeadLineContract.Presenter
+    private lateinit var mStoryListPresenter: StoryListContract.Presenter
     private lateinit var mRecyclerHelper: RecyclerHelper
 
-    private lateinit var mNewsAdapter: NewsAdapter
+    private lateinit var mStoryAdapter: StoryAdapter
 
     override fun createView(inflater: LayoutInflater, container: ViewGroup?): View {
-        return inflater.inflate(R.layout.fragment_news, container, false)
+        return inflater.inflate(R.layout.fragment_zhihu, container, false)
     }
 
     override fun initView(view: View, args: Bundle?) {
 
-        mNewsAdapter = NewsAdapter(context)
-        mNewsAdapter.onItemEventListener = this
+        mStoryAdapter = StoryAdapter(context)
+        mStoryAdapter.onItemEventListener = this
 
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
 
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
         recyclerView.itemAnimator = DefaultItemAnimator()
-        recyclerView.adapter = mNewsAdapter
+        recyclerView.adapter = mStoryAdapter
 
-        val repository = NewsDataRepository(NewsSourceFactory(context))
-        mHeadLinePresenter = HeadLinePresenter(repository, this)
+        val repository = ZhiHuDataRepository(ZhiHuSourceFactory(context))
+        mStoryListPresenter = StoryListPresenter(repository, this)
 
         // 刷新助手类
         mRecyclerHelper = RecyclerHelper(swipeRefreshLayout, recyclerView, this)
         mRecyclerHelper.setLoadMore(true)
         mRecyclerHelper.forceRefreshing()
 
-        mHeadLinePresenter.setCategoryItem(args!!.getSerializable("item") as CategoryItemModel)
-        mHeadLinePresenter.loadHeadLine()
+        mStoryListPresenter.loadLastStories()
     }
 
     override fun showLoading() {
@@ -91,33 +86,32 @@ class NewsFragment : VBaseFragment(), HeadLineContract.View, OnItemEventListener
         mRecyclerHelper.cancelRefreshing()
     }
 
-    override fun onLoadHeadLine(model: List<LineItemModel>) {
+    override fun onItemEvent(event: Int, view: View, position: Int, vararg args: Any?) {
 
-        // 更新列表信息
-        mNewsAdapter.items = model
-        mNewsAdapter.notifyDataSetChanged()
+//        val intent = Intent(context, DetailsActivity::class.java).apply {
+//            putExtra("item", mNewsAdapter.getItem(position))
+//        }
+
+        // 进入详情界面
+//        ActivityUtil.startActivity(context, intent)
+    }
+
+    override fun onLoadStories(model: List<ItemModel>) {
+
+        mStoryAdapter.items = model
+        mStoryAdapter.notifyDataSetChanged()
     }
 
     override fun onLoadFailed(msg: String) {
         showMessage(msg)
     }
 
-    override fun onItemEvent(event: Int, view: View, position: Int, vararg args: Any?) {
-
-        val intent = Intent(context, DetailsActivity::class.java).apply {
-            putExtra("item", mNewsAdapter.getItem(position))
-        }
-
-        // 进入详情界面
-        ActivityUtil.startActivity(context, intent)
-    }
-
     override fun onRefresh() {
         // 重新加载数据
-        mHeadLinePresenter.loadHeadLine()
+        mStoryListPresenter.loadLastStories()
     }
 
     override fun onLoadMore() {
-        mHeadLinePresenter.loadMoreHeadLine()
+        mStoryListPresenter.loadMoreStories()
     }
 }

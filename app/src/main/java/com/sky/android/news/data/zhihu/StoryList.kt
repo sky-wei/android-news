@@ -14,24 +14,17 @@
  * limitations under the License.
  */
 
-package com.sky.android.news
+package com.sky.android.news.data.zhihu
+
+import java.io.Serializable
 
 /**
- * Created by sky on 17-9-21.
+ * Created by sky on 17-9-28.
  */
-object Constant {
+data class StoryList(val date: String, val stories: List<StoryItem>, val top_stories: List<TopStory>) : Serializable
 
-    object Service {
+data class StoryItem(val images: List<String>, val type: Int,
+                   val id: Long, val ga_prefix: String, val title: String) : Serializable
 
-        val BASE_URL = "https://c.m.163.com/"
-
-        val ZH_BASE_URL = "https://news-at.zhihu.com/"
-    }
-
-    object Category {
-
-        val NEWS = 0x01
-
-        val ZHI_HU = 0x02
-    }
-}
+data class TopStory(val image: String, val type: Int,
+                      val id: Long, val ga_prefix: String, val title: String) : Serializable

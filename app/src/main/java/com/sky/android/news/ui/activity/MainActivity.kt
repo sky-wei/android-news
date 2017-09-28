@@ -17,7 +17,9 @@
 package com.sky.android.news.ui.activity
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.support.design.widget.AppBarLayout
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
@@ -35,10 +37,13 @@ import com.sky.android.news.R2
 import com.sky.android.news.ui.base.VBaseActivity
 import com.sky.android.news.ui.fragment.AboutFragment
 import com.sky.android.news.ui.fragment.CategoryFragment
+import com.sky.android.news.ui.fragment.ZhiHuFragment
 import com.sky.android.news.util.ActivityUtil
 
 class MainActivity : VBaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    @BindView(R2.id.layout_appbar)
+    lateinit var layoutAppBar: AppBarLayout
     @BindView(R2.id.toolbar)
     lateinit var toolbar: Toolbar
     @BindView(R2.id.drawer_layout)
@@ -82,7 +87,20 @@ class MainActivity : VBaseActivity(), NavigationView.OnNavigationItemSelectedLis
         drawer.closeDrawer(GravityCompat.START)
 
         when(item.itemId) {
-
+            R.id.nav_news -> {
+                // 切换到网易新闻
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    layoutAppBar.elevation = 0.0f
+                switchFragment(CategoryFragment::class.java,
+                        buildDefaultArgs(Constant.Category.NEWS))
+            }
+            R.id.nav_zhihu -> {
+                // 切换到知乎日报
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    layoutAppBar.elevation = 15.0f
+                switchFragment(ZhiHuFragment::class.java,
+                        buildDefaultArgs(Constant.Category.ZHI_HU))
+            }
             R.id.nav_settings -> {
 
             }

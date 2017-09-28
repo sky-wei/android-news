@@ -14,24 +14,28 @@
  * limitations under the License.
  */
 
-package com.sky.android.news
+package com.sky.android.news.contract
+
+import com.sky.android.news.base.BasePresenter
+import com.sky.android.news.base.BaseView
+import com.sky.android.news.data.model.ItemModel
 
 /**
- * Created by sky on 17-9-21.
+ * Created by sky on 17-9-28.
  */
-object Constant {
+interface StoryListContract {
 
-    object Service {
+    interface View : BaseView {
 
-        val BASE_URL = "https://c.m.163.com/"
+        fun onLoadStories(model: List<ItemModel>)
 
-        val ZH_BASE_URL = "https://news-at.zhihu.com/"
+        fun onLoadFailed(msg: String)
     }
 
-    object Category {
+    interface Presenter : BasePresenter {
 
-        val NEWS = 0x01
+        fun loadLastStories()
 
-        val ZHI_HU = 0x02
+        fun loadMoreStories()
     }
 }

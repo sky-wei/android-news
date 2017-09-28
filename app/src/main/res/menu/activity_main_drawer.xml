@@ -22,6 +22,11 @@
             android:id="@+id/nav_news"
             android:icon="@drawable/ic_video_library_white"
             android:title="网易新闻" />
+
+        <item
+            android:id="@+id/nav_zhihu"
+            android:icon="@drawable/ic_video_library_white"
+            android:title="知乎日报" />
     </group>
 
     <item android:title="我的">

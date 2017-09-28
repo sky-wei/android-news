@@ -14,24 +14,29 @@
  * limitations under the License.
  */
 
-package com.sky.android.news
+package com.sky.android.news.data.source
+
+import com.sky.android.news.data.model.StoryDetailsModel
+import com.sky.android.news.data.model.StoryListModel
+import rx.Observable
 
 /**
- * Created by sky on 17-9-21.
+ * Created by sky on 17-9-28.
  */
-object Constant {
+interface ZhiHuDataSource {
 
-    object Service {
+    /**
+     * 获取最后一次列表
+     */
+    fun getLatestStories(): Observable<StoryListModel>
 
-        val BASE_URL = "https://c.m.163.com/"
+    /**
+     * 获取指定日期的列表
+     */
+    fun getStories(date: String): Observable<StoryListModel>
 
-        val ZH_BASE_URL = "https://news-at.zhihu.com/"
-    }
-
-    object Category {
-
-        val NEWS = 0x01
-
-        val ZHI_HU = 0x02
-    }
+    /**
+     * 获取指定id的详情
+     */
+    fun getStory(id: String): Observable<StoryDetailsModel>
 }

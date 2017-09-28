@@ -40,7 +40,7 @@ class CloudNewsDataSource(private val mCache: NewsCache) : CloudDataSource(), Ne
 
     override fun getHeadLine(tid: String, start: Int, end: Int): Observable<HeadLineModel> {
 
-        val service = buildVideoService()
+        val service = buildNewsService()
 
         return service.getHeadLine(tid, start, end).map { it ->
             val model = MapperFactory.createHeadLineMapper().transform(it)
@@ -52,7 +52,7 @@ class CloudNewsDataSource(private val mCache: NewsCache) : CloudDataSource(), Ne
 
     override fun getDetails(docId: String): Observable<DetailsModel> {
 
-        val service = buildVideoService()
+        val service = buildNewsService()
 
         return service.getDetails(docId).map { it ->
             val model = MapperFactory.createDetailsMapper().transform(it)
@@ -62,7 +62,7 @@ class CloudNewsDataSource(private val mCache: NewsCache) : CloudDataSource(), Ne
         }
     }
 
-    private fun buildVideoService(): NewsService {
+    private fun buildNewsService(): NewsService {
         return buildService(NewsService::class.java, Constant.Service.BASE_URL)
     }
 }
