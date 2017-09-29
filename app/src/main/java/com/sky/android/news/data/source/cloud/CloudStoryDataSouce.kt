@@ -17,18 +17,18 @@
 package com.sky.android.news.data.source.cloud
 
 import com.sky.android.news.Constant
-import com.sky.android.news.data.cache.ZhiHuCache
+import com.sky.android.news.data.cache.StoryCache
 import com.sky.android.news.data.mapper.MapperFactory
 import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.model.StoryListModel
-import com.sky.android.news.data.service.ZhiHuService
-import com.sky.android.news.data.source.ZhiHuDataSource
+import com.sky.android.news.data.service.StoryService
+import com.sky.android.news.data.source.StoryDataSource
 import rx.Observable
 
 /**
  * Created by sky on 17-9-28.
  */
-class CloudZhiHuDataSouce(private val mCache: ZhiHuCache) : CloudDataSource(), ZhiHuDataSource {
+class CloudStoryDataSouce(private val mCache: StoryCache) : CloudDataSource(), StoryDataSource {
 
     override fun getLatestStories(): Observable<StoryListModel> {
 
@@ -66,7 +66,7 @@ class CloudZhiHuDataSouce(private val mCache: ZhiHuCache) : CloudDataSource(), Z
         }
     }
 
-    private fun buildZhiHuService(): ZhiHuService {
-        return buildService(ZhiHuService::class.java, Constant.Service.ZH_BASE_URL)
+    private fun buildZhiHuService(): StoryService {
+        return buildService(StoryService::class.java, Constant.Service.ZH_BASE_URL)
     }
 }

@@ -22,7 +22,7 @@ import com.sky.android.news.data.model.StoryListModel
 /**
  * Created by sky on 17-9-28.
  */
-interface ZhiHuCache {
+interface StoryCache {
 
     /**
      * 获取最后一次列表信息

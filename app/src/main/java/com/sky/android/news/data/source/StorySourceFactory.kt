@@ -17,28 +17,28 @@
 package com.sky.android.news.data.source
 
 import android.content.Context
-import com.sky.android.news.data.cache.ZhiHuCache
+import com.sky.android.news.data.cache.StoryCache
 import com.sky.android.news.data.cache.impl.CacheManagerImpl
-import com.sky.android.news.data.cache.impl.ZhiHuCacheImpl
-import com.sky.android.news.data.source.cloud.CloudZhiHuDataSouce
-import com.sky.android.news.data.source.disk.DiskZhiHuDataSouce
+import com.sky.android.news.data.cache.impl.StoryCacheImpl
+import com.sky.android.news.data.source.cloud.CloudStoryDataSouce
+import com.sky.android.news.data.source.disk.DiskStoryDataSouce
 
 /**
  * Created by sky on 17-9-28.
  */
-class ZhiHuSourceFactory(private val mContext: Context) {
+class StorySourceFactory(private val mContext: Context) {
 
-    private var mCache: ZhiHuCache = ZhiHuCacheImpl(CacheManagerImpl.getInstance(mContext))
+    private var mCache: StoryCache = StoryCacheImpl(CacheManagerImpl.getInstance(mContext))
 
-    fun create(): ZhiHuDataSource {
+    fun create(): StoryDataSource {
         return createRemoteSource()
     }
 
-    fun createLocalSource(): ZhiHuDataSource {
-        return DiskZhiHuDataSouce(mContext, mCache)
+    fun createLocalSource(): StoryDataSource {
+        return DiskStoryDataSouce(mContext, mCache)
     }
 
-    fun createRemoteSource(): ZhiHuDataSource {
-        return CloudZhiHuDataSouce(mCache)
+    fun createRemoteSource(): StoryDataSource {
+        return CloudStoryDataSouce(mCache)
     }
 }

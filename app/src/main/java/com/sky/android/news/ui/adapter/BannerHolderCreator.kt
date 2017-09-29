@@ -17,37 +17,48 @@
 package com.sky.android.news.ui.adapter
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator
 import com.bigkoo.convenientbanner.holder.Holder
 import com.bumptech.glide.Glide
-import com.sky.android.news.data.model.TopStoryModel
+import com.sky.android.news.R
+import com.sky.android.news.R2
+import com.sky.android.news.data.model.TopStoryItemModel
 
 /**
  * Created by sky on 17-9-28.
  */
-class BannerPageCreator : CBViewHolderCreator<BannerPageCreator.BannerImageHolder> {
+class BannerHolderCreator : CBViewHolderCreator<BannerHolderCreator.BannerImageHolder> {
 
     override fun createHolder(): BannerImageHolder {
         return BannerImageHolder()
     }
 
-    inner class BannerImageHolder : Holder<TopStoryModel> {
+    inner class BannerImageHolder : Holder<TopStoryItemModel> {
 
-        lateinit var mImageView: ImageView
+        private lateinit var ivImage: ImageView
+        private lateinit var tvTitle: TextView
 
         override fun createView(context: Context): View {
-            mImageView = ImageView(context)
-            mImageView.scaleType = ImageView.ScaleType.CENTER_CROP
-            return mImageView
+
+            val view = LayoutInflater.from(context)
+                    .inflate(R.layout.item_banner, null, false)
+
+            ivImage = view.findViewById(R2.id.iv_image) as ImageView
+            tvTitle = view.findViewById(R2.id.tv_title) as TextView
+
+            return  view
         }
 
-        override fun UpdateUI(context: Context, position: Int, data: TopStoryModel) {
+        override fun UpdateUI(context: Context, position: Int, data: TopStoryItemModel) {
 
             Glide.with(context)
                     .load(data.image)
-                    .into(mImageView)
+                    .into(ivImage)
+            tvTitle.text = data.title
         }
     }
 }

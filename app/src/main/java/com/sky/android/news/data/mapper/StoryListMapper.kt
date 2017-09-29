@@ -20,10 +20,10 @@ import com.sky.android.common.utils.CollectionUtils
 import com.sky.android.news.base.toExtString
 import com.sky.android.news.data.model.StoryItemModel
 import com.sky.android.news.data.model.StoryListModel
-import com.sky.android.news.data.model.TopStoryModel
-import com.sky.android.news.data.zhihu.StoryItem
-import com.sky.android.news.data.zhihu.StoryList
-import com.sky.android.news.data.zhihu.TopStory
+import com.sky.android.news.data.model.TopStoryItemModel
+import com.sky.android.news.data.story.StoryItem
+import com.sky.android.news.data.story.StoryList
+import com.sky.android.news.data.story.TopStory
 
 /**
  * Created by sky on 17-9-28.
@@ -52,16 +52,16 @@ class StoryListMapper {
                 storyItem.type, storyItem.id, storyItem.ga_prefix.toExtString(), storyItem.title.toExtString())
     }
 
-    private fun transformTopStory(topStory: List<TopStory>?): List<TopStoryModel> {
+    private fun transformTopStory(topStory: List<TopStory>?): List<TopStoryItemModel> {
 
         if (CollectionUtils.isEmpty(topStory)) return listOf()
 
         return topStory!!.map { transformTopStory(it) }
     }
 
-    private fun transformTopStory(topStory: TopStory): TopStoryModel {
+    private fun transformTopStory(topStory: TopStory): TopStoryItemModel {
 
-        return TopStoryModel(topStory.image.toExtString(), topStory.type,
+        return TopStoryItemModel(topStory.image.toExtString(), topStory.type,
                 topStory.id, topStory.ga_prefix.toExtString(), topStory.title.toExtString())
     }
 }

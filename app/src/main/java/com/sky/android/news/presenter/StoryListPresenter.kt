@@ -19,19 +19,20 @@ package com.sky.android.news.presenter
 import com.sky.android.common.utils.Alog
 import com.sky.android.news.base.BaseSubscriber
 import com.sky.android.news.contract.StoryListContract
-import com.sky.android.news.data.model.BaseItemModel
+import com.sky.android.news.data.model.BaseViewType
+import com.sky.android.news.data.model.NodeItemModel
 import com.sky.android.news.data.model.StoryListModel
 import com.sky.android.news.data.model.TopStoryListModel
-import com.sky.android.news.data.source.ZhiHuDataSource
+import com.sky.android.news.data.source.StoryDataSource
 import com.sky.android.news.ui.helper.PageHelper
 
 /**
  * Created by sky on 17-9-28.
  */
-class StoryListPresenter(val source: ZhiHuDataSource,
+class StoryListPresenter(val source: StoryDataSource,
                          val view: StoryListContract.View) : AbstractPresenter(), StoryListContract.Presenter {
 
-    private val mPageHelper = PageHelper<BaseItemModel>()
+    private val mPageHelper = PageHelper<BaseViewType>()
     private var mDate = ""
 
     init {
@@ -76,10 +77,12 @@ class StoryListPresenter(val source: ZhiHuDataSource,
 
             if (loadMore) {
                 // 追加数据
+                mPageHelper.appendData(listOf(NodeItemModel(model.date)))
                 mPageHelper.appendData(model.stories)
             } else {
                 // 设置数据
                 mPageHelper.setData(listOf(TopStoryListModel(model.topStories)))
+                mPageHelper.appendData(listOf(NodeItemModel(model.date, "今日热闻")))
                 mPageHelper.appendData(model.stories)
             }
             view.onLoadStories(mPageHelper.getData())

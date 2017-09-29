@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.zhihu
+package com.sky.android.news.data.story
 
 import java.io.Serializable
 
 /**
  * Created by sky on 17-9-28.
  */
-data class StoryDetails(val body: String, val image_source: String, val title: String,
-                 val image: String, val share_url: String, val js: List<String>,
-                 val ga_prefix: String, val section: Section, val images: List<String>,
-                 val type: Int, val id: Long, val css: List<String>) : Serializable
+data class StoryList(val date: String, val stories: List<StoryItem>, val top_stories: List<TopStory>) : Serializable
 
-data class Section(val thumbnail: String, val id: Long, val name: String) : Serializable
+data class StoryItem(val images: List<String>, val type: Int,
+                   val id: Long, val ga_prefix: String, val title: String) : Serializable
+
+data class TopStory(val image: String, val type: Int,
+                      val id: Long, val ga_prefix: String, val title: String) : Serializable

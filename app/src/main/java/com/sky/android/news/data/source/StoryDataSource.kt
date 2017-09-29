@@ -14,17 +14,29 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.zhihu
+package com.sky.android.news.data.source
 
-import java.io.Serializable
+import com.sky.android.news.data.model.StoryDetailsModel
+import com.sky.android.news.data.model.StoryListModel
+import rx.Observable
 
 /**
  * Created by sky on 17-9-28.
  */
-data class StoryList(val date: String, val stories: List<StoryItem>, val top_stories: List<TopStory>) : Serializable
+interface StoryDataSource {
 
-data class StoryItem(val images: List<String>, val type: Int,
-                   val id: Long, val ga_prefix: String, val title: String) : Serializable
+    /**
+     * 获取最后一次列表
+     */
+    fun getLatestStories(): Observable<StoryListModel>
 
-data class TopStory(val image: String, val type: Int,
-                      val id: Long, val ga_prefix: String, val title: String) : Serializable
+    /**
+     * 获取指定日期的列表
+     */
+    fun getStories(date: String): Observable<StoryListModel>
+
+    /**
+     * 获取指定id的详情
+     */
+    fun getStory(id: String): Observable<StoryDetailsModel>
+}

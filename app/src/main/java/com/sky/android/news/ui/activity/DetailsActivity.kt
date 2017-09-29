@@ -45,7 +45,7 @@ class DetailsActivity : VBaseActivity() {
     override fun initView(intent: Intent) {
 
         // 设置ActionBar
-        setSupportActionBar(toolbar, "返回", true)
+        setSupportActionBar(toolbar, R.string.app_name, true)
 
         val fName = intent.getStringExtra(CommonActivity.F_NAME)
 

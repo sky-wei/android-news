@@ -20,8 +20,8 @@ import com.sky.android.common.utils.CollectionUtils
 import com.sky.android.news.base.toExtString
 import com.sky.android.news.data.model.SectionModel
 import com.sky.android.news.data.model.StoryDetailsModel
-import com.sky.android.news.data.zhihu.Section
-import com.sky.android.news.data.zhihu.StoryDetails
+import com.sky.android.news.data.story.Section
+import com.sky.android.news.data.story.StoryDetails
 
 /**
  * Created by sky on 17-9-28.
@@ -42,9 +42,9 @@ class StoryDetailsMapper {
 
     private fun transformSection(section: Section?): SectionModel {
 
-        if (section == null) SectionModel()
+        if (section == null) return SectionModel()
 
-        return SectionModel(section!!.thumbnail.toExtString(),
+        return SectionModel(section.thumbnail.toExtString(),
                 section.id, section.name.toExtString())
     }
 }

@@ -16,7 +16,6 @@
 
 package com.sky.android.news.ui.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
@@ -30,14 +29,15 @@ import com.sky.android.common.interfaces.OnItemEventListener
 import com.sky.android.news.R
 import com.sky.android.news.R2
 import com.sky.android.news.contract.StoryListContract
-import com.sky.android.news.data.model.BaseItemModel
-import com.sky.android.news.data.source.ZhiHuDataRepository
-import com.sky.android.news.data.source.ZhiHuSourceFactory
+import com.sky.android.news.data.model.BaseViewType
+import com.sky.android.news.data.source.StoryDataRepository
+import com.sky.android.news.data.source.StorySourceFactory
 import com.sky.android.news.presenter.StoryListPresenter
 import com.sky.android.news.ui.adapter.StoryAdapter
 import com.sky.android.news.ui.base.VBaseFragment
 import com.sky.android.news.ui.helper.RecyclerHelper
 import com.sky.android.news.util.ActivityUtil
+import java.io.Serializable
 
 /**
  * Created by sky on 17-9-28.
@@ -70,7 +70,7 @@ class StoryListFragment : VBaseFragment(), StoryListContract.View, OnItemEventLi
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.adapter = mStoryAdapter
 
-        val repository = ZhiHuDataRepository(ZhiHuSourceFactory(context))
+        val repository = StoryDataRepository(StorySourceFactory(context))
         mStoryListPresenter = StoryListPresenter(repository, this)
 
         // 刷新助手类
@@ -78,6 +78,7 @@ class StoryListFragment : VBaseFragment(), StoryListContract.View, OnItemEventLi
         mRecyclerHelper.setLoadMore(true)
         mRecyclerHelper.forceRefreshing()
 
+        // 加载最后一个信息
         mStoryListPresenter.loadLastStories()
     }
 
@@ -90,12 +91,19 @@ class StoryListFragment : VBaseFragment(), StoryListContract.View, OnItemEventLi
 
     override fun onItemEvent(event: Int, view: View, position: Int, vararg args: Any?) {
 
+        if (event == 1) {
+            // 进入详情界面
+            ActivityUtil.startDetailsActivity(context,
+                    StoryDetailsFragment::class.java, args[0] as Serializable)
+            return
+        }
+
         // 进入详情界面
         ActivityUtil.startDetailsActivity(context,
                 StoryDetailsFragment::class.java, mStoryAdapter.getItem(position))
     }
 
-    override fun onLoadStories(model: List<BaseItemModel>) {
+    override fun onLoadStories(model: List<BaseViewType>) {
 
         mStoryAdapter.items = model
         mStoryAdapter.notifyDataSetChanged()

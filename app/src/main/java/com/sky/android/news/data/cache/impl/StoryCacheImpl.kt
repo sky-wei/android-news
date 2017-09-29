@@ -17,7 +17,7 @@
 package com.sky.android.news.data.cache.impl
 
 import com.sky.android.news.data.cache.CacheManager
-import com.sky.android.news.data.cache.ZhiHuCache
+import com.sky.android.news.data.cache.StoryCache
 import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.model.StoryDetailsPackageModel
 import com.sky.android.news.data.model.StoryListModel
@@ -26,17 +26,17 @@ import com.sky.android.news.data.model.StoryListPackageModel
 /**
  * Created by sky on 17-9-28.
  */
-class ZhiHuCacheImpl(private val mCacheManager: CacheManager) : ZhiHuCache {
+class StoryCacheImpl(private val mCacheManager: CacheManager) : StoryCache {
 
     private var mLatestStoriesKey = mCacheManager.buildKey(
-            ZhiHuCacheImpl::class.java.name + ":getLatestStories()")
+            StoryCacheImpl::class.java.name + ":getLatestStories()")
 
     override fun getLatestStories(): StoryListModel? {
 
         val model = mCacheManager.get(mLatestStoriesKey, StoryListPackageModel::class.java)
 
         if (model != null
-                && !isExpired(model.lastTime, 1000 * 60 * 60 * 12)) {
+                && !isExpired(model.lastTime, 1000 * 60 * 60)) {
             // 返回缓存数据
             return model.model
         }
@@ -54,7 +54,7 @@ class ZhiHuCacheImpl(private val mCacheManager: CacheManager) : ZhiHuCache {
                 mCacheManager.buildKey(date), StoryListPackageModel::class.java)
 
         if (model != null
-                && !isExpired(model.lastTime, 1000 * 60 * 60 * 12)) {
+                && !isExpired(model.lastTime, 1000 * 60 * 60)) {
             // 返回缓存数据
             return model.model
         }

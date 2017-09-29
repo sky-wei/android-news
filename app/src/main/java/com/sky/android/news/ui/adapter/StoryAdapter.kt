@@ -17,6 +17,7 @@
 package com.sky.android.news.ui.adapter
 
 import android.content.Context
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,36 +34,62 @@ import com.sky.android.common.base.BaseRecyclerAdapter
 import com.sky.android.common.base.BaseRecyclerHolder
 import com.sky.android.news.R
 import com.sky.android.news.R2
-import com.sky.android.news.data.model.BaseItemModel
-import com.sky.android.news.data.model.StoryItemModel
-import com.sky.android.news.data.model.TopStoryListModel
-import com.sky.android.news.data.model.TopStoryModel
+import com.sky.android.news.data.model.*
+import java.text.SimpleDateFormat
 
 /**
  * Created by sky on 17-9-28.
  */
-class StoryAdapter(context: Context) : SimpleRecyclerAdapter<BaseItemModel>(context) {
+class StoryAdapter(context: Context) : SimpleRecyclerAdapter<BaseViewType>(context) {
+
+    private val dateFormat = SimpleDateFormat("yyyyMMdd")
+    private val dateFormat2 = SimpleDateFormat("MM月dd日 E")
 
     override fun onCreateView(layoutInflater: LayoutInflater, viewGroup: ViewGroup, viewType: Int): View {
-        if (viewType == 0) {
-            return layoutInflater.inflate(R.layout.item_top_story, viewGroup, false)
+        return when(viewType) {
+            0 -> layoutInflater.inflate(R.layout.item_top_story, viewGroup, false)
+            1 -> layoutInflater.inflate(R.layout.item_story_list, viewGroup, false)
+            else -> layoutInflater.inflate(R.layout.item_note_story, viewGroup, false)
         }
-        return layoutInflater.inflate(R.layout.item_story_list, viewGroup, false)
     }
 
-    override fun onCreateViewHolder(view: View, viewType: Int): BaseRecyclerHolder<BaseItemModel> {
-        return if (viewType == 0) TopStoryHolder(view, this) else StoryItemHolder(view, this)
+    override fun onCreateViewHolder(view: View, viewType: Int): BaseRecyclerHolder<BaseViewType> {
+        return when(viewType) {
+            0 -> TopStoryHolder(view, this)
+            1 -> StoryItemHolder(view, this)
+            else -> NoteStoryHolder(view, this)
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
         return getItem(position).viewType
     }
 
-    inner class TopStoryHolder(itemView: View, adapter: BaseRecyclerAdapter<BaseItemModel>)
-        : BaseRecyclerHolder<BaseItemModel>(itemView, adapter), OnItemClickListener {
+    inner class NoteStoryHolder(itemView: View, adapter: BaseRecyclerAdapter<BaseViewType>)
+        : BaseRecyclerHolder<BaseViewType>(itemView, adapter) {
+
+        @BindView(R2.id.tv_note)
+        lateinit var tvNote: TextView
+
+        override fun onInitialize() {
+            ButterKnife.bind(this, itemView)
+        }
+
+        override fun onBind(position: Int, viewType: Int) {
+
+            val item = getItem(position) as NodeItemModel
+
+            val date = dateFormat.parse(item.data)
+
+            tvNote.text = if (!TextUtils.isEmpty(item.node)) item.node else dateFormat2.format(date)
+        }
+    }
+
+    inner class TopStoryHolder(itemView: View, adapter: BaseRecyclerAdapter<BaseViewType>)
+        : BaseRecyclerHolder<BaseViewType>(itemView, adapter), OnItemClickListener {
 
         @BindView(R2.id.convenient_banner)
-        lateinit var convenientBanner: ConvenientBanner<TopStoryModel>
+        lateinit var convenientBanner: ConvenientBanner<TopStoryItemModel>
 
         override fun onInitialize() {
             ButterKnife.bind(this, itemView)
@@ -78,12 +105,13 @@ class StoryAdapter(context: Context) : SimpleRecyclerAdapter<BaseItemModel>(cont
 
             val item = getItem(position) as TopStoryListModel
 
-            convenientBanner.setPages(BannerPageCreator(), item.topStories)
+            convenientBanner.setPages(BannerHolderCreator(), item.topStories)
             convenientBanner.notifyDataSetChanged()
         }
 
         override fun onItemClick(position: Int) {
-
+            val item = getItem(adapterPosition) as TopStoryListModel
+            onItemEvent(1, itemView, adapterPosition, item.topStories[position])
         }
 
         override fun onAttachedToWindow() {
@@ -99,8 +127,8 @@ class StoryAdapter(context: Context) : SimpleRecyclerAdapter<BaseItemModel>(cont
         }
     }
 
-    inner class StoryItemHolder(itemView: View, adapter: BaseRecyclerAdapter<BaseItemModel>)
-        : BaseRecyclerHolder<BaseItemModel>(itemView, adapter) {
+    inner class StoryItemHolder(itemView: View, adapter: BaseRecyclerAdapter<BaseViewType>)
+        : BaseRecyclerHolder<BaseViewType>(itemView, adapter) {
 
         @BindView(R2.id.iv_image)
         lateinit var ivImage: ImageView

@@ -14,25 +14,16 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.service
+package com.sky.android.news.data.story
 
-import com.sky.android.news.data.zhihu.StoryDetails
-import com.sky.android.news.data.zhihu.StoryList
-import retrofit2.http.GET
-import retrofit2.http.Path
-import rx.Observable
+import java.io.Serializable
 
 /**
  * Created by sky on 17-9-28.
  */
-interface ZhiHuService {
+data class StoryDetails(val body: String, val image_source: String, val title: String,
+                 val image: String, val share_url: String, val js: List<String>,
+                 val ga_prefix: String, val section: Section, val images: List<String>,
+                 val type: Int, val id: Long, val css: List<String>) : Serializable
 
-    @GET("api/4/stories/latest")
-    fun getLatestStories(): Observable<StoryList>
-
-    @GET("api/4/stories/before/{date}")
-    fun getStories(@Path("date") date: String): Observable<StoryList>
-
-    @GET("api/4/story/{id}")
-    fun getStory(@Path("id") id: String): Observable<StoryDetails>
-}
+data class Section(val thumbnail: String, val id: Long, val name: String) : Serializable

@@ -21,18 +21,25 @@ import java.io.Serializable
 /**
  * Created by sky on 17-9-28.
  */
-data class StoryListModel(val date: String, val stories: List<StoryItemModel>, val topStories: List<TopStoryModel>) : Serializable
+data class StoryListModel(val date: String, val stories: List<StoryItemModel>, val topStories: List<TopStoryItemModel>) : Serializable
 
-data class TopStoryListModel(val topStories: List<TopStoryModel>, override val viewType: Int = 0) : BaseItemModel
+data class TopStoryListModel(val topStories: List<TopStoryItemModel>, override val viewType: Int = 0) : BaseViewType
 
-data class StoryItemModel(val images: List<String>, val type: Int,
-                          val id: Long, val gaPrefix: String, val title: String, override val viewType: Int = 1) : BaseItemModel
+data class StoryItemModel(val images: List<String>, override val type: Int,
+                          override val id: Long, val gaPrefix: String, val title: String, override val viewType: Int = 1) : BaseItemModel, BaseViewType
 
-data class TopStoryModel(val image: String, val type: Int,
-                         val id: Long, val gaPrefix: String, val title: String) : Serializable
+data class NodeItemModel(val data: String, val node: String = "", override val viewType: Int = 2) : BaseViewType
+
+data class TopStoryItemModel(val image: String, override val type: Int,
+                             override val id: Long, val gaPrefix: String, val title: String) : BaseItemModel, Serializable
+
+interface BaseViewType : Serializable {
+    val viewType: Int
+}
 
 interface BaseItemModel : Serializable {
-    val viewType: Int
+    val id: Long
+    val type: Int
 }
 
 data class StoryListPackageModel(val lastTime: Long, val model: StoryListModel) : Serializable

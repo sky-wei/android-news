@@ -14,50 +14,47 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.source.disk
+package com.sky.android.news.data.source
 
-import android.content.Context
-import com.sky.android.news.data.cache.ZhiHuCache
 import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.model.StoryListModel
-import com.sky.android.news.data.source.ZhiHuDataSource
 import rx.Observable
-import rx.Subscriber
 
 /**
  * Created by sky on 17-9-28.
  */
-class DiskZhiHuDataSouce(private val mContext: Context, private val mCache: ZhiHuCache) : ZhiHuDataSource {
+class StoryDataRepository(sourceFactory: StorySourceFactory) : StoryDataSource {
+
+    private val mLocal = sourceFactory.createLocalSource()
+    private val mRemote = sourceFactory.createRemoteSource()
 
     override fun getLatestStories(): Observable<StoryListModel> {
-        return Observable.unsafeCreate { subscriber ->
-            handler(subscriber, mCache.getLatestStories())
-        }
+
+        val localObservable = mLocal.getLatestStories()
+        val remoteObservable = mRemote.getLatestStories()
+
+        return Observable
+                .concat(localObservable, remoteObservable)
+                .takeFirst { model -> model != null }
     }
 
     override fun getStories(date: String): Observable<StoryListModel> {
-        return Observable.unsafeCreate { subscriber ->
-            handler(subscriber, mCache.getStories(date))
-        }
+
+        val localObservable = mLocal.getStories(date)
+        val remoteObservable = mRemote.getStories(date)
+
+        return Observable
+                .concat(localObservable, remoteObservable)
+                .takeFirst { model -> model != null }
     }
 
     override fun getStory(id: String): Observable<StoryDetailsModel> {
-        return Observable.unsafeCreate { subscriber ->
-            handler(subscriber, mCache.getStory(id))
-        }
-    }
 
-    private fun <T> handler(subscriber: Subscriber<in T>, model: T?) {
+        val localObservable = mLocal.getStory(id)
+        val remoteObservable = mRemote.getStory(id)
 
-        try {
-            // 处理下一步
-            subscriber.onNext(model)
-
-            // 完成
-            subscriber.onCompleted()
-        } catch (e: Throwable) {
-            // 出错了
-            subscriber.onError(e)
-        }
+        return Observable
+                .concat(localObservable, remoteObservable)
+                .takeFirst { model -> model != null }
     }
 }
