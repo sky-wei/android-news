@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="205dp">
 
-                <ImageView
+                <com.sky.android.news.ui.view.TopImageView
                     android:id="@+id/iv_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
