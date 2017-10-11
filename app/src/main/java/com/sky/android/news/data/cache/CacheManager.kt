@@ -27,6 +27,8 @@ interface CacheManager {
 
     fun remove(key: String): Boolean
 
+    fun clear()
+
     fun close()
 
     fun buildKey(value: String): String

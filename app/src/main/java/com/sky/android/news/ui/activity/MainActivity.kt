@@ -37,6 +37,7 @@ import com.sky.android.news.R2
 import com.sky.android.news.ui.base.VBaseActivity
 import com.sky.android.news.ui.fragment.AboutFragment
 import com.sky.android.news.ui.fragment.CategoryFragment
+import com.sky.android.news.ui.fragment.SettingsFragment
 import com.sky.android.news.ui.fragment.StoryListFragment
 import com.sky.android.news.util.ActivityUtil
 
@@ -105,9 +106,12 @@ class MainActivity : VBaseActivity(), NavigationView.OnNavigationItemSelectedLis
                         buildDefaultArgs(Constant.Category.ZHI_HU))
             }
             R.id.nav_settings -> {
-
+                // 进入设置
+                ActivityUtil.startCommonActivity(
+                        context, R.string.setting, SettingsFragment::class.java.name, false)
             }
             R.id.nav_about -> {
+                // 进入关于
                 ActivityUtil.startCommonActivity(
                         context, R.string.about, AboutFragment::class.java.name)
             }

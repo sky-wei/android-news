@@ -31,7 +31,7 @@ import java.io.IOException
 /**
  * Created by sky on 17-9-21.
  */
-class CacheManagerImpl private constructor(mContext: Context): CacheManager {
+class CacheManagerImpl private constructor(val mContext: Context): CacheManager {
 
     private val TAG = CacheManagerImpl::class.java.simpleName
 
@@ -59,6 +59,11 @@ class CacheManagerImpl private constructor(mContext: Context): CacheManager {
     }
 
     init {
+        initCacheManager()
+    }
+
+    private fun initCacheManager() {
+
         val version = BuildConfig.VERSION_CODE
 
         val cacheDir = File(mContext.cacheDir, "net_cache")
@@ -126,6 +131,19 @@ class CacheManagerImpl private constructor(mContext: Context): CacheManager {
             Alog.e(TAG, "移除数据失败", e)
         }
         return false
+    }
+
+    override fun clear() {
+
+        if (!verifyCache()) return
+
+        try {
+            // 删除数据
+            mDiskLruCache!!.delete()
+            initCacheManager()
+        } catch (e: IOException) {
+            Alog.e(TAG, "删除数据失败", e)
+        }
     }
 
     @Synchronized

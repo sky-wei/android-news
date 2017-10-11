@@ -27,6 +27,9 @@
     <string name="version_x">版本 v%s</string>
     <string name="mail">邮箱：jingcai.wei@163.com</string>
     <string name="source">项目地址：<u>https://github.com/jingcai-wei</u></string>
-    <string name="title_activity_main2">Main2Activity</string>
-    <string name="title_activity_settings">Settings</string>
+    <string name="storage_setting">存储</string>
+    <string name="clear_news_cache">清空新闻缓存</string>
+    <string name="clear_image_cache">清空图片缓存</string>
+    <string name="setting">设置</string>
+
 </resources>
