@@ -16,6 +16,7 @@
 
 package com.sky.android.news.ui.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -74,5 +75,9 @@ abstract class VBaseFragment : BaseFragment(), BaseView {
 
     override fun showMessage(msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun getContext(): Context {
+        return super.getContext()!!
     }
 }

@@ -18,7 +18,7 @@ package com.sky.android.news.data.source
 
 import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.model.StoryListModel
-import rx.Observable
+import io.reactivex.Observable
 
 /**
  * Created by sky on 17-9-28.

@@ -23,8 +23,8 @@ import com.sky.android.news.data.model.CategoryModel
 import com.sky.android.news.data.model.DetailsModel
 import com.sky.android.news.data.model.HeadLineModel
 import com.sky.android.news.data.source.NewsDataSource
-import rx.Observable
-import rx.Subscriber
+import io.reactivex.Observable
+import org.reactivestreams.Subscriber
 
 /**
  * Created by sky on 17-9-21.
@@ -56,7 +56,7 @@ class DiskNewsDataSource(private val mContext: Context, private val mCache: News
             subscriber.onNext(model)
 
             // 完成
-            subscriber.onCompleted()
+            subscriber.onComplete()
         } catch (e: Throwable) {
             // 出错了
             subscriber.onError(e)

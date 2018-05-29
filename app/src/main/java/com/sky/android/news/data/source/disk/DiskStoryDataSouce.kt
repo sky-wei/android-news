@@ -21,8 +21,8 @@ import com.sky.android.news.data.cache.StoryCache
 import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.model.StoryListModel
 import com.sky.android.news.data.source.StoryDataSource
-import rx.Observable
-import rx.Subscriber
+import io.reactivex.Observable
+import org.reactivestreams.Subscriber
 
 /**
  * Created by sky on 17-9-28.
@@ -54,7 +54,7 @@ class DiskStoryDataSouce(private val mContext: Context, private val mCache: Stor
             subscriber.onNext(model)
 
             // 完成
-            subscriber.onCompleted()
+            subscriber.onComplete()
         } catch (e: Throwable) {
             // 出错了
             subscriber.onError(e)

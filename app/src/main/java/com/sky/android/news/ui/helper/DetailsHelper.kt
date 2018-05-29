@@ -26,7 +26,7 @@ import com.sky.android.common.utils.CollectionUtils
 import com.sky.android.news.data.model.ContentModel
 import com.sky.android.news.data.model.ImageModel
 import com.sky.android.news.data.model.VideoModel
-import rx.Observable
+import io.reactivex.Observable
 
 
 /**

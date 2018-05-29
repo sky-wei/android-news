@@ -19,7 +19,7 @@ package com.sky.android.news.data.source
 import com.sky.android.news.data.model.CategoryModel
 import com.sky.android.news.data.model.DetailsModel
 import com.sky.android.news.data.model.HeadLineModel
-import rx.Observable
+import io.reactivex.Observable
 
 /**
  * Created by sky on 17-9-21.

@@ -55,7 +55,7 @@ class VImageGetter(val context: Context, private val textView: TextView) : Html.
         private val drawableReference: WeakReference<UrlDrawable> = WeakReference(urlDrawable)
         private val containerReference: WeakReference<TextView> = WeakReference(container)
 
-        override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>) {
+        override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
 
             val height = resource.intrinsicHeight
             val width = resource.intrinsicWidth

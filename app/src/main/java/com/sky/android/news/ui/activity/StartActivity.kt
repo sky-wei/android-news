@@ -22,7 +22,7 @@ import android.content.Intent
 import com.sky.android.news.R
 import com.sky.android.news.ui.base.VBaseActivity
 import com.sky.android.news.util.ActivityUtil
-import com.tbruyelle.rxpermissions.RxPermissions
+import com.tbruyelle.rxpermissions2.RxPermissions
 
 /**
  * Created by sky on 17-9-21.

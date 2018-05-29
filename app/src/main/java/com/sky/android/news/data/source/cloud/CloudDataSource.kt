@@ -27,10 +27,10 @@ import com.sky.android.news.data.news.LineItem
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
+import org.reactivestreams.Subscriber
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import rx.Subscriber
 import java.lang.reflect.Type
 
 /**
@@ -49,7 +49,7 @@ abstract class CloudDataSource {
                 .client(client)
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create(newGosn()))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
 
         return retrofit.create(tClass)
@@ -69,7 +69,7 @@ abstract class CloudDataSource {
             subscriber.onNext(model)
 
             // 完成
-            subscriber.onCompleted()
+            subscriber.onComplete()
         } catch (e: Throwable) {
             // 出错了
             subscriber.onError(e)

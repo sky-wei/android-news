@@ -18,9 +18,9 @@ package com.sky.android.news.data.service
 
 import com.sky.android.news.data.story.StoryDetails
 import com.sky.android.news.data.story.StoryList
+import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Path
-import rx.Observable
 
 /**
  * Created by sky on 17-9-28.

@@ -129,7 +129,7 @@ class MainActivity : VBaseActivity(), NavigationView.OnNavigationItemSelectedLis
 
         if (curFragment != null
                 && classes == curFragment.javaClass
-                && id == curFragment.arguments.getInt("id", -1)) {
+                && id == curFragment.arguments?.getInt("id", -1)) {
             // 相同的，不需要处理
             return
         }

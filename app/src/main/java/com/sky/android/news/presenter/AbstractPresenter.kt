@@ -17,9 +17,9 @@
 package com.sky.android.news.presenter
 
 import com.sky.android.news.base.BasePresenter
-import rx.Observable
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by sky on 17-9-22.

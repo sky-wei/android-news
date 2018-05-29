@@ -24,7 +24,7 @@ import com.sky.android.news.data.model.DetailsModel
 import com.sky.android.news.data.model.HeadLineModel
 import com.sky.android.news.data.service.NewsService
 import com.sky.android.news.data.source.NewsDataSource
-import rx.Observable
+import io.reactivex.Observable
 
 /**
  * Created by sky on 17-9-21.

@@ -23,7 +23,7 @@ import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.model.StoryListModel
 import com.sky.android.news.data.service.StoryService
 import com.sky.android.news.data.source.StoryDataSource
-import rx.Observable
+import io.reactivex.Observable
 
 /**
  * Created by sky on 17-9-28.
