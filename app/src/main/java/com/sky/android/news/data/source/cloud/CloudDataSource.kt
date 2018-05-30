@@ -24,6 +24,7 @@ import com.sky.android.news.data.news.Content
 import com.sky.android.news.data.news.Details
 import com.sky.android.news.data.news.HeadLine
 import com.sky.android.news.data.news.LineItem
+import io.reactivex.ObservableEmitter
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -62,17 +63,19 @@ abstract class CloudDataSource {
                 .create()
     }
 
-    fun <T> handler(subscriber: Subscriber<in T>, model: T?) {
+    fun <T> handler(observableEmitter: ObservableEmitter<in T>, model: T?) {
 
         try {
-            // 处理下一步
-            subscriber.onNext(model)
+            if (model != null) {
+                // 处理下一步
+                observableEmitter.onNext(model)
+            }
 
             // 完成
-            subscriber.onComplete()
+            observableEmitter.onComplete()
         } catch (e: Throwable) {
             // 出错了
-            subscriber.onError(e)
+            observableEmitter.onError(e)
         }
     }
 

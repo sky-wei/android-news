@@ -73,13 +73,7 @@ class DetailsPresenter(val context: Context,
             return true
         }
 
-        override fun onNext(model: DetailsModel?) {
-
-            if (model == null) {
-                // 返回数据为空
-                view.onLoadFailed("服务返回数据为空")
-                return
-            }
+        override fun onNext(model: DetailsModel) {
 
             // 加载成功
             view.cancelLoading()

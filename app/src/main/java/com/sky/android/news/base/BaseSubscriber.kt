@@ -18,20 +18,20 @@ package com.sky.android.news.base
 
 import com.sky.android.common.utils.Alog
 import com.sky.android.news.data.DataException
-import org.reactivestreams.Subscriber
-import org.reactivestreams.Subscription
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 
 /**
  * Created by sky on 17-9-21.
  */
-abstract class BaseSubscriber<T> : Subscriber<T> {
+abstract class BaseSubscriber<T> : Observer<T> {
 
     private val TAG = BaseSubscriber::class.java.simpleName
 
     override fun onComplete() {
     }
 
-    override fun onSubscribe(s: Subscription?) {
+    override fun onSubscribe(p0: Disposable) {
     }
 
     override fun onError(e: Throwable) {

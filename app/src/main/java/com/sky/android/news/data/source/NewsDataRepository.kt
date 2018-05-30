@@ -36,7 +36,6 @@ class NewsDataRepository(sourceFactory: NewsSourceFactory) : NewsDataSource {
 
         return Observable
                 .concat(localObservable, remoteObservable)
-                .takeFirst { model -> model != null }
     }
 
     override fun getHeadLine(tid: String, start: Int, end: Int): Observable<HeadLineModel> {
@@ -46,7 +45,6 @@ class NewsDataRepository(sourceFactory: NewsSourceFactory) : NewsDataSource {
 
         return Observable
                 .concat(localObservable, remoteObservable)
-                .takeFirst { model -> model != null }
     }
 
     override fun getDetails(docId: String): Observable<DetailsModel> {
@@ -56,6 +54,5 @@ class NewsDataRepository(sourceFactory: NewsSourceFactory) : NewsDataSource {
 
         return Observable
                 .concat(localObservable, remoteObservable)
-                .takeFirst { model -> model != null }
     }
 }

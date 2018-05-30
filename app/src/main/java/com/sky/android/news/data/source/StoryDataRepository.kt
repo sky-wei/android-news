@@ -35,7 +35,6 @@ class StoryDataRepository(sourceFactory: StorySourceFactory) : StoryDataSource {
 
         return Observable
                 .concat(localObservable, remoteObservable)
-                .takeFirst { model -> model != null }
     }
 
     override fun getStories(date: String): Observable<StoryListModel> {
@@ -45,7 +44,6 @@ class StoryDataRepository(sourceFactory: StorySourceFactory) : StoryDataSource {
 
         return Observable
                 .concat(localObservable, remoteObservable)
-                .takeFirst { model -> model != null }
     }
 
     override fun getStory(id: String): Observable<StoryDetailsModel> {
@@ -55,6 +53,5 @@ class StoryDataRepository(sourceFactory: StorySourceFactory) : StoryDataSource {
 
         return Observable
                 .concat(localObservable, remoteObservable)
-                .takeFirst { model -> model != null }
     }
 }

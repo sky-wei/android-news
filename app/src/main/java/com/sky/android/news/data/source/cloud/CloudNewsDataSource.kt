@@ -33,9 +33,7 @@ class CloudNewsDataSource(private val mCache: NewsCache) : CloudDataSource(), Ne
 
     override fun getCategory(): Observable<CategoryModel> {
         // 服务器没有这个功能
-        return Observable.unsafeCreate<CategoryModel> { subscriber ->
-            handler(subscriber, null)
-        }
+        return Observable.create <CategoryModel> { handler(it, null) }
     }
 
     override fun getHeadLine(tid: String, start: Int, end: Int): Observable<HeadLineModel> {

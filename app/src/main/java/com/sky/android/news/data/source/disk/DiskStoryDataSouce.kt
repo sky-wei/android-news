@@ -22,6 +22,7 @@ import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.model.StoryListModel
 import com.sky.android.news.data.source.StoryDataSource
 import io.reactivex.Observable
+import io.reactivex.ObservableEmitter
 import org.reactivestreams.Subscriber
 
 /**
@@ -30,34 +31,30 @@ import org.reactivestreams.Subscriber
 class DiskStoryDataSouce(private val mContext: Context, private val mCache: StoryCache) : StoryDataSource {
 
     override fun getLatestStories(): Observable<StoryListModel> {
-        return Observable.unsafeCreate { subscriber ->
-            handler(subscriber, mCache.getLatestStories())
-        }
+        return Observable.create { handler(it, mCache.getLatestStories()) }
     }
 
     override fun getStories(date: String): Observable<StoryListModel> {
-        return Observable.unsafeCreate { subscriber ->
-            handler(subscriber, mCache.getStories(date))
-        }
+        return Observable.create { handler(it, mCache.getStories(date)) }
     }
 
     override fun getStory(id: String): Observable<StoryDetailsModel> {
-        return Observable.unsafeCreate { subscriber ->
-            handler(subscriber, mCache.getStory(id))
-        }
+        return Observable.create { handler(it, mCache.getStory(id)) }
     }
 
-    private fun <T> handler(subscriber: Subscriber<in T>, model: T?) {
+    private fun <T> handler(observableEmitter: ObservableEmitter<in T>, model: T?) {
 
         try {
-            // 处理下一步
-            subscriber.onNext(model)
+            if (model != null) {
+                // 处理下一步
+                observableEmitter.onNext(model)
+            }
 
             // 完成
-            subscriber.onComplete()
+            observableEmitter.onComplete()
         } catch (e: Throwable) {
             // 出错了
-            subscriber.onError(e)
+            observableEmitter.onError(e)
         }
     }
 }

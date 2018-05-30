@@ -61,13 +61,7 @@ class StoryListPresenter(val source: StoryDataSource,
             return true
         }
 
-        override fun onNext(model: StoryListModel?) {
-
-            if (model == null) {
-                // 返回数据为空
-                view.onLoadFailed("服务返回数据为空")
-                return
-            }
+        override fun onNext(model: StoryListModel) {
 
             // 加载完成
             view.cancelLoading()

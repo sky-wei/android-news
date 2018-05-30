@@ -44,13 +44,7 @@ class CategoryPresenter(val source: NewsDataSource,
             return true
         }
 
-        override fun onNext(model: CategoryModel?) {
-
-            if (model == null) {
-                // 返回数据为空
-                view.onLoadFailed("服务返回数据为空")
-                return
-            }
+        override fun onNext(model: CategoryModel) {
 
             // 加载成功
             view.onLoadCategory(model)
