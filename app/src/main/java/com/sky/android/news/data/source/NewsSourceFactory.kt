@@ -17,7 +17,6 @@
 package com.sky.android.news.data.source
 
 import android.content.Context
-import com.sky.android.news.VApplication
 import com.sky.android.news.data.cache.NewsCache
 import com.sky.android.news.data.cache.impl.CacheManagerImpl
 import com.sky.android.news.data.cache.impl.NewsCacheImpl

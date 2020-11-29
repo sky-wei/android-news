@@ -15,3 +15,13 @@
  */
 
 include ':app', ':tv'
+
+file('library').eachDir { dir ->
+    if (dir.name != "app"
+            && dir.name != "gradle"
+            && dir.name != "library"
+    ) {
+        include dir.name
+        project(":${dir.name}").projectDir = dir
+    }
+}

@@ -24,7 +24,7 @@ import com.sky.android.news.data.cache.impl.CacheManagerImpl
 /**
  * Created by sky on 17-9-21.
  */
-class VApplication : Application() {
+class App : Application() {
 
     override fun onCreate() {
         SpeechUtility.createUtility(this, "appid=59c8c734")
