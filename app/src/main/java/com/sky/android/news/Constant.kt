@@ -23,22 +23,22 @@ object Constant {
 
     object Service {
 
-        val BASE_URL = "https://c.m.163.com/"
+        const val BASE_URL = "https://c.m.163.com/"
 
-        val ZH_BASE_URL = "https://news-at.zhihu.com/"
+        const val ZH_BASE_URL = "https://news-at.zhihu.com/"
     }
 
     object Category {
 
-        val NEWS = 0x01
+        const val NEWS = 0x01
 
-        val ZHI_HU = 0x02
+        const val ZHI_HU = 0x02
     }
 
     object Preference {
 
-        val CLEAR_NEWS_CACHE = "clear_news_cache"
+        const val CLEAR_NEWS_CACHE = "clear_news_cache"
 
-        val CLEAR_IMAGE_CACHE = "clear_image_cache"
+        const val CLEAR_IMAGE_CACHE = "clear_image_cache"
     }
 }

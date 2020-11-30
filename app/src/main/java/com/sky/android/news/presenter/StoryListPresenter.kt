@@ -16,7 +16,7 @@
 
 package com.sky.android.news.presenter
 
-import com.sky.android.common.utils.Alog
+import com.sky.android.common.util.Alog
 import com.sky.android.news.base.BaseSubscriber
 import com.sky.android.news.contract.StoryListContract
 import com.sky.android.news.data.model.BaseViewType

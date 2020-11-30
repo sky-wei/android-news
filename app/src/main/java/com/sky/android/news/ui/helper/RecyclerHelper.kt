@@ -16,15 +16,15 @@
 
 package com.sky.android.news.ui.helper
 
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.RecyclerView
-import com.sky.android.common.utils.DisplayUtils
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.sky.android.common.util.DisplayUtil
 
 /**
  * Created by sky on 17-9-22.
  */
 class RecyclerHelper(private val refreshLayout: SwipeRefreshLayout,
-                     private val recyclerView: RecyclerView, val onCallback: OnCallback)
+                     private val recyclerView: RecyclerView, private val onCallback: OnCallback)
     : RecyclerView.OnScrollListener(), SwipeRefreshLayout.OnRefreshListener {
 
     var mLoadMore: Boolean = false
@@ -57,9 +57,7 @@ class RecyclerHelper(private val refreshLayout: SwipeRefreshLayout,
         }
     }
 
-    fun isRefreshing(): Boolean {
-        return refreshLayout.isRefreshing
-    }
+    fun isRefreshing(): Boolean = refreshLayout.isRefreshing
 
     fun forceRefreshing() {
 
@@ -67,7 +65,7 @@ class RecyclerHelper(private val refreshLayout: SwipeRefreshLayout,
 
         // 显示加载进度
         refreshLayout.setProgressViewOffset(true, 0,
-                DisplayUtils.dip2px(refreshLayout.context, 60f))
+                DisplayUtil.dip2px(refreshLayout.context, 60f))
         refreshLayout.isRefreshing = true
     }
 

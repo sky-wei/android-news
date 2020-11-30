@@ -16,8 +16,8 @@
 
 package com.sky.android.news.data.source
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import android.util.Log
 import com.google.gson.Gson
 import org.junit.After
@@ -41,7 +41,7 @@ class NewsDataRepositoryTest {
     @Before
     fun setUp() {
 
-        val appContext = InstrumentationRegistry.getTargetContext()
+        val appContext = androidx.test.platform.app.InstrumentationRegistry.getTargetContext()
         source = NewsDataRepository(NewsSourceFactory(appContext))
     }
 

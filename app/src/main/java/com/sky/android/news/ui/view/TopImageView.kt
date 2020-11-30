@@ -19,18 +19,18 @@ package com.sky.android.news.ui.view
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
-import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatImageView
 
 /**
  * Created by sky on 17-10-11.
  */
-class TopImageView : ImageView {
+class TopImageView : AppCompatImageView {
 
-    constructor(context: Context?) : super(context)
+    constructor(context: Context) : super(context)
 
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)

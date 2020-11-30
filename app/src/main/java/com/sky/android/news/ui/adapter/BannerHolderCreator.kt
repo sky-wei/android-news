@@ -25,17 +25,15 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator
 import com.bigkoo.convenientbanner.holder.Holder
 import com.bumptech.glide.Glide
 import com.sky.android.news.R
-import com.sky.android.news.R2
 import com.sky.android.news.data.model.TopStoryItemModel
+import kotlinx.android.synthetic.main.item_banner.view.*
 
 /**
  * Created by sky on 17-9-28.
  */
 class BannerHolderCreator : CBViewHolderCreator<BannerHolderCreator.BannerImageHolder> {
 
-    override fun createHolder(): BannerImageHolder {
-        return BannerImageHolder()
-    }
+    override fun createHolder(): BannerImageHolder = BannerImageHolder()
 
     inner class BannerImageHolder : Holder<TopStoryItemModel> {
 
@@ -47,8 +45,8 @@ class BannerHolderCreator : CBViewHolderCreator<BannerHolderCreator.BannerImageH
             val view = LayoutInflater.from(context)
                     .inflate(R.layout.item_banner, null, false)
 
-            ivImage = view.findViewById(R2.id.iv_image) as ImageView
-            tvTitle = view.findViewById(R2.id.tv_title) as TextView
+            ivImage = view.iv_image as ImageView
+            tvTitle = view.tv_title as TextView
 
             return  view
         }

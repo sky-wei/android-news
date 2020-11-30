@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-include ':app', ':tv'
+include ':app'//, ':tv'
 
 file('library').eachDir { dir ->
     if (dir.name != "app"

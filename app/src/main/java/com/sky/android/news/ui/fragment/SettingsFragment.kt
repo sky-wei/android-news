@@ -17,9 +17,9 @@
 package com.sky.android.news.ui.fragment
 
 import android.os.Bundle
-import android.preference.Preference
-import android.preference.PreferenceFragment
 import android.widget.Toast
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import com.bumptech.glide.Glide
 import com.sky.android.news.Constant
 import com.sky.android.news.R
@@ -29,16 +29,21 @@ import com.sky.android.news.data.cache.impl.CacheManagerImpl
  * Created by sky on 17-10-11.
  */
 
-class SettingsFragment : PreferenceFragment(), Preference.OnPreferenceClickListener {
+class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceClickListener {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
 
         addPreferencesFromResource(R.xml.setting_preferences)
 
+        findPreference<Preference>(Constant.Preference.CLEAR_NEWS_CACHE)
+
         // 添加事件监听
-        findPreference(Constant.Preference.CLEAR_NEWS_CACHE).onPreferenceClickListener = this
-        findPreference(Constant.Preference.CLEAR_IMAGE_CACHE).onPreferenceClickListener = this
+        findPreference<Preference>(
+                Constant.Preference.CLEAR_NEWS_CACHE
+        )?.onPreferenceClickListener = this
+        findPreference<Preference>(
+                Constant.Preference.CLEAR_IMAGE_CACHE
+        )?.onPreferenceClickListener = this
     }
 
     override fun onPreferenceClick(preference: Preference): Boolean {
@@ -46,13 +51,13 @@ class SettingsFragment : PreferenceFragment(), Preference.OnPreferenceClickListe
         when(preference.key) {
             Constant.Preference.CLEAR_NEWS_CACHE -> {
                 // 清除新闻缓存
-                CacheManagerImpl.getInstance(activity).clear()
+                CacheManagerImpl.getInstance(requireContext()).clear()
                 Toast.makeText(activity, "清空缓存成功", Toast.LENGTH_SHORT).show()
             }
             Constant.Preference.CLEAR_IMAGE_CACHE -> {
                 // 清除图片缓存
-                Thread{
-                    Glide.get(activity).clearDiskCache()
+                Thread {
+                    Glide.get(requireContext()).clearDiskCache()
                 }.start()
                 Toast.makeText(activity, "清空缓存成功", Toast.LENGTH_SHORT).show()
             }

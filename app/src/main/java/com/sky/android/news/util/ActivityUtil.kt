@@ -20,8 +20,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
-import com.sky.android.common.base.BaseFragment
-import com.sky.android.common.utils.Alog
+import com.sky.android.common.util.Alog
+import com.sky.android.core.fragment.BaseFragment
 import com.sky.android.news.ui.activity.CommonActivity
 import com.sky.android.news.ui.activity.DetailsActivity
 import java.io.Serializable
@@ -41,9 +41,8 @@ object ActivityUtil {
         ActivityUtil.startActivity(context, intent)
     }
 
-    fun startCommonActivity(context: Context, title: Int, fName: String): Boolean {
-        return startCommonActivity(context, title, fName, true)
-    }
+    fun startCommonActivity(context: Context, title: Int, fName: String): Boolean =
+            startCommonActivity(context, title, fName, true)
 
     fun startCommonActivity(context: Context, title: Int, fName: String, supportFragment: Boolean): Boolean {
 

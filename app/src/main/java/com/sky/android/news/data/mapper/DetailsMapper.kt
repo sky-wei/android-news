@@ -16,8 +16,8 @@
 
 package com.sky.android.news.data.mapper
 
-import com.sky.android.common.utils.CollectionUtils
-import com.sky.android.common.utils.ConversionUtils
+import com.sky.android.common.util.CollectionUtil
+import com.sky.android.common.util.ConversionUtil
 import com.sky.android.news.base.toExtString
 import com.sky.android.news.data.model.*
 import com.sky.android.news.data.news.*
@@ -33,39 +33,37 @@ class DetailsMapper {
 
     private fun transform(content: Content): ContentModel {
 
-        val image = transformImage(if (CollectionUtils.isEmpty(content.img)) listOf() else content.img)
-        val video = transformVideo(if (CollectionUtils.isEmpty(content.video)) listOf() else content.video)
-        val spInfo = transformSpInfo(if (CollectionUtils.isEmpty(content.spinfo)) listOf() else content.spinfo)
-        val relative = transformRelative(if (CollectionUtils.isEmpty(content.relative_sys)) listOf() else content.relative_sys)
+        val image = transformImage(if (CollectionUtil.isEmpty(content.img)) listOf() else content.img)
+        val video = transformVideo(if (CollectionUtil.isEmpty(content.video)) listOf() else content.video)
+        val spInfo = transformSpInfo(if (CollectionUtil.isEmpty(content.spinfo)) listOf() else content.spinfo)
+        val relative = transformRelative(if (CollectionUtil.isEmpty(content.relative_sys)) listOf() else content.relative_sys)
 
-        return ContentModel(ConversionUtils.toString(content.template), image, ConversionUtils.toString(content.shareLink),
-                ConversionUtils.toString(content.source), content.threadVote, ConversionUtils.toString(content.title),
-                ConversionUtils.toString(content.body), ConversionUtils.toString(content.tid), content.picnews,
-                spInfo, relative, ConversionUtils.toString(content.articleType), ConversionUtils.toString(content.digest),
-                ConversionUtils.toString(content.ptime), ConversionUtils.toString(content.ec), ConversionUtils.toString(content.docid),
-                content.threadAgainst, ConversionUtils.toString(content.hasNext), ConversionUtils.toString(content.dkeys),
-                content.replyCount, ConversionUtils.toString(content.voicecomment), ConversionUtils.toString(content.replyBoard),
-                ConversionUtils.toString(content.category), video)
+        return ContentModel(ConversionUtil.toString(content.template), image, ConversionUtil.toString(content.shareLink),
+                ConversionUtil.toString(content.source), content.threadVote, ConversionUtil.toString(content.title),
+                ConversionUtil.toString(content.body), ConversionUtil.toString(content.tid), content.picnews,
+                spInfo, relative, ConversionUtil.toString(content.articleType), ConversionUtil.toString(content.digest),
+                ConversionUtil.toString(content.ptime), ConversionUtil.toString(content.ec), ConversionUtil.toString(content.docid),
+                content.threadAgainst, ConversionUtil.toString(content.hasNext), ConversionUtil.toString(content.dkeys),
+                content.replyCount, ConversionUtil.toString(content.voicecomment), ConversionUtil.toString(content.replyBoard),
+                ConversionUtil.toString(content.category), video)
     }
 
-    private fun transformImage(image: List<Image>): List<ImageModel> {
-        return image.map { it -> transformImage(it) }
-    }
+    private fun transformImage(image: List<Image>): List<ImageModel> =
+            image.map { transformImage(it) }
 
     private fun transformImage(image: Image): ImageModel {
-        return ImageModel(ConversionUtils.toString(image.ref),
-                ConversionUtils.toString(image.src),
-                ConversionUtils.toString(image.alt),
-                ConversionUtils.toString(image.pixel))
+        return ImageModel(ConversionUtil.toString(image.ref),
+                ConversionUtil.toString(image.src),
+                ConversionUtil.toString(image.alt),
+                ConversionUtil.toString(image.pixel))
     }
 
-    private fun transformVideo(image: List<Video>): List<VideoModel> {
-        return image.map { it -> transformVideo(it) }
-    }
+    private fun transformVideo(image: List<Video>): List<VideoModel> =
+            image.map { transformVideo(it) }
 
     private fun transformVideo(image: Video): VideoModel {
-        return VideoModel(ConversionUtils.toString(image.broadcast), ConversionUtils.toString(image.sizeHD),
-                ConversionUtils.toString(image.url_mp4), ConversionUtils.toString(image.alt),
+        return VideoModel(ConversionUtil.toString(image.broadcast), ConversionUtil.toString(image.sizeHD),
+                ConversionUtil.toString(image.url_mp4), ConversionUtil.toString(image.alt),
                 image.length.toExtString(), image.videosource.toExtString(), image.appurl.toExtString(),
                 image.m3u8Hd_url.toExtString(), image.mp4_url.toExtString(), image.sizeSD.toExtString(),
                 image.sid.toExtString(), image.cover.toExtString(), image.vid.toExtString(),
@@ -74,27 +72,25 @@ class DetailsMapper {
                 image.size.toExtString(), image.commentid.toExtString(), image.m3u8_url.toExtString())
     }
 
-    private fun transformSpInfo(spInfo: List<SpInfo>): List<SpInfoModel> {
-        return spInfo.map { it -> transformSpInfo(it) }
-    }
+    private fun transformSpInfo(spInfo: List<SpInfo>): List<SpInfoModel> =
+            spInfo.map { transformSpInfo(it) }
 
     private fun transformSpInfo(spInfo: SpInfo): SpInfoModel {
-        return SpInfoModel(ConversionUtils.toString(spInfo.ref),
-                ConversionUtils.toString(spInfo.spcontent),
-                ConversionUtils.toString(spInfo.sptype))
+        return SpInfoModel(ConversionUtil.toString(spInfo.ref),
+                ConversionUtil.toString(spInfo.spcontent),
+                ConversionUtil.toString(spInfo.sptype))
     }
 
-    private fun transformRelative(relatives: List<Relative>): List<RelativeModel> {
-        return relatives.map { it -> transformRelative(it) }
-    }
+    private fun transformRelative(relatives: List<Relative>): List<RelativeModel> =
+            relatives.map { transformRelative(it) }
 
     private fun transformRelative(relative: Relative): RelativeModel {
-        return RelativeModel(ConversionUtils.toString(relative.docID),
-                ConversionUtils.toString(relative.from),
-                ConversionUtils.toString(relative.href),
-                ConversionUtils.toString(relative.id),
-                ConversionUtils.toString(relative.imgsrc),
-                ConversionUtils.toString(relative.title),
-                ConversionUtils.toString(relative.ptime))
+        return RelativeModel(ConversionUtil.toString(relative.docID),
+                ConversionUtil.toString(relative.from),
+                ConversionUtil.toString(relative.href),
+                ConversionUtil.toString(relative.id),
+                ConversionUtil.toString(relative.imgsrc),
+                ConversionUtil.toString(relative.title),
+                ConversionUtil.toString(relative.ptime))
     }
 }

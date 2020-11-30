@@ -16,7 +16,7 @@
 
 package com.sky.android.news.data.mapper
 
-import com.sky.android.common.utils.CollectionUtils
+import com.sky.android.common.util.CollectionUtil
 import com.sky.android.news.base.toExtString
 import com.sky.android.news.data.model.StoryItemModel
 import com.sky.android.news.data.model.StoryListModel
@@ -40,7 +40,7 @@ class StoryListMapper {
 
     private fun transformStoryItem(storyItem: List<StoryItem>?): List<StoryItemModel> {
 
-        if (CollectionUtils.isEmpty(storyItem)) return listOf()
+        if (CollectionUtil.isEmpty(storyItem)) return listOf()
 
         return storyItem!!.map { transformStoryItem(it) }
     }
@@ -48,13 +48,13 @@ class StoryListMapper {
     private fun transformStoryItem(storyItem: StoryItem): StoryItemModel {
 
         return StoryItemModel(
-                if (CollectionUtils.isEmpty(storyItem.images)) listOf() else storyItem.images,
+                if (CollectionUtil.isEmpty(storyItem.images)) listOf() else storyItem.images,
                 storyItem.type, storyItem.id, storyItem.ga_prefix.toExtString(), storyItem.title.toExtString())
     }
 
     private fun transformTopStory(topStory: List<TopStory>?): List<TopStoryItemModel> {
 
-        if (CollectionUtils.isEmpty(topStory)) return listOf()
+        if (CollectionUtil.isEmpty(topStory)) return listOf()
 
         return topStory!!.map { transformTopStory(it) }
     }

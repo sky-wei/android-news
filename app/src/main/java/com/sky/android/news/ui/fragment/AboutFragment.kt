@@ -19,43 +19,32 @@ package com.sky.android.news.ui.fragment
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import butterknife.BindView
-import butterknife.OnClick
 import com.sky.android.news.BuildConfig
 import com.sky.android.news.R
-import com.sky.android.news.R2
 import com.sky.android.news.ui.base.VBaseFragment
 import com.sky.android.news.util.ActivityUtil
+import kotlinx.android.synthetic.main.fragment_about.*
 
 /**
  * Created by sky on 17-9-21.
  */
 class AboutFragment : VBaseFragment() {
 
-    @BindView(R2.id.tv_version)
-    lateinit var tvVersion: TextView
-
-    override fun createView(inflater: LayoutInflater, container: ViewGroup?): View {
-        return inflater.inflate(R.layout.fragment_about, container, false)
-    }
+    override fun getLayoutId(): Int = R.layout.fragment_about
 
     override fun initView(view: View, args: Bundle?) {
+
         // 设置版本名称
-        tvVersion.text = getString(
+        tv_version.text = getString(
                 R.string.version_x, BuildConfig.VERSION_NAME)
-    }
 
+        tv_source.setOnClickListener {
 
-    @OnClick(R.id.tv_source)
-    fun onClick(view: View) {
+            val uri = Uri.parse("https://github.com/jingcai-wei/android-news")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
 
-        val uri = Uri.parse("https://github.com/jingcai-wei/android-news")
-        val intent = Intent(Intent.ACTION_VIEW, uri)
-
-        ActivityUtil.startActivity(context, intent)
+            ActivityUtil.startActivity(requireContext(), intent)
+        }
     }
 }

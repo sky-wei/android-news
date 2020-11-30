@@ -16,17 +16,15 @@
 
 package com.sky.android.news.ui.fragment
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.text.TextUtils
 import android.view.*
-import android.widget.TextView
-import butterknife.BindView
 import com.iflytek.cloud.*
-import com.sky.android.common.utils.ViewUtils
+import com.sky.android.common.util.ViewUtil
 import com.sky.android.news.R
-import com.sky.android.news.R2
 import com.sky.android.news.contract.DetailsContract
 import com.sky.android.news.data.model.ContentModel
 import com.sky.android.news.data.model.DetailsModel
@@ -37,6 +35,7 @@ import com.sky.android.news.presenter.DetailsPresenter
 import com.sky.android.news.ui.base.VBaseFragment
 import com.sky.android.news.ui.helper.VImageGetter
 import com.sky.android.news.util.ActivityUtil
+import kotlinx.android.synthetic.main.fragment_details.*
 
 
 /**
@@ -44,25 +43,13 @@ import com.sky.android.news.util.ActivityUtil
  */
 class DetailsFragment : VBaseFragment(), DetailsContract.View, InitListener, SynthesizerListener {
 
-    @BindView(R2.id.tv_title)
-    lateinit var tvTitle: TextView
-    @BindView(R2.id.tv_summary)
-    lateinit var tvSummary: TextView
-    @BindView(R2.id.tv_loading)
-    lateinit var tvLoading: TextView
-    @BindView(R2.id.tv_body)
-    lateinit var tvBody: TextView
-//    @BindView(R2.id.web_view)
-//    lateinit var webView: WebView
 
     // 语音合成对象
 	private var mTts: SpeechSynthesizer? = null
     private lateinit var mContent: ContentModel
     private lateinit var mDetailsPresenter: DetailsContract.Presenter
 
-    override fun createView(inflater: LayoutInflater, container: ViewGroup?): View {
-        return inflater.inflate(R.layout.fragment_details, container, false)
-    }
+    override fun getLayoutId(): Int = R.layout.fragment_details
 
     override fun initView(view: View, args: Bundle?) {
 
@@ -120,17 +107,18 @@ class DetailsFragment : VBaseFragment(), DetailsContract.View, InitListener, Syn
         }
 
         ActivityUtil.startActivity(
-                context, Intent.createChooser(intent, "分享到"))
+                requireContext(), Intent.createChooser(intent, "分享到"))
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onLoadDetails(model: DetailsModel) {
 
         mContent = model.models
 
         // 设置标题
-        tvTitle.text = mContent.title
-        tvSummary.text = "${mContent.source}  ${mContent.pTime}"
-        tvBody.text = Html.fromHtml(mContent.body, VImageGetter(context, tvBody), null)
+        tv_title.text = mContent.title
+        tv_summary.text = "${mContent.source}  ${mContent.pTime}"
+        tv_body.text = Html.fromHtml(mContent.body, VImageGetter(requireContext(), tv_body), null)
 
         // 使用WebView来处理
 //        webView.loadData(mContent.body, "text/html; charset=UTF-8", null)
@@ -141,11 +129,11 @@ class DetailsFragment : VBaseFragment(), DetailsContract.View, InitListener, Syn
     }
 
     override fun showLoading() {
-        ViewUtils.setVisibility(tvLoading, View.VISIBLE)
+        ViewUtil.setVisibility(tv_loading, View.VISIBLE)
     }
 
     override fun cancelLoading() {
-        ViewUtils.setVisibility(tvLoading, View.INVISIBLE)
+        ViewUtil.setVisibility(tv_loading, View.INVISIBLE)
     }
 
     override fun onInit(code: Int) {
@@ -184,7 +172,7 @@ class DetailsFragment : VBaseFragment(), DetailsContract.View, InitListener, Syn
 
     private fun startBroadcast() {
 
-        if (TextUtils.isEmpty(tvBody.text)
+        if (TextUtils.isEmpty(tv_body.text)
                 || (mTts != null && mTts!!.isSpeaking)) {
             return
         }
@@ -194,9 +182,9 @@ class DetailsFragment : VBaseFragment(), DetailsContract.View, InitListener, Syn
             mTts = SpeechSynthesizer.createSynthesizer(context, this)
         }
 
-        val code = mTts!!.startSpeaking(tvBody.text.toString(), this)
+        val code = mTts!!.startSpeaking(tv_body.text.toString(), this)
 
-        if (code !== ErrorCode.SUCCESS) {
+        if (code != ErrorCode.SUCCESS) {
             showMessage("语音合成失败,错误码: $code")
         }
     }

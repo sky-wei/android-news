@@ -27,8 +27,8 @@ import com.bumptech.glide.module.AppGlideModule
 /**
  * Created by sky on 17-9-23.
  */
-@GlideModule
-class VAppGlideModule : AppGlideModule() {
+//@GlideModule
+class GlideModule : AppGlideModule() {
 
     override fun applyOptions(context: Context, builder: GlideBuilder) {
         super.applyOptions(context, builder)

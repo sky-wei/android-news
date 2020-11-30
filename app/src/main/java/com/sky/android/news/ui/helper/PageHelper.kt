@@ -24,7 +24,8 @@ import java.util.*
 class PageHelper<T> {
 
     companion object {
-        val PAGE_SIZE = 20
+
+        const val PAGE_SIZE = 20
     }
 
     private var mCurPage: Int = 0
@@ -60,13 +61,9 @@ class PageHelper<T> {
         }
     }
 
-    fun getData(): List<T> {
-        return mData
-    }
+    fun getData(): List<T> = mData
 
-    fun getDataItem(index: Int): T {
-        return mData[index]
-    }
+    fun getDataItem(index: Int): T = mData[index]
 
     fun appendData(data: List<T>): Boolean {
 
@@ -86,9 +83,7 @@ class PageHelper<T> {
         return mCurPage + 1 < mTotalPage
     }
 
-    fun getCurPage(): Int {
-        return mCurPage
-    }
+    fun getCurPage(): Int = mCurPage
 
     private fun reset() {
 

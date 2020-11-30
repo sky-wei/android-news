@@ -18,13 +18,11 @@ package com.sky.android.news.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.Toolbar
-import butterknife.BindView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentFactory
 import com.sky.android.news.R
-import com.sky.android.news.R2
 import com.sky.android.news.ui.base.VBaseActivity
-import com.sky.android.news.ui.fragment.DetailsFragment
+import kotlinx.android.synthetic.main.app_bar_frame.*
 
 /**
  * Created by sky on 17-9-23.
@@ -32,15 +30,11 @@ import com.sky.android.news.ui.fragment.DetailsFragment
 class DetailsActivity : VBaseActivity() {
 
     companion object {
-        val F_NAME = "fName"
+
+        const val F_NAME = "fName"
     }
 
-    @BindView(R2.id.toolbar)
-    lateinit var toolbar: Toolbar
-
-    override fun getLayoutId(): Int {
-        return R.layout.app_bar_frame
-    }
+    override fun getLayoutId(): Int = R.layout.app_bar_frame
 
     override fun initView(intent: Intent) {
 

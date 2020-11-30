@@ -17,8 +17,8 @@
 package com.sky.android.tv.news;
 
 import android.graphics.drawable.Drawable;
-import android.support.v17.leanback.widget.ImageCardView;
-import android.support.v17.leanback.widget.Presenter;
+import androidx.leanback.widget.ImageCardView;
+import androidx.leanback.widget.Presenter;
 import android.util.Log;
 import android.view.ViewGroup;
 

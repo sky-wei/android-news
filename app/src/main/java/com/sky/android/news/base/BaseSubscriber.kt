@@ -16,7 +16,7 @@
 
 package com.sky.android.news.base
 
-import com.sky.android.common.utils.Alog
+import com.sky.android.common.util.Alog
 import com.sky.android.news.data.DataException
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable

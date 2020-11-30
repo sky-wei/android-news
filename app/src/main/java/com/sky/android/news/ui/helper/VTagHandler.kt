@@ -23,6 +23,7 @@ import android.text.style.ClickableSpan
 import android.text.style.ImageSpan
 import android.view.View
 import org.xml.sax.XMLReader
+import java.util.*
 
 
 /**
@@ -34,11 +35,11 @@ class VTagHandler : Html.TagHandler {
 
     override fun handleTag(opening: Boolean, tag: String, output: Editable, xmlReader: XMLReader) {
 
-        if (tag.toLowerCase() == "img") {
+        if (tag.toLowerCase(Locale.getDefault()) == "img") {
 
             val len = output.length
             val images = output.getSpans(len - 1, len, ImageSpan::class.java)
-            val imageUrl = images[0].source
+            val imageUrl = images[0].source!!
 
             output.setSpan(ImageClick(imageUrl), len - 1, len, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }

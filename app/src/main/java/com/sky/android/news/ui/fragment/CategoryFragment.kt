@@ -17,42 +17,31 @@
 package com.sky.android.news.ui.fragment
 
 import android.os.Bundle
-import android.support.v4.view.ViewPager
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import butterknife.BindView
-import com.ogaclejapan.smarttablayout.SmartTabLayout
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems
 import com.sky.android.news.R
-import com.sky.android.news.R2
-import com.sky.android.news.ui.base.VBaseFragment
 import com.sky.android.news.contract.CategoryContract
 import com.sky.android.news.data.model.CategoryModel
 import com.sky.android.news.data.source.NewsDataRepository
 import com.sky.android.news.data.source.NewsSourceFactory
 import com.sky.android.news.presenter.CategoryPresenter
+import com.sky.android.news.ui.base.VBaseFragment
+import kotlinx.android.synthetic.main.fragment_category.*
 
 /**
  * Created by sky on 17-9-21.
  */
 class CategoryFragment : VBaseFragment(), CategoryContract.View {
 
-    @BindView(R2.id.viewpagertab)
-    lateinit var smartTabLayout: SmartTabLayout
-    @BindView(R2.id.viewpager)
-    lateinit var viewPager: ViewPager
 
     private lateinit var mCategoryPresenter: CategoryContract.Presenter
 
-    override fun createView(inflater: LayoutInflater, container: ViewGroup?): View {
-        return inflater.inflate(R.layout.fragment_category, container, false)
-    }
+    override fun getLayoutId(): Int = R.layout.fragment_category
 
     override fun initView(view: View, args: Bundle?) {
 
-        val repository = NewsDataRepository(NewsSourceFactory(context))
+        val repository = NewsDataRepository(NewsSourceFactory(requireContext()))
         mCategoryPresenter = CategoryPresenter(repository, this)
 
         // 加载类别
@@ -76,8 +65,8 @@ class CategoryFragment : VBaseFragment(), CategoryContract.View {
         val adapter = FragmentPagerItemAdapter(
                 childFragmentManager, creator.create())
 
-        viewPager.adapter = adapter
-        smartTabLayout.setViewPager(viewPager)
+        viewpager.adapter = adapter
+        viewpagertab.setViewPager(viewpager)
     }
 
     override fun onLoadFailed(msg: String) {

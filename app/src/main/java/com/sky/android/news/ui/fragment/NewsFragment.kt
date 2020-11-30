@@ -16,67 +16,53 @@
 
 package com.sky.android.news.ui.fragment
 
-import android.content.Intent
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import butterknife.BindView
-import com.sky.android.common.interfaces.OnItemEventListener
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.sky.android.core.interfaces.OnItemEventListener
 import com.sky.android.news.R
-import com.sky.android.news.R2
 import com.sky.android.news.contract.HeadLineContract
 import com.sky.android.news.data.model.CategoryItemModel
 import com.sky.android.news.data.model.LineItemModel
 import com.sky.android.news.data.source.NewsDataRepository
 import com.sky.android.news.data.source.NewsSourceFactory
 import com.sky.android.news.presenter.HeadLinePresenter
-import com.sky.android.news.ui.activity.DetailsActivity
 import com.sky.android.news.ui.adapter.NewsAdapter
 import com.sky.android.news.ui.base.VBaseFragment
 import com.sky.android.news.ui.helper.RecyclerHelper
 import com.sky.android.news.util.ActivityUtil
+import kotlinx.android.synthetic.main.fragment_news.*
 
 /**
  * Created by sky on 17-9-21.
  */
 class NewsFragment : VBaseFragment(), HeadLineContract.View, OnItemEventListener, RecyclerHelper.OnCallback {
 
-    @BindView(R2.id.swipe_refresh_layout)
-    lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    @BindView(R2.id.recycler_view)
-    lateinit var recyclerView: RecyclerView
-
     private lateinit var mHeadLinePresenter: HeadLineContract.Presenter
     private lateinit var mRecyclerHelper: RecyclerHelper
 
     private lateinit var mNewsAdapter: NewsAdapter
 
-    override fun createView(inflater: LayoutInflater, container: ViewGroup?): View {
-        return inflater.inflate(R.layout.fragment_news, container, false)
-    }
+    override fun getLayoutId(): Int = R.layout.fragment_news
 
     override fun initView(view: View, args: Bundle?) {
 
         mNewsAdapter = NewsAdapter(context)
         mNewsAdapter.onItemEventListener = this
 
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
+        swipe_refresh_layout.setColorSchemeResources(R.color.colorPrimary)
 
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.itemAnimator = DefaultItemAnimator()
-        recyclerView.adapter = mNewsAdapter
+        recycler_view.layoutManager = LinearLayoutManager(context)
+        recycler_view.setHasFixedSize(true)
+        recycler_view.itemAnimator = DefaultItemAnimator()
+        recycler_view.adapter = mNewsAdapter
 
         val repository = NewsDataRepository(NewsSourceFactory(context))
         mHeadLinePresenter = HeadLinePresenter(repository, this)
 
         // 刷新助手类
-        mRecyclerHelper = RecyclerHelper(swipeRefreshLayout, recyclerView, this)
+        mRecyclerHelper = RecyclerHelper(swipe_refresh_layout, recycler_view, this)
         mRecyclerHelper.setLoadMore(true)
         mRecyclerHelper.forceRefreshing()
 

@@ -16,14 +16,8 @@
 
 package com.sky.android.news.ui.base
 
-import android.content.Context
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import butterknife.ButterKnife
-import com.sky.android.common.base.BaseFragment
+import com.sky.android.common.util.ToastUtil
+import com.sky.android.core.fragment.BaseFragment
 import com.sky.android.news.R
 import com.sky.android.news.base.BaseView
 import com.sky.android.news.ui.diglog.LoadingDialog
@@ -35,30 +29,11 @@ abstract class VBaseFragment : BaseFragment(), BaseView {
 
     private var mLoadingDialog: LoadingDialog? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-
-        val view = createView(inflater, container)
-        ButterKnife.bind(this, view)
-
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // 初始化View
-        initView(view, arguments)
-    }
-
-    protected abstract fun createView(inflater: LayoutInflater, container: ViewGroup?): View
-
-    protected abstract fun initView(view: View, args: Bundle?)
-
     override fun showLoading() {
 
         if (mLoadingDialog != null) return
 
-        mLoadingDialog = LoadingDialog(context)
+        mLoadingDialog = LoadingDialog(requireContext())
         mLoadingDialog!!.setTipText(R.string.loading)
         mLoadingDialog!!.setCancelable(false)
         mLoadingDialog!!.show()
@@ -74,10 +49,6 @@ abstract class VBaseFragment : BaseFragment(), BaseView {
     }
 
     override fun showMessage(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun getContext(): Context {
-        return super.getContext()!!
+        ToastUtil.show(msg)
     }
 }

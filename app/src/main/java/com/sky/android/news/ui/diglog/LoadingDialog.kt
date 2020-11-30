@@ -20,27 +20,22 @@ import android.app.Dialog
 import android.content.Context
 import android.view.Gravity
 import android.view.KeyEvent
-import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.sky.android.news.R
-import com.sky.android.news.R2
+import kotlinx.android.synthetic.main.dialog_loading.*
 
 /**
  * Created by sky on 17-9-24.
  */
-class LoadingDialog @JvmOverloads constructor(context: Context, private val mCancelCallback: CancelCallback? = null) : Dialog(context, R.style.CustomProgressDialog) {
-
-    @BindView(R2.id.tv_tip)
-    lateinit var tvTip: TextView
+class LoadingDialog @JvmOverloads constructor(
+        context: Context,
+        private val mCancelCallback: CancelCallback? = null
+) : Dialog(context, R.style.CustomProgressDialog) {
 
     private var cancelable = true
 
     init {
         setContentView(R.layout.dialog_loading)
         window!!.setGravity(Gravity.CENTER)
-
-        ButterKnife.bind(this)
     }
 
     override fun setCancelable(flag: Boolean) {
@@ -49,11 +44,11 @@ class LoadingDialog @JvmOverloads constructor(context: Context, private val mCan
     }
 
     fun setTipText(text: Int) {
-        tvTip.setText(text)
+        tv_tip.setText(text)
     }
 
     fun setTipText(text: String) {
-        tvTip.text = text
+        tv_tip.text = text
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {

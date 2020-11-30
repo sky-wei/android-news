@@ -19,65 +19,51 @@ package com.sky.android.news.ui.activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.AppBarLayout
-import android.support.design.widget.NavigationView
-import android.support.v4.app.Fragment
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.widget.Toolbar
 import android.view.KeyEvent
 import android.view.MenuItem
 import android.widget.Toast
-import butterknife.BindView
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.navigation.NavigationView
 import com.jaeger.library.StatusBarUtil
 import com.sky.android.news.Constant
 import com.sky.android.news.R
-import com.sky.android.news.R2
 import com.sky.android.news.ui.base.VBaseActivity
 import com.sky.android.news.ui.fragment.AboutFragment
 import com.sky.android.news.ui.fragment.CategoryFragment
 import com.sky.android.news.ui.fragment.SettingsFragment
 import com.sky.android.news.ui.fragment.StoryListFragment
 import com.sky.android.news.util.ActivityUtil
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.app_bar_main.*
 
 class MainActivity : VBaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R2.id.layout_appbar)
-    lateinit var layoutAppBar: AppBarLayout
-    @BindView(R2.id.toolbar)
-    lateinit var toolbar: Toolbar
-    @BindView(R2.id.drawer_layout)
-    lateinit var drawer: DrawerLayout
-    @BindView(R2.id.nav_view)
-    lateinit var navigationView: NavigationView
-
     private var mKeyTime: Long = 0
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_main
-    }
+    override fun getLayoutId(): Int = R.layout.activity_main
 
     override fun initView(intent: Intent) {
 
         setSupportActionBar(toolbar)
         StatusBarUtil.setColorForDrawerLayout(
-                this, drawer, resources.getColor(R.color.transparent))
+                this, drawer_layout, resources.getColor(R.color.transparent))
 
         val toggle = ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer.setDrawerListener(toggle)
+                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        drawer_layout.setDrawerListener(toggle)
         toggle.syncState()
 
-        navigationView.setNavigationItemSelectedListener(this)
+        nav_view.setNavigationItemSelectedListener(this)
 
         switchFragment(CategoryFragment::class.java,
                 buildDefaultArgs(Constant.Category.NEWS))
     }
 
     override fun onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START)
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
@@ -85,7 +71,7 @@ class MainActivity : VBaseActivity(), NavigationView.OnNavigationItemSelectedLis
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
-        drawer.closeDrawer(GravityCompat.START)
+        drawer_layout.closeDrawer(GravityCompat.START)
 
         when(item.itemId) {
             R.id.nav_news -> {
@@ -108,7 +94,7 @@ class MainActivity : VBaseActivity(), NavigationView.OnNavigationItemSelectedLis
             R.id.nav_settings -> {
                 // 进入设置
                 ActivityUtil.startCommonActivity(
-                        context, R.string.setting, SettingsFragment::class.java.name, false)
+                        context, R.string.setting, SettingsFragment::class.java.name)
             }
             R.id.nav_about -> {
                 // 进入关于
@@ -119,7 +105,7 @@ class MainActivity : VBaseActivity(), NavigationView.OnNavigationItemSelectedLis
         return true
     }
 
-    private fun switchFragment(classes: Class<out Fragment>, args: Bundle) {
+    private fun switchFragment(classes: Class<out androidx.fragment.app.Fragment>, args: Bundle) {
 
         val manager = supportFragmentManager
         val curFragment = manager.findFragmentById(R.id.fl_content)
@@ -134,7 +120,7 @@ class MainActivity : VBaseActivity(), NavigationView.OnNavigationItemSelectedLis
             return
         }
 
-        val fragment = Fragment.instantiate(context, classes.name, args)
+        val fragment = androidx.fragment.app.Fragment.instantiate(context, classes.name, args)
         supportFragmentManager.beginTransaction().replace(R.id.fl_content, fragment).commit()
     }
 
@@ -159,7 +145,7 @@ class MainActivity : VBaseActivity(), NavigationView.OnNavigationItemSelectedLis
 
     private fun setAppBarLayoutElevation(value: Float) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            layoutAppBar.elevation = value
+            layout_appbar.elevation = value
     }
 
     private fun setAppBarScrollFlags(scrollFlags: Int) {

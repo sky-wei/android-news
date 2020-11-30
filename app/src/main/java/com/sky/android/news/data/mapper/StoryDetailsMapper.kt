@@ -16,7 +16,7 @@
 
 package com.sky.android.news.data.mapper
 
-import com.sky.android.common.utils.CollectionUtils
+import com.sky.android.common.util.CollectionUtil
 import com.sky.android.news.base.toExtString
 import com.sky.android.news.data.model.SectionModel
 import com.sky.android.news.data.model.StoryDetailsModel
@@ -30,9 +30,9 @@ class StoryDetailsMapper {
 
     fun transform(storyDetails: StoryDetails): StoryDetailsModel {
 
-        val js = if (CollectionUtils.isEmpty(storyDetails.js)) listOf("") else storyDetails.js
-        val images = if (CollectionUtils.isEmpty(storyDetails.images)) listOf("") else storyDetails.images
-        val css = if (CollectionUtils.isEmpty(storyDetails.css)) listOf("") else storyDetails.css
+        val js = if (CollectionUtil.isEmpty(storyDetails.js)) listOf("") else storyDetails.js
+        val images = if (CollectionUtil.isEmpty(storyDetails.images)) listOf("") else storyDetails.images
+        val css = if (CollectionUtil.isEmpty(storyDetails.css)) listOf("") else storyDetails.css
 
         return StoryDetailsModel(storyDetails.body.toExtString(), storyDetails.image_source.toExtString(),
                 storyDetails.title.toExtString(), storyDetails.image.toExtString(), storyDetails.share_url.toExtString(),

@@ -17,6 +17,7 @@
 package com.sky.android.news.ui.activity
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import com.sky.android.news.R
@@ -31,10 +32,9 @@ class StartActivity : VBaseActivity() {
 
     private lateinit var rxPermissions: RxPermissions
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_start
-    }
+    override fun getLayoutId(): Int = R.layout.activity_start
 
+    @SuppressLint("CheckResult")
     override fun initView(intent: Intent) {
 
         rxPermissions = RxPermissions(this)
@@ -66,7 +66,7 @@ class StartActivity : VBaseActivity() {
                 .setTitle("提示")
                 .setCancelable(false)
                 .setMessage("权限获取失败，无法启动程序")
-                .setPositiveButton("确定", { _, _ -> finish() })
+                .setPositiveButton("确定") { _, _ -> finish() }
                 .create()
         dialog.show()
     }

@@ -16,25 +16,23 @@
 
 package com.sky.android.news.ui.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import com.bigkoo.convenientbanner.ConvenientBanner
 import com.bigkoo.convenientbanner.listener.OnItemClickListener
 import com.bumptech.glide.Glide
-import com.sky.android.common.adapter.SimpleRecyclerAdapter
-import com.sky.android.common.base.BaseRecyclerAdapter
-import com.sky.android.common.base.BaseRecyclerHolder
+import com.sky.android.core.adapter.BaseRecyclerAdapter
+import com.sky.android.core.adapter.BaseRecyclerHolder
+import com.sky.android.core.adapter.SimpleRecyclerAdapter
 import com.sky.android.news.R
-import com.sky.android.news.R2
 import com.sky.android.news.data.model.*
+import kotlinx.android.synthetic.main.item_note_story.view.*
+import kotlinx.android.synthetic.main.item_story_list.view.*
+import kotlinx.android.synthetic.main.item_top_story.view.*
 import java.text.SimpleDateFormat
 
 /**
@@ -42,10 +40,12 @@ import java.text.SimpleDateFormat
  */
 class StoryAdapter(context: Context) : SimpleRecyclerAdapter<BaseViewType>(context) {
 
+    @SuppressLint("SimpleDateFormat")
     private val dateFormat = SimpleDateFormat("yyyyMMdd")
+    @SuppressLint("SimpleDateFormat")
     private val dateFormat2 = SimpleDateFormat("MM月dd日 E")
 
-    override fun onCreateView(layoutInflater: LayoutInflater, viewGroup: ViewGroup, viewType: Int): View {
+    override fun onCreateView(layoutInflater: LayoutInflater, viewGroup: ViewGroup?, viewType: Int): View {
         return when(viewType) {
             0 -> layoutInflater.inflate(R.layout.item_top_story, viewGroup, false)
             1 -> layoutInflater.inflate(R.layout.item_story_list, viewGroup, false)
@@ -61,19 +61,10 @@ class StoryAdapter(context: Context) : SimpleRecyclerAdapter<BaseViewType>(conte
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return getItem(position).viewType
-    }
+    override fun getItemViewType(position: Int): Int = getItem(position).viewType
 
     inner class NoteStoryHolder(itemView: View, adapter: BaseRecyclerAdapter<BaseViewType>)
         : BaseRecyclerHolder<BaseViewType>(itemView, adapter) {
-
-        @BindView(R2.id.tv_note)
-        lateinit var tvNote: TextView
-
-        override fun onInitialize() {
-            ButterKnife.bind(this, itemView)
-        }
 
         override fun onBind(position: Int, viewType: Int) {
 
@@ -81,24 +72,30 @@ class StoryAdapter(context: Context) : SimpleRecyclerAdapter<BaseViewType>(conte
 
             val date = dateFormat.parse(item.data)
 
-            tvNote.text = if (!TextUtils.isEmpty(item.node)) item.node else dateFormat2.format(date)
+            itemView.apply {
+                tv_note.text = if (!TextUtils.isEmpty(item.node)) item.node else dateFormat2.format(date)
+            }
         }
     }
 
     inner class TopStoryHolder(itemView: View, adapter: BaseRecyclerAdapter<BaseViewType>)
         : BaseRecyclerHolder<BaseViewType>(itemView, adapter), OnItemClickListener {
 
-        @BindView(R2.id.convenient_banner)
         lateinit var convenientBanner: ConvenientBanner<TopStoryItemModel>
 
         override fun onInitialize() {
-            ButterKnife.bind(this, itemView)
+
+            convenientBanner = itemView.convenient_banner as ConvenientBanner<TopStoryItemModel>
 
             convenientBanner.setPageIndicator(
                     intArrayOf(R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused))
             convenientBanner.setPageIndicatorAlign(
                     ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
-            convenientBanner.setOnItemClickListener(this)
+
+            convenientBanner.setOnItemClickListener {
+                val item = getItem(adapterPosition) as TopStoryListModel
+                callItemEvent(itemView, adapterPosition, item.topStories[position])
+            }
         }
 
         override fun onBind(position: Int, viewType: Int) {
@@ -110,8 +107,7 @@ class StoryAdapter(context: Context) : SimpleRecyclerAdapter<BaseViewType>(conte
         }
 
         override fun onItemClick(position: Int) {
-            val item = getItem(adapterPosition) as TopStoryListModel
-            onItemEvent(1, itemView, adapterPosition, item.topStories[position])
+
         }
 
         override fun onAttachedToWindow() {
@@ -130,29 +126,23 @@ class StoryAdapter(context: Context) : SimpleRecyclerAdapter<BaseViewType>(conte
     inner class StoryItemHolder(itemView: View, adapter: BaseRecyclerAdapter<BaseViewType>)
         : BaseRecyclerHolder<BaseViewType>(itemView, adapter) {
 
-        @BindView(R2.id.iv_image)
-        lateinit var ivImage: ImageView
-        @BindView(R2.id.tv_title)
-        lateinit var tvTitle: TextView
-
         override fun onInitialize() {
-            ButterKnife.bind(this, itemView)
+            itemView.card_zhihu_item.setOnClickListener {
+                // 回调点击事件
+                callItemEvent(it, adapterPosition)
+            }
         }
 
         override fun onBind(position: Int, viewType: Int) {
 
             val item = getItem(position) as StoryItemModel
 
-            Glide.with(context)
-                    .load(item.images[0])
-                    .into(ivImage)
-            tvTitle.text = item.title
-        }
-
-        @OnClick(R2.id.card_zhihu_item)
-        fun onClick(view: View) {
-            // 回调点击事件
-            onItemEvent(0, view, adapterPosition)
+            itemView.apply {
+                Glide.with(context)
+                        .load(item.images[0])
+                        .into(iv_image)
+                tv_title.text = item.title
+            }
         }
     }
 }

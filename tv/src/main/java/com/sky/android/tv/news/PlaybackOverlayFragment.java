@@ -22,31 +22,31 @@ import android.media.MediaMetadataRetriever;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v17.leanback.widget.AbstractDetailsDescriptionPresenter;
-import android.support.v17.leanback.widget.Action;
-import android.support.v17.leanback.widget.ArrayObjectAdapter;
-import android.support.v17.leanback.widget.ClassPresenterSelector;
-import android.support.v17.leanback.widget.ControlButtonPresenterSelector;
-import android.support.v17.leanback.widget.HeaderItem;
-import android.support.v17.leanback.widget.ListRow;
-import android.support.v17.leanback.widget.ListRowPresenter;
-import android.support.v17.leanback.widget.OnActionClickedListener;
-import android.support.v17.leanback.widget.OnItemViewClickedListener;
-import android.support.v17.leanback.widget.OnItemViewSelectedListener;
-import android.support.v17.leanback.widget.PlaybackControlsRow;
-import android.support.v17.leanback.widget.PlaybackControlsRow.FastForwardAction;
-import android.support.v17.leanback.widget.PlaybackControlsRow.PlayPauseAction;
-import android.support.v17.leanback.widget.PlaybackControlsRow.RepeatAction;
-import android.support.v17.leanback.widget.PlaybackControlsRow.RewindAction;
-import android.support.v17.leanback.widget.PlaybackControlsRow.ShuffleAction;
-import android.support.v17.leanback.widget.PlaybackControlsRow.SkipNextAction;
-import android.support.v17.leanback.widget.PlaybackControlsRow.SkipPreviousAction;
-import android.support.v17.leanback.widget.PlaybackControlsRow.ThumbsDownAction;
-import android.support.v17.leanback.widget.PlaybackControlsRow.ThumbsUpAction;
-import android.support.v17.leanback.widget.PlaybackControlsRowPresenter;
-import android.support.v17.leanback.widget.Presenter;
-import android.support.v17.leanback.widget.Row;
-import android.support.v17.leanback.widget.RowPresenter;
+import androidx.leanback.widget.AbstractDetailsDescriptionPresenter;
+import androidx.leanback.widget.Action;
+import androidx.leanback.widget.ArrayObjectAdapter;
+import androidx.leanback.widget.ClassPresenterSelector;
+import androidx.leanback.widget.ControlButtonPresenterSelector;
+import androidx.leanback.widget.HeaderItem;
+import androidx.leanback.widget.ListRow;
+import androidx.leanback.widget.ListRowPresenter;
+import androidx.leanback.widget.OnActionClickedListener;
+import androidx.leanback.widget.OnItemViewClickedListener;
+import androidx.leanback.widget.OnItemViewSelectedListener;
+import androidx.leanback.widget.PlaybackControlsRow;
+import androidx.leanback.widget.PlaybackControlsRow.FastForwardAction;
+import androidx.leanback.widget.PlaybackControlsRow.PlayPauseAction;
+import androidx.leanback.widget.PlaybackControlsRow.RepeatAction;
+import androidx.leanback.widget.PlaybackControlsRow.RewindAction;
+import androidx.leanback.widget.PlaybackControlsRow.ShuffleAction;
+import androidx.leanback.widget.PlaybackControlsRow.SkipNextAction;
+import androidx.leanback.widget.PlaybackControlsRow.SkipPreviousAction;
+import androidx.leanback.widget.PlaybackControlsRow.ThumbsDownAction;
+import androidx.leanback.widget.PlaybackControlsRow.ThumbsUpAction;
+import androidx.leanback.widget.PlaybackControlsRowPresenter;
+import androidx.leanback.widget.Presenter;
+import androidx.leanback.widget.Row;
+import androidx.leanback.widget.RowPresenter;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -62,7 +62,7 @@ import java.util.List;
 /*
  * Class for video playback with media control
  */
-public class PlaybackOverlayFragment extends android.support.v17.leanback.app.PlaybackOverlayFragment {
+public class PlaybackOverlayFragment extends androidx.leanback.app.PlaybackOverlayFragment {
     private static final String TAG = "PlaybackControlsFragmnt";
 
     private static final boolean SHOW_DETAIL = true;

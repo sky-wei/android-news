@@ -22,7 +22,7 @@ import android.text.Html
 import android.text.Spanned
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.sky.android.common.utils.CollectionUtils
+import com.sky.android.common.util.CollectionUtil
 import com.sky.android.news.data.model.ContentModel
 import com.sky.android.news.data.model.ImageModel
 import com.sky.android.news.data.model.VideoModel
@@ -36,7 +36,7 @@ class DetailsHelper(val context: Context) {
 
     fun replaceImage(value: String, images: List<ImageModel>): String {
 
-        if (CollectionUtils.isEmpty(images)) return value
+        if (CollectionUtil.isEmpty(images)) return value
 
         var tempValue = value
 
@@ -50,7 +50,7 @@ class DetailsHelper(val context: Context) {
 
     fun replaceVideo(value: String, images: List<VideoModel>): String {
 
-        if (CollectionUtils.isEmpty(images)) return value
+        if (CollectionUtil.isEmpty(images)) return value
 
         var tempValue = value
 

@@ -18,24 +18,28 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.jakewharton.butterknife'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.sky.android.news"
-        minSdkVersion 14
-        targetSdkVersion 27
+        minSdkVersion 16
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     flavorDimensions "default"
@@ -63,33 +67,37 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation(name: 'library-1.0', ext: 'aar')
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
-    implementation 'com.android.support:cardview-v7:27.1.1'
-    implementation 'com.android.support:design:27.1.1'
-    implementation 'com.android.support:support-v4:27.1.1'
-    implementation 'com.android.support:support-vector-drawable:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.0-SNAPSHOT'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    implementation 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
-    implementation 'com.ogaclejapan.smarttablayout:utils-v4:1.6.1@aar'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.30'
-    implementation 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
-    implementation 'com.github.bumptech.glide:glide:4.7.1'
+//    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
+//        exclude group: 'com.android.support', module: 'support-annotations'
+//    })
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation "androidx.preference:preference-ktx:1.1.1"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
+    implementation 'com.ogaclejapan.smarttablayout:utils-v4:2.0.0@aar'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.8.1'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation 'com.jakewharton:disklrucache:2.0.2'
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
     implementation 'com.jaeger.statusbarutil:library:1.4.0'
     implementation 'com.bigkoo:convenientbanner:2.0.5'
 //    implementation 'com.trello.rxlifecycle2:rxlifecycle-kotlin:2.2.1'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.1'
     kapt 'com.github.bumptech.glide:compiler:4.7.1'
-    kapt 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
+    implementation project(":base")
+    implementation project(":core")
+
+    // 解决glide的问题
+//    kapt 'com.android.support:support-annotations:28.0.0'
 }

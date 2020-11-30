@@ -18,7 +18,7 @@ package com.sky.android.news.data.source.cloud
 
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
-import com.sky.android.common.utils.Alog
+import com.sky.android.common.util.Alog
 import com.sky.android.news.data.DataException
 import com.sky.android.news.data.news.Content
 import com.sky.android.news.data.news.Details

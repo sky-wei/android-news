@@ -17,20 +17,21 @@
 package com.sky.android.news
 
 import android.app.Application
+import androidx.multidex.MultiDexApplication
 import com.iflytek.cloud.SpeechUtility
-import com.sky.android.common.utils.Alog
+import com.sky.android.common.util.Alog
 import com.sky.android.news.data.cache.impl.CacheManagerImpl
 
 /**
  * Created by sky on 17-9-21.
  */
-class App : Application() {
+class App : MultiDexApplication() {
 
     override fun onCreate() {
         SpeechUtility.createUtility(this, "appid=59c8c734")
         super.onCreate()
 
-        Alog.setDebug(BuildConfig.DEBUG)
+//        Alog.setDebug(BuildConfig.DEBUG)
 //        Setting.setShowLog(BuildConfig.DEBUG)
 
         // 初始化...

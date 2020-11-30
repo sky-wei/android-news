@@ -16,7 +16,7 @@
 
 package com.sky.android.news.data.mapper
 
-import com.sky.android.common.utils.ConversionUtils
+import com.sky.android.common.util.ConversionUtil
 import com.sky.android.news.base.toExtString
 import com.sky.android.news.data.model.HeadLineModel
 import com.sky.android.news.data.model.LineItemModel
@@ -28,22 +28,20 @@ import com.sky.android.news.data.news.LineItem
  */
 class HeadLineMapper {
 
-    fun transform(headLine: HeadLine): HeadLineModel {
-        return HeadLineModel(transform(headLine.lineItems))
-    }
+    fun transform(headLine: HeadLine): HeadLineModel =
+            HeadLineModel(transform(headLine.lineItems))
 
-    private fun transform(lineItems: List<LineItem>): List<LineItemModel> {
-        return lineItems.map { it -> transform(it) }
-    }
+    private fun transform(lineItems: List<LineItem>): List<LineItemModel> =
+            lineItems.map { transform(it) }
 
     private fun transform(item: LineItem): LineItemModel {
-        return LineItemModel(item.votecount, ConversionUtils.toString(item.docid),
-                ConversionUtils.toString(item.lmodify), ConversionUtils.toString(item.url_3w),
-                ConversionUtils.toString(item.source), ConversionUtils.toString(item.postid),
-                item.priority, ConversionUtils.toString(item.title), item.replyCount,
-                ConversionUtils.toString(item.ltitle), ConversionUtils.toString(item.subtitle),
-                ConversionUtils.toString(item.digest), ConversionUtils.toString(item.boardid),
-                ConversionUtils.toString(item.imgsrc), ConversionUtils.toString(item.ptime),
-                ConversionUtils.toString(item.daynum), item.template.toExtString())
+        return LineItemModel(item.votecount, ConversionUtil.toString(item.docid),
+                ConversionUtil.toString(item.lmodify), ConversionUtil.toString(item.url_3w),
+                ConversionUtil.toString(item.source), ConversionUtil.toString(item.postid),
+                item.priority, ConversionUtil.toString(item.title), item.replyCount,
+                ConversionUtil.toString(item.ltitle), ConversionUtil.toString(item.subtitle),
+                ConversionUtil.toString(item.digest), ConversionUtil.toString(item.boardid),
+                ConversionUtil.toString(item.imgsrc), ConversionUtil.toString(item.ptime),
+                ConversionUtil.toString(item.daynum), item.template.toExtString())
     }
 }

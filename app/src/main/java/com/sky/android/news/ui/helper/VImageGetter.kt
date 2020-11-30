@@ -26,7 +26,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
-import com.sky.android.common.utils.Alog
+import com.sky.android.common.util.Alog
 import java.lang.ref.WeakReference
 
 
@@ -57,6 +57,9 @@ class VImageGetter(val context: Context, private val textView: TextView) : Html.
 
         override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
 
+            val urlDrawable = drawableReference.get()?: return
+            val textView = containerReference.get()?: return
+
             val height = resource.intrinsicHeight
             val width = resource.intrinsicWidth
             val scale = getScale(resource)
@@ -64,11 +67,11 @@ class VImageGetter(val context: Context, private val textView: TextView) : Html.
             val rect = Rect(0, 0, (width * scale).toInt(), (height * scale).toInt())
 
             resource.bounds = rect
-            drawableReference.get()!!.bounds = rect
-            drawableReference.get()!!.drawable = resource
+            urlDrawable.bounds = rect
+            urlDrawable.drawable = resource
 
-            containerReference.get()!!.text = containerReference.get()!!.text
-            containerReference.get()!!.invalidate()
+            textView.text = containerReference.get()!!.text
+            textView.invalidate()
         }
 
         private fun getScale(drawable: Drawable): Float {
@@ -83,8 +86,7 @@ class VImageGetter(val context: Context, private val textView: TextView) : Html.
         var drawable: Drawable? = null
 
         override fun draw(canvas: Canvas) {
-            if (drawable != null)
-                drawable!!.draw(canvas)
+            drawable?.draw(canvas)
         }
     }
 }

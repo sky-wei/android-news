@@ -17,12 +17,11 @@
 package com.sky.android.news.data.cache.impl
 
 import android.content.Context
-import android.os.Environment
 import com.google.gson.Gson
 import com.jakewharton.disklrucache.DiskLruCache
-import com.sky.android.common.utils.Alog
-import com.sky.android.common.utils.FileUtils
-import com.sky.android.common.utils.MD5Utils
+import com.sky.android.common.util.Alog
+import com.sky.android.common.util.FileUtil
+import com.sky.android.common.util.MD5Util
 import com.sky.android.news.BuildConfig
 import com.sky.android.news.data.cache.CacheManager
 import java.io.File
@@ -31,16 +30,16 @@ import java.io.IOException
 /**
  * Created by sky on 17-9-21.
  */
-class CacheManagerImpl private constructor(val mContext: Context): CacheManager {
-
-    private val TAG = CacheManagerImpl::class.java.simpleName
-
-    private val MAX_SIZE = 1024 * 1024 * 20
+class CacheManagerImpl private constructor(private val mContext: Context): CacheManager {
 
     private var mDiskLruCache: DiskLruCache? = null
     private var mGson: Gson = Gson()
 
     companion object {
+
+        private val TAG = CacheManagerImpl::class.java.simpleName
+
+        private const val MAX_SIZE = 1024 * 1024 * 20
 
         @Volatile
         private var instance: CacheManager? = null
@@ -67,7 +66,7 @@ class CacheManagerImpl private constructor(val mContext: Context): CacheManager 
         val version = BuildConfig.VERSION_CODE
 
         val cacheDir = File(mContext.cacheDir, "net_cache")
-        if (!cacheDir.exists()) FileUtils.createDir(cacheDir)
+        if (!cacheDir.exists()) FileUtil.createDir(cacheDir)
 
         mDiskLruCache = try {
             DiskLruCache.open(cacheDir, version, 1, MAX_SIZE.toLong())
@@ -158,23 +157,17 @@ class CacheManagerImpl private constructor(val mContext: Context): CacheManager 
         }
     }
 
-    override fun buildKey(value: String): String {
-        return MD5Utils.md5sum(value)
-    }
+    override fun buildKey(value: String): String = MD5Util.md5sum(value)
 
-    private fun verifyCache(): Boolean {
-        return mDiskLruCache != null
-    }
+    private fun verifyCache(): Boolean = mDiskLruCache != null
 
     @Throws(IOException::class)
-    private operator fun get(key: String): DiskLruCache.Snapshot? {
-        return if (verifyCache()) mDiskLruCache!!.get(key) else null
-    }
+    private operator fun get(key: String): DiskLruCache.Snapshot? =
+            if (verifyCache()) mDiskLruCache!!.get(key) else null
 
     @Throws(IOException::class)
-    private fun edit(key: String): DiskLruCache.Editor? {
-        return if (verifyCache()) mDiskLruCache!!.edit(key) else null
-    }
+    private fun edit(key: String): DiskLruCache.Editor? =
+            if (verifyCache()) mDiskLruCache!!.edit(key) else null
 
     @Throws(IOException::class)
     private fun abort(editor: DiskLruCache.Editor?) {

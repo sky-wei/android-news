@@ -16,38 +16,19 @@
 
 package com.sky.android.news.ui.base
 
-import android.content.Context
-import android.content.Intent
-import android.os.Bundle
-import android.support.v7.widget.Toolbar
-import butterknife.ButterKnife
-import com.sky.android.common.base.BaseActivity
+import androidx.appcompat.widget.Toolbar
+import com.sky.android.core.activity.BaseActivity
 
 /**
  * Created by sky on 17-9-21.
  */
 abstract class VBaseActivity : BaseActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // 设置
-        setContentView(getLayoutId())
-        ButterKnife.bind(this)
-
-        // 初始化
-        initView(intent)
-    }
-
-    protected abstract fun getLayoutId(): Int
-
-    protected abstract fun initView(intent: Intent)
-
-    fun setSupportActionBar(toolbar: Toolbar, title: Int, homeAsUp: Boolean) {
+    open fun setSupportActionBar(toolbar: Toolbar, title: Int, homeAsUp: Boolean) {
         setSupportActionBar(toolbar, getString(title), homeAsUp)
     }
 
-    fun setSupportActionBar(toolbar: Toolbar?, title: String, homeAsUp: Boolean) {
+    open fun setSupportActionBar(toolbar: Toolbar?, title: String, homeAsUp: Boolean) {
 
         if (toolbar == null) return
 

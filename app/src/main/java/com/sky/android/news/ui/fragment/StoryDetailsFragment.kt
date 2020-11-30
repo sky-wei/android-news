@@ -18,14 +18,12 @@ package com.sky.android.news.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
-import android.webkit.WebView
-import android.widget.ImageView
-import android.widget.TextView
-import butterknife.BindView
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import com.bumptech.glide.Glide
 import com.sky.android.news.R
-import com.sky.android.news.R2
 import com.sky.android.news.contract.StoryDetailsContract
 import com.sky.android.news.data.model.BaseItemModel
 import com.sky.android.news.data.model.StoryDetailsModel
@@ -34,31 +32,23 @@ import com.sky.android.news.data.source.StorySourceFactory
 import com.sky.android.news.presenter.StoryDetailsPresenter
 import com.sky.android.news.ui.base.VBaseFragment
 import com.sky.android.news.util.ActivityUtil
+import kotlinx.android.synthetic.main.fragment_story_details.*
 
 /**
  * Created by sky on 17-9-28.
  */
 class StoryDetailsFragment : VBaseFragment(), StoryDetailsContract.View {
 
-    @BindView(R2.id.iv_image)
-    lateinit var ivImage: ImageView
-    @BindView(R2.id.tv_title)
-    lateinit var tvTitle: TextView
-    @BindView(R2.id.web_view)
-    lateinit var webView: WebView
-
     private lateinit var mModel: StoryDetailsModel
     private lateinit var mStoryDetailsPresenter: StoryDetailsContract.Presenter
 
-    override fun createView(inflater: LayoutInflater, container: ViewGroup?): View {
-        return inflater.inflate(R.layout.fragment_story_details, container, false)
-    }
+    override fun getLayoutId(): Int = R.layout.fragment_story_details
 
     override fun initView(view: View, args: Bundle?) {
 
         setHasOptionsMenu(true)
 
-        webView.settings.defaultTextEncodingName = "UTF -8"
+        web_view.settings.defaultTextEncodingName = "UTF -8"
 
         val item = args!!.getSerializable("item") as BaseItemModel
 
@@ -96,11 +86,11 @@ class StoryDetailsFragment : VBaseFragment(), StoryDetailsContract.View {
 
         Glide.with(context)
                 .load(model.image)
-                .into(ivImage)
-        tvTitle.text = model.title
+                .into(iv_image)
+        tv_title.text = model.title
 
         // 使用WebView来处理
-        webView.loadDataWithBaseURL("file:///android_asset/",
+        web_view.loadDataWithBaseURL("file:///android_asset/",
                 stitching(model.body), "text/html", "UTF-8", null)
     }
 
@@ -134,7 +124,7 @@ class StoryDetailsFragment : VBaseFragment(), StoryDetailsContract.View {
                 "<script src=\"video.js\"></script>\n" +
                 "</head>\n" +
                 "<body classname=\"\" onload=\"onLoaded()\">\n" +
-                "$body" +
+                body +
                 "<script src=\"show_bottom_link.js\"></script>\n" +
                 "<script>show('{\\\"theme_subscribed\\\":false}');</script>\n" +
                 "</body>\n" +
