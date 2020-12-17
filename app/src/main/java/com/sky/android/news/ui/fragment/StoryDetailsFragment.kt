@@ -30,19 +30,20 @@ import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.source.StoryDataRepository
 import com.sky.android.news.data.source.StorySourceFactory
 import com.sky.android.news.presenter.StoryDetailsPresenter
-import com.sky.android.news.ui.base.VBaseFragment
+import com.sky.android.news.ui.base.NewsFragment
 import com.sky.android.news.util.ActivityUtil
 import kotlinx.android.synthetic.main.fragment_story_details.*
 
 /**
  * Created by sky on 17-9-28.
  */
-class StoryDetailsFragment : VBaseFragment(), StoryDetailsContract.View {
+class StoryDetailsFragment : NewsFragment(), StoryDetailsContract.View {
 
     private lateinit var mModel: StoryDetailsModel
     private lateinit var mStoryDetailsPresenter: StoryDetailsContract.Presenter
 
-    override fun getLayoutId(): Int = R.layout.fragment_story_details
+    override val layoutId: Int
+        get() = R.layout.fragment_story_details
 
     override fun initView(view: View, args: Bundle?) {
 

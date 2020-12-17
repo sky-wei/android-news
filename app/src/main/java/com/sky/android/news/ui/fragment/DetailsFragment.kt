@@ -32,7 +32,7 @@ import com.sky.android.news.data.model.LineItemModel
 import com.sky.android.news.data.source.NewsDataRepository
 import com.sky.android.news.data.source.NewsSourceFactory
 import com.sky.android.news.presenter.DetailsPresenter
-import com.sky.android.news.ui.base.VBaseFragment
+import com.sky.android.news.ui.base.NewsFragment
 import com.sky.android.news.ui.helper.VImageGetter
 import com.sky.android.news.util.ActivityUtil
 import kotlinx.android.synthetic.main.fragment_details.*
@@ -41,7 +41,7 @@ import kotlinx.android.synthetic.main.fragment_details.*
 /**
  * Created by sky on 17-9-23.
  */
-class DetailsFragment : VBaseFragment(), DetailsContract.View, InitListener, SynthesizerListener {
+class DetailsFragment : NewsFragment(), DetailsContract.View, InitListener, SynthesizerListener {
 
 
     // 语音合成对象
@@ -49,7 +49,8 @@ class DetailsFragment : VBaseFragment(), DetailsContract.View, InitListener, Syn
     private lateinit var mContent: ContentModel
     private lateinit var mDetailsPresenter: DetailsContract.Presenter
 
-    override fun getLayoutId(): Int = R.layout.fragment_details
+    override val layoutId: Int
+        get() = R.layout.fragment_details
 
     override fun initView(view: View, args: Bundle?) {
 

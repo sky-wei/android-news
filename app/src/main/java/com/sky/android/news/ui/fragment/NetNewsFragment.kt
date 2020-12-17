@@ -29,7 +29,7 @@ import com.sky.android.news.data.source.NewsDataRepository
 import com.sky.android.news.data.source.NewsSourceFactory
 import com.sky.android.news.presenter.HeadLinePresenter
 import com.sky.android.news.ui.adapter.NewsAdapter
-import com.sky.android.news.ui.base.VBaseFragment
+import com.sky.android.news.ui.base.NewsFragment
 import com.sky.android.news.ui.helper.RecyclerHelper
 import com.sky.android.news.util.ActivityUtil
 import kotlinx.android.synthetic.main.fragment_news.*
@@ -37,14 +37,15 @@ import kotlinx.android.synthetic.main.fragment_news.*
 /**
  * Created by sky on 17-9-21.
  */
-class NewsFragment : VBaseFragment(), HeadLineContract.View, OnItemEventListener, RecyclerHelper.OnCallback {
+class NetNewsFragment : NewsFragment(), HeadLineContract.View, OnItemEventListener, RecyclerHelper.OnCallback {
 
     private lateinit var mHeadLinePresenter: HeadLineContract.Presenter
     private lateinit var mRecyclerHelper: RecyclerHelper
 
     private lateinit var mNewsAdapter: NewsAdapter
 
-    override fun getLayoutId(): Int = R.layout.fragment_news
+    override val layoutId: Int
+        get() = R.layout.fragment_news
 
     override fun initView(view: View, args: Bundle?) {
 
@@ -88,11 +89,12 @@ class NewsFragment : VBaseFragment(), HeadLineContract.View, OnItemEventListener
         showMessage(msg)
     }
 
-    override fun onItemEvent(event: Int, view: View, position: Int, vararg args: Any?) {
+    override fun onItemEvent(event: Int, view: View, position: Int, vararg args: Any?): Boolean {
 
         // 进入详情界面
         ActivityUtil.startDetailsActivity(context,
                 DetailsFragment::class.java, mNewsAdapter.getItem(position))
+        return true
     }
 
     override fun onRefresh() {

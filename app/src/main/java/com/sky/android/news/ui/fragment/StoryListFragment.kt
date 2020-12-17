@@ -26,7 +26,7 @@ import com.sky.android.news.data.source.StoryDataRepository
 import com.sky.android.news.data.source.StorySourceFactory
 import com.sky.android.news.presenter.StoryListPresenter
 import com.sky.android.news.ui.adapter.StoryAdapter
-import com.sky.android.news.ui.base.VBaseFragment
+import com.sky.android.news.ui.base.NewsFragment
 import com.sky.android.news.ui.helper.RecyclerHelper
 import com.sky.android.news.util.ActivityUtil
 import kotlinx.android.synthetic.main.fragment_zhihu.*
@@ -35,14 +35,15 @@ import java.io.Serializable
 /**
  * Created by sky on 17-9-28.
  */
-class StoryListFragment : VBaseFragment(), StoryListContract.View, OnItemEventListener, RecyclerHelper.OnCallback {
+class StoryListFragment : NewsFragment(), StoryListContract.View, OnItemEventListener, RecyclerHelper.OnCallback {
 
     private lateinit var mStoryListPresenter: StoryListContract.Presenter
     private lateinit var mRecyclerHelper: RecyclerHelper
 
     private lateinit var mStoryAdapter: StoryAdapter
 
-    override fun getLayoutId(): Int = R.layout.fragment_zhihu
+    override val layoutId: Int
+        get() = R.layout.fragment_zhihu
 
     override fun initView(view: View, args: Bundle?) {
 
@@ -75,18 +76,19 @@ class StoryListFragment : VBaseFragment(), StoryListContract.View, OnItemEventLi
         mRecyclerHelper.cancelRefreshing()
     }
 
-    override fun onItemEvent(event: Int, view: View, position: Int, vararg args: Any?) {
+    override fun onItemEvent(event: Int, view: View, position: Int, vararg args: Any?): Boolean {
 
         if (event == 1) {
             // 进入详情界面
             ActivityUtil.startDetailsActivity(context,
                     StoryDetailsFragment::class.java, args[0] as Serializable)
-            return
+            return true
         }
 
         // 进入详情界面
         ActivityUtil.startDetailsActivity(context,
                 StoryDetailsFragment::class.java, mStoryAdapter.getItem(position))
+        return true
     }
 
     override fun onLoadStories(model: List<BaseViewType>) {

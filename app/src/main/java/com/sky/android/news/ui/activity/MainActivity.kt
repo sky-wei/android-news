@@ -29,7 +29,7 @@ import com.google.android.material.navigation.NavigationView
 import com.jaeger.library.StatusBarUtil
 import com.sky.android.news.Constant
 import com.sky.android.news.R
-import com.sky.android.news.ui.base.VBaseActivity
+import com.sky.android.news.ui.base.NewsActivity
 import com.sky.android.news.ui.fragment.AboutFragment
 import com.sky.android.news.ui.fragment.CategoryFragment
 import com.sky.android.news.ui.fragment.SettingsFragment
@@ -38,11 +38,12 @@ import com.sky.android.news.util.ActivityUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
-class MainActivity : VBaseActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : NewsActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private var mKeyTime: Long = 0
 
-    override fun getLayoutId(): Int = R.layout.activity_main
+    override val layoutId: Int
+        get() = R.layout.activity_main
 
     override fun initView(intent: Intent) {
 

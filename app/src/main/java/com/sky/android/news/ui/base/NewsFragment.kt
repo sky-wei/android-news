@@ -25,7 +25,7 @@ import com.sky.android.news.ui.diglog.LoadingDialog
 /**
  * Created by sky on 17-9-21.
  */
-abstract class VBaseFragment : BaseFragment(), BaseView {
+abstract class NewsFragment : BaseFragment(), BaseView {
 
     private var mLoadingDialog: LoadingDialog? = null
 

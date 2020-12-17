@@ -17,12 +17,17 @@
 package com.sky.android.news.ui.base
 
 import androidx.appcompat.widget.Toolbar
+import com.sky.android.common.util.ToastUtil
 import com.sky.android.core.activity.BaseActivity
+import com.sky.android.news.R
+import com.sky.android.news.ui.diglog.LoadingDialog
 
 /**
  * Created by sky on 17-9-21.
  */
-abstract class VBaseActivity : BaseActivity() {
+abstract class NewsActivity : BaseActivity() {
+
+    private var mLoadingDialog: LoadingDialog? = null
 
     open fun setSupportActionBar(toolbar: Toolbar, title: Int, homeAsUp: Boolean) {
         setSupportActionBar(toolbar, getString(title), homeAsUp)
@@ -39,5 +44,28 @@ abstract class VBaseActivity : BaseActivity() {
 
         actionBar!!.title = title
         actionBar.setDisplayHomeAsUpEnabled(homeAsUp)
+    }
+
+    override fun showLoading() {
+
+        if (mLoadingDialog != null) return
+
+        mLoadingDialog = LoadingDialog(context)
+        mLoadingDialog!!.setTipText(R.string.loading)
+        mLoadingDialog!!.setCancelable(false)
+        mLoadingDialog!!.show()
+    }
+
+    override fun cancelLoading() {
+
+        if (mLoadingDialog == null) return
+
+        // 隐藏
+        mLoadingDialog!!.dismiss()
+        mLoadingDialog = null
+    }
+
+    override fun showMessage(msg: String) {
+        ToastUtil.show(msg)
     }
 }

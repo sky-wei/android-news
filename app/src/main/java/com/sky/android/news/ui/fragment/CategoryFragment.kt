@@ -26,18 +26,19 @@ import com.sky.android.news.data.model.CategoryModel
 import com.sky.android.news.data.source.NewsDataRepository
 import com.sky.android.news.data.source.NewsSourceFactory
 import com.sky.android.news.presenter.CategoryPresenter
-import com.sky.android.news.ui.base.VBaseFragment
+import com.sky.android.news.ui.base.NewsFragment
 import kotlinx.android.synthetic.main.fragment_category.*
 
 /**
  * Created by sky on 17-9-21.
  */
-class CategoryFragment : VBaseFragment(), CategoryContract.View {
+class CategoryFragment : NewsFragment(), CategoryContract.View {
 
 
     private lateinit var mCategoryPresenter: CategoryContract.Presenter
 
-    override fun getLayoutId(): Int = R.layout.fragment_category
+    override val layoutId: Int
+        get() = R.layout.fragment_category
 
     override fun initView(view: View, args: Bundle?) {
 
@@ -59,7 +60,7 @@ class CategoryFragment : VBaseFragment(), CategoryContract.View {
             }
 
             // 添加类型
-            creator.add(it.name, NewsFragment::class.java, args)
+            creator.add(it.name, NetNewsFragment::class.java, args)
         }
 
         val adapter = FragmentPagerItemAdapter(

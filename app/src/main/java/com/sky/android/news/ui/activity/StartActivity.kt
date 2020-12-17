@@ -21,18 +21,19 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import com.sky.android.news.R
-import com.sky.android.news.ui.base.VBaseActivity
+import com.sky.android.news.ui.base.NewsActivity
 import com.sky.android.news.util.ActivityUtil
 import com.tbruyelle.rxpermissions2.RxPermissions
 
 /**
  * Created by sky on 17-9-21.
  */
-class StartActivity : VBaseActivity() {
+class StartActivity : NewsActivity() {
 
     private lateinit var rxPermissions: RxPermissions
 
-    override fun getLayoutId(): Int = R.layout.activity_start
+    override val layoutId: Int
+        get() = R.layout.activity_start
 
     @SuppressLint("CheckResult")
     override fun initView(intent: Intent) {

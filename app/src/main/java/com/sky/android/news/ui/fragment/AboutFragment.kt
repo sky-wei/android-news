@@ -22,16 +22,17 @@ import android.os.Bundle
 import android.view.View
 import com.sky.android.news.BuildConfig
 import com.sky.android.news.R
-import com.sky.android.news.ui.base.VBaseFragment
+import com.sky.android.news.ui.base.NewsFragment
 import com.sky.android.news.util.ActivityUtil
 import kotlinx.android.synthetic.main.fragment_about.*
 
 /**
  * Created by sky on 17-9-21.
  */
-class AboutFragment : VBaseFragment() {
+class AboutFragment : NewsFragment() {
 
-    override fun getLayoutId(): Int = R.layout.fragment_about
+    override val layoutId: Int
+        get() = R.layout.fragment_about
 
     override fun initView(view: View, args: Bundle?) {
 

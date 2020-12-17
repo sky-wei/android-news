@@ -19,22 +19,22 @@ package com.sky.android.news.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentFactory
 import com.sky.android.news.R
-import com.sky.android.news.ui.base.VBaseActivity
+import com.sky.android.news.ui.base.NewsActivity
 import kotlinx.android.synthetic.main.app_bar_frame.*
 
 /**
  * Created by sky on 17-9-23.
  */
-class DetailsActivity : VBaseActivity() {
+class DetailsActivity : NewsActivity() {
 
     companion object {
 
         const val F_NAME = "fName"
     }
 
-    override fun getLayoutId(): Int = R.layout.app_bar_frame
+    override val layoutId: Int
+        get() = R.layout.app_bar_frame
 
     override fun initView(intent: Intent) {
 
