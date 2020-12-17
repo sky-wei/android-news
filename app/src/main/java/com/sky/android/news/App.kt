@@ -16,10 +16,10 @@
 
 package com.sky.android.news
 
-import android.app.Application
 import androidx.multidex.MultiDexApplication
 import com.iflytek.cloud.SpeechUtility
 import com.sky.android.common.util.Alog
+import com.sky.android.common.util.ToastUtil
 import com.sky.android.news.data.cache.impl.CacheManagerImpl
 
 /**
@@ -31,7 +31,15 @@ class App : MultiDexApplication() {
         SpeechUtility.createUtility(this, "appid=59c8c734")
         super.onCreate()
 
-//        Alog.setDebug(BuildConfig.DEBUG)
+        if (BuildConfig.DEBUG) {
+            Alog.setSingletonInstance(
+                    Alog.Builder()
+                            .setDebug(true)
+                            .build()
+            )
+        }
+        ToastUtil.initialize(this)
+
 //        Setting.setShowLog(BuildConfig.DEBUG)
 
         // 初始化...

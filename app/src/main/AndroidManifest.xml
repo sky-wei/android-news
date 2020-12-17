@@ -40,7 +40,7 @@
         android:theme="@style/AppTheme"
         android:allowBackup="false">
         <activity
-            android:name=".ui.activity.StartActivity"
+            android:name=".ui.splash.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Start">
             <intent-filter>
@@ -50,7 +50,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name=".ui.main.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

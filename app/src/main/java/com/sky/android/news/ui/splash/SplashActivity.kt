@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2020 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.ui.activity
+package com.sky.android.news.ui.splash
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import androidx.activity.viewModels
 import com.sky.android.news.R
 import com.sky.android.news.ui.base.NewsActivity
+import com.sky.android.news.ui.main.MainActivity
 import com.sky.android.news.util.ActivityUtil
-import com.tbruyelle.rxpermissions2.RxPermissions
 
 /**
  * Created by sky on 17-9-21.
  */
-class StartActivity : NewsActivity() {
+class SplashActivity : NewsActivity() {
 
-    private lateinit var rxPermissions: RxPermissions
+    private val mViewModel by viewModels<SplashViewModel>()
 
     override val layoutId: Int
         get() = R.layout.activity_start
@@ -38,19 +38,18 @@ class StartActivity : NewsActivity() {
     @SuppressLint("CheckResult")
     override fun initView(intent: Intent) {
 
-        rxPermissions = RxPermissions(this)
-        rxPermissions
-                .request(
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.INTERNET
-                )
-                .subscribe { granted ->
-                    if (granted!!) {
-                        enterMainActivity()
-                    } else {
-                        showPermissionNotGranted()
-                    }
-                }
+        mViewModel.requestPermission(this)
+
+        mViewModel.run {
+
+            granted.observe(this@SplashActivity) {
+                enterMainActivity()
+            }
+
+            denied.observe(this@SplashActivity) {
+                showPermissionNotGranted()
+            }
+        }
     }
 
     private fun enterMainActivity() {
