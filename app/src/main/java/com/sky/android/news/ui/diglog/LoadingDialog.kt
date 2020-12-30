@@ -20,8 +20,9 @@ import android.app.Dialog
 import android.content.Context
 import android.view.Gravity
 import android.view.KeyEvent
+import com.hi.dhl.binding.viewbind
 import com.sky.android.news.R
-import kotlinx.android.synthetic.main.dialog_loading.*
+import com.sky.android.news.databinding.DialogLoadingBinding
 
 /**
  * Created by sky on 17-9-24.
@@ -31,6 +32,7 @@ class LoadingDialog @JvmOverloads constructor(
         private val mCancelCallback: CancelCallback? = null
 ) : Dialog(context, R.style.CustomProgressDialog) {
 
+    private val binding: DialogLoadingBinding by viewbind()
     private var cancelable = true
 
     init {
@@ -44,11 +46,11 @@ class LoadingDialog @JvmOverloads constructor(
     }
 
     fun setTipText(text: Int) {
-        tv_tip.setText(text)
+        binding.tvTip.setText(text)
     }
 
     fun setTipText(text: String) {
-        tv_tip.text = text
+        binding.tvTip.text = text
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {

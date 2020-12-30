@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2020 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.ui.adapter
+package com.sky.android.news.ui.main.news
 
 import android.content.Context
 import android.text.TextUtils
@@ -22,12 +22,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.hi.dhl.binding.viewbind
 import com.sky.android.core.adapter.BaseRecyclerAdapter
 import com.sky.android.core.adapter.BaseRecyclerHolder
 import com.sky.android.core.adapter.SimpleRecyclerAdapter
 import com.sky.android.news.R
 import com.sky.android.news.data.model.LineItemModel
-import kotlinx.android.synthetic.main.item_line_list.view.*
+import com.sky.android.news.databinding.ItemLineListBinding
 
 /**
  * Created by sky on 17-9-22.
@@ -43,10 +44,12 @@ class NewsAdapter(context: Context) : SimpleRecyclerAdapter<LineItemModel>(conte
     inner class NewsHolder(itemView: View, adapter: BaseRecyclerAdapter<LineItemModel>)
         : BaseRecyclerHolder<LineItemModel>(itemView, adapter) {
 
+        private val binding: ItemLineListBinding by viewbind()
+
         override fun onInitialize() {
             super.onInitialize()
 
-            itemView.card_news_item.setOnClickListener {
+            binding.cardNewsItem.setOnClickListener {
                 // 回调点击事件
                 callItemEvent(it, adapterPosition)
             }
@@ -59,10 +62,10 @@ class NewsAdapter(context: Context) : SimpleRecyclerAdapter<LineItemModel>(conte
             // 设置信息
             Glide.with(context)
                     .load(item.imgSrc)
-                    .into(itemView.iv_image)
+                    .into(binding.ivImage)
 
-            itemView.tv_title.text = if (TextUtils.isEmpty(item.lTitle)) item.title else item.lTitle
-            itemView.tv_source.text = item.source
+            binding.tvTitle.text = if (TextUtils.isEmpty(item.lTitle)) item.title else item.lTitle
+            binding.tvSource.text = item.source
         }
     }
 }

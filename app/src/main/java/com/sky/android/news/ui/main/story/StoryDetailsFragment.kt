@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2020 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.ui.fragment
+package com.sky.android.news.ui.main.story
 
 import android.content.Intent
 import android.os.Bundle
@@ -23,21 +23,24 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import com.bumptech.glide.Glide
+import com.hi.dhl.binding.viewbind
 import com.sky.android.news.R
 import com.sky.android.news.contract.StoryDetailsContract
 import com.sky.android.news.data.model.BaseItemModel
 import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.source.StoryDataRepository
 import com.sky.android.news.data.source.StorySourceFactory
+import com.sky.android.news.databinding.FragmentStoryDetailsBinding
 import com.sky.android.news.presenter.StoryDetailsPresenter
 import com.sky.android.news.ui.base.NewsFragment
 import com.sky.android.news.util.ActivityUtil
-import kotlinx.android.synthetic.main.fragment_story_details.*
 
 /**
  * Created by sky on 17-9-28.
  */
 class StoryDetailsFragment : NewsFragment(), StoryDetailsContract.View {
+
+    private val binding: FragmentStoryDetailsBinding by viewbind()
 
     private lateinit var mModel: StoryDetailsModel
     private lateinit var mStoryDetailsPresenter: StoryDetailsContract.Presenter
@@ -49,7 +52,7 @@ class StoryDetailsFragment : NewsFragment(), StoryDetailsContract.View {
 
         setHasOptionsMenu(true)
 
-        web_view.settings.defaultTextEncodingName = "UTF -8"
+        binding.webView.settings.defaultTextEncodingName = "UTF -8"
 
         val item = args!!.getSerializable("item") as BaseItemModel
 
@@ -87,11 +90,11 @@ class StoryDetailsFragment : NewsFragment(), StoryDetailsContract.View {
 
         Glide.with(context)
                 .load(model.image)
-                .into(iv_image)
-        tv_title.text = model.title
+                .into(binding.ivImage)
+        binding.tvTitle.text = model.title
 
         // 使用WebView来处理
-        web_view.loadDataWithBaseURL("file:///android_asset/",
+        binding.webView.loadDataWithBaseURL("file:///android_asset/",
                 stitching(model.body), "text/html", "UTF-8", null)
     }
 

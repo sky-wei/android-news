@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2020 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,25 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.ui.fragment
+package com.sky.android.news.ui.about
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import com.hi.dhl.binding.viewbind
 import com.sky.android.news.BuildConfig
 import com.sky.android.news.R
+import com.sky.android.news.databinding.FragmentAboutBinding
 import com.sky.android.news.ui.base.NewsFragment
 import com.sky.android.news.util.ActivityUtil
-import kotlinx.android.synthetic.main.fragment_about.*
 
 /**
  * Created by sky on 17-9-21.
  */
 class AboutFragment : NewsFragment() {
+
+    private val binding: FragmentAboutBinding by viewbind()
 
     override val layoutId: Int
         get() = R.layout.fragment_about
@@ -37,10 +40,10 @@ class AboutFragment : NewsFragment() {
     override fun initView(view: View, args: Bundle?) {
 
         // 设置版本名称
-        tv_version.text = getString(
+        binding.tvVersion.text = getString(
                 R.string.version_x, BuildConfig.VERSION_NAME)
 
-        tv_source.setOnClickListener {
+        binding.tvSource.setOnClickListener {
 
             val uri = Uri.parse("https://github.com/jingcai-wei/android-news")
             val intent = Intent(Intent.ACTION_VIEW, uri)

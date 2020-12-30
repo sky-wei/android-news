@@ -26,45 +26,47 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.navigation.NavigationView
+import com.hi.dhl.binding.viewbind
 import com.jaeger.library.StatusBarUtil
 import com.sky.android.news.Constant
 import com.sky.android.news.R
+import com.sky.android.news.databinding.ActivityMainBinding
 import com.sky.android.news.ui.base.NewsActivity
-import com.sky.android.news.ui.fragment.AboutFragment
-import com.sky.android.news.ui.fragment.CategoryFragment
-import com.sky.android.news.ui.fragment.SettingsFragment
-import com.sky.android.news.ui.fragment.StoryListFragment
+import com.sky.android.news.ui.about.AboutFragment
+import com.sky.android.news.ui.main.news.CategoryFragment
+import com.sky.android.news.ui.setting.SettingsFragment
+import com.sky.android.news.ui.main.story.StoryListFragment
 import com.sky.android.news.util.ActivityUtil
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 
 class MainActivity : NewsActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private var mKeyTime: Long = 0
+
+    private val binding: ActivityMainBinding by viewbind()
 
     override val layoutId: Int
         get() = R.layout.activity_main
 
     override fun initView(intent: Intent) {
 
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.appBarMain.toolbar)
         StatusBarUtil.setColorForDrawerLayout(
-                this, drawer_layout, resources.getColor(R.color.transparent))
+                this, binding.drawerLayout, resources.getColor(R.color.transparent))
 
         val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.setDrawerListener(toggle)
+                this, binding.drawerLayout, binding.appBarMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        nav_view.setNavigationItemSelectedListener(this)
+        binding.navView.setNavigationItemSelectedListener(this)
 
         switchFragment(CategoryFragment::class.java,
                 buildDefaultArgs(Constant.Category.NEWS))
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
@@ -72,7 +74,7 @@ class MainActivity : NewsActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
-        drawer_layout.closeDrawer(GravityCompat.START)
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
 
         when(item.itemId) {
             R.id.nav_news -> {
@@ -146,12 +148,14 @@ class MainActivity : NewsActivity(), NavigationView.OnNavigationItemSelectedList
 
     private fun setAppBarLayoutElevation(value: Float) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            layout_appbar.elevation = value
+            binding.appBarMain.layoutAppbar.elevation = value
     }
 
     private fun setAppBarScrollFlags(scrollFlags: Int) {
-        val params = toolbar.layoutParams as AppBarLayout.LayoutParams
-        params.scrollFlags = scrollFlags
-        toolbar.layoutParams = params
+        binding.appBarMain.toolbar.apply {
+            val params = layoutParams as AppBarLayout.LayoutParams
+            params.scrollFlags = scrollFlags
+            layoutParams = params
+        }
     }
 }

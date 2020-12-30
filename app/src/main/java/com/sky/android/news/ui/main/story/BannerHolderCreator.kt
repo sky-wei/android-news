@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2020 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.ui.adapter
+package com.sky.android.news.ui.main.story
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator
 import com.bigkoo.convenientbanner.holder.Holder
 import com.bumptech.glide.Glide
-import com.sky.android.news.R
 import com.sky.android.news.data.model.TopStoryItemModel
-import kotlinx.android.synthetic.main.item_banner.view.*
+import com.sky.android.news.databinding.ItemBannerBinding
 
 /**
  * Created by sky on 17-9-28.
@@ -37,26 +34,21 @@ class BannerHolderCreator : CBViewHolderCreator<BannerHolderCreator.BannerImageH
 
     inner class BannerImageHolder : Holder<TopStoryItemModel> {
 
-        private lateinit var ivImage: ImageView
-        private lateinit var tvTitle: TextView
+        private lateinit var binding: ItemBannerBinding
 
         override fun createView(context: Context): View {
-
-            val view = LayoutInflater.from(context)
-                    .inflate(R.layout.item_banner, null, false)
-
-            ivImage = view.iv_image as ImageView
-            tvTitle = view.tv_title as TextView
-
-            return  view
+            binding = ItemBannerBinding.inflate(
+                    LayoutInflater.from(context), null, false
+            )
+            return  binding.root
         }
 
         override fun UpdateUI(context: Context, position: Int, data: TopStoryItemModel) {
 
             Glide.with(context)
                     .load(data.image)
-                    .into(ivImage)
-            tvTitle.text = data.title
+                    .into(binding.ivImage)
+            binding.tvTitle.text = data.title
         }
     }
 }

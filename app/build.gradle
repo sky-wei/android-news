@@ -16,7 +16,6 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
@@ -44,6 +43,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+//        dataBinding = true
+        viewBinding = true
+    }
 
     flavorDimensions "default"
 
@@ -70,9 +73,6 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-//    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
-//        exclude group: 'com.android.support', module: 'support-annotations'
-//    })
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
@@ -96,13 +96,10 @@ dependencies {
     implementation 'com.jaeger.statusbarutil:library:1.4.0'
     implementation 'com.bigkoo:convenientbanner:2.0.5'
     implementation 'com.yanzhenjie:permission:2.0.3'
+    implementation 'com.hi-dhl:binding:1.0.6'
 
-//    implementation 'com.trello.rxlifecycle2:rxlifecycle-kotlin:2.2.1'
     testImplementation 'junit:junit:4.13.1'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
     implementation project(":base")
     implementation project(":core")
-
-    // 解决glide的问题
-//    kapt 'com.android.support:support-annotations:28.0.0'
 }

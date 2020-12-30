@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2020 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.ui.activity
+package com.sky.android.news.ui.main.details
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.hi.dhl.binding.viewbind
 import com.sky.android.news.R
+import com.sky.android.news.databinding.AppBarFrameBinding
+import com.sky.android.news.ext.applyTo
+import com.sky.android.news.ui.common.CommonActivity
 import com.sky.android.news.ui.base.NewsActivity
-import kotlinx.android.synthetic.main.app_bar_frame.*
 
 /**
  * Created by sky on 17-9-23.
@@ -33,13 +36,17 @@ class DetailsActivity : NewsActivity() {
         const val F_NAME = "fName"
     }
 
+    private val binding: AppBarFrameBinding by viewbind()
+
     override val layoutId: Int
         get() = R.layout.app_bar_frame
 
     override fun initView(intent: Intent) {
 
         // 设置ActionBar
-        setSupportActionBar(toolbar, R.string.app_name, true)
+        binding.apply {
+            toolbar.applyTo(this@DetailsActivity, R.string.app_name, true)
+        }
 
         val fName = intent.getStringExtra(CommonActivity.F_NAME)
 

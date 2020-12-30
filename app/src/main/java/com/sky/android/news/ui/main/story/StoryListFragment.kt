@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2020 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,28 +14,32 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.ui.fragment
+package com.sky.android.news.ui.main.story
 
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.hi.dhl.binding.viewbind
 import com.sky.android.core.interfaces.OnItemEventListener
 import com.sky.android.news.R
 import com.sky.android.news.contract.StoryListContract
 import com.sky.android.news.data.model.BaseViewType
 import com.sky.android.news.data.source.StoryDataRepository
 import com.sky.android.news.data.source.StorySourceFactory
+import com.sky.android.news.databinding.FragmentZhihuBinding
 import com.sky.android.news.presenter.StoryListPresenter
-import com.sky.android.news.ui.adapter.StoryAdapter
 import com.sky.android.news.ui.base.NewsFragment
 import com.sky.android.news.ui.helper.RecyclerHelper
 import com.sky.android.news.util.ActivityUtil
-import kotlinx.android.synthetic.main.fragment_zhihu.*
 import java.io.Serializable
 
 /**
  * Created by sky on 17-9-28.
  */
 class StoryListFragment : NewsFragment(), StoryListContract.View, OnItemEventListener, RecyclerHelper.OnCallback {
+
+    private val binding: FragmentZhihuBinding by viewbind()
 
     private lateinit var mStoryListPresenter: StoryListContract.Presenter
     private lateinit var mRecyclerHelper: RecyclerHelper
@@ -50,18 +54,20 @@ class StoryListFragment : NewsFragment(), StoryListContract.View, OnItemEventLis
         mStoryAdapter = StoryAdapter(context)
         mStoryAdapter.onItemEventListener = this
 
-        swipe_refresh_layout.setColorSchemeResources(R.color.colorPrimary)
+        binding.swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
 
-        recycler_view.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-        recycler_view.setHasFixedSize(true)
-        recycler_view.itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator()
-        recycler_view.adapter = mStoryAdapter
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            itemAnimator = DefaultItemAnimator()
+            adapter = mStoryAdapter
+        }
 
         val repository = StoryDataRepository(StorySourceFactory(context))
         mStoryListPresenter = StoryListPresenter(repository, this)
 
         // 刷新助手类
-        mRecyclerHelper = RecyclerHelper(swipe_refresh_layout, recycler_view, this)
+        mRecyclerHelper = RecyclerHelper(binding.swipeRefreshLayout, binding.recyclerView, this)
         mRecyclerHelper.setLoadMore(true)
         mRecyclerHelper.forceRefreshing()
 

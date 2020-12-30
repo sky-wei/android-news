@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2020 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.ui.adapter
+package com.sky.android.news.ui.main.story
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -25,14 +25,15 @@ import android.view.ViewGroup
 import com.bigkoo.convenientbanner.ConvenientBanner
 import com.bigkoo.convenientbanner.listener.OnItemClickListener
 import com.bumptech.glide.Glide
+import com.hi.dhl.binding.viewbind
 import com.sky.android.core.adapter.BaseRecyclerAdapter
 import com.sky.android.core.adapter.BaseRecyclerHolder
 import com.sky.android.core.adapter.SimpleRecyclerAdapter
 import com.sky.android.news.R
 import com.sky.android.news.data.model.*
-import kotlinx.android.synthetic.main.item_note_story.view.*
-import kotlinx.android.synthetic.main.item_story_list.view.*
-import kotlinx.android.synthetic.main.item_top_story.view.*
+import com.sky.android.news.databinding.ItemNoteStoryBinding
+import com.sky.android.news.databinding.ItemStoryListBinding
+import com.sky.android.news.databinding.ItemTopStoryBinding
 import java.text.SimpleDateFormat
 
 /**
@@ -66,26 +67,27 @@ class StoryAdapter(context: Context) : SimpleRecyclerAdapter<BaseViewType>(conte
     inner class NoteStoryHolder(itemView: View, adapter: BaseRecyclerAdapter<BaseViewType>)
         : BaseRecyclerHolder<BaseViewType>(itemView, adapter) {
 
+        private val binding: ItemNoteStoryBinding by viewbind()
+
         override fun onBind(position: Int, viewType: Int) {
 
             val item = getItem(position) as NodeItemModel
 
             val date = dateFormat.parse(item.data)
 
-            itemView.apply {
-                tv_note.text = if (!TextUtils.isEmpty(item.node)) item.node else dateFormat2.format(date)
-            }
+            binding.tvNote.text = if (!TextUtils.isEmpty(item.node)) item.node else dateFormat2.format(date)
         }
     }
 
     inner class TopStoryHolder(itemView: View, adapter: BaseRecyclerAdapter<BaseViewType>)
         : BaseRecyclerHolder<BaseViewType>(itemView, adapter), OnItemClickListener {
 
+        private val binding: ItemTopStoryBinding by viewbind()
         lateinit var convenientBanner: ConvenientBanner<TopStoryItemModel>
 
         override fun onInitialize() {
 
-            convenientBanner = itemView.convenient_banner as ConvenientBanner<TopStoryItemModel>
+            convenientBanner = binding.convenientBanner as ConvenientBanner<TopStoryItemModel>
 
             convenientBanner.setPageIndicator(
                     intArrayOf(R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused))
@@ -126,8 +128,10 @@ class StoryAdapter(context: Context) : SimpleRecyclerAdapter<BaseViewType>(conte
     inner class StoryItemHolder(itemView: View, adapter: BaseRecyclerAdapter<BaseViewType>)
         : BaseRecyclerHolder<BaseViewType>(itemView, adapter) {
 
+        private val binding: ItemStoryListBinding by viewbind()
+
         override fun onInitialize() {
-            itemView.card_zhihu_item.setOnClickListener {
+            binding.cardZhihuItem.setOnClickListener {
                 // 回调点击事件
                 callItemEvent(it, adapterPosition)
             }
@@ -140,8 +144,8 @@ class StoryAdapter(context: Context) : SimpleRecyclerAdapter<BaseViewType>(conte
             itemView.apply {
                 Glide.with(context)
                         .load(item.images[0])
-                        .into(iv_image)
-                tv_title.text = item.title
+                        .into(binding.ivImage)
+                binding.tvTitle.text = item.title
             }
         }
     }

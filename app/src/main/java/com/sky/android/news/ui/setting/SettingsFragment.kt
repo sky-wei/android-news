@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2020 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.ui.fragment
+package com.sky.android.news.ui.setting
 
 import android.os.Bundle
 import android.widget.Toast
@@ -34,8 +34,6 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceClic
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
 
         addPreferencesFromResource(R.xml.setting_preferences)
-
-        findPreference<Preference>(Constant.Preference.CLEAR_NEWS_CACHE)
 
         // 添加事件监听
         findPreference<Preference>(

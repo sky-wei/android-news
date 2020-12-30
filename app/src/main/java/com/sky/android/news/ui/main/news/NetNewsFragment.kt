@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2020 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.ui.fragment
+package com.sky.android.news.ui.main.news
 
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.hi.dhl.binding.viewbind
 import com.sky.android.core.interfaces.OnItemEventListener
 import com.sky.android.news.R
 import com.sky.android.news.contract.HeadLineContract
@@ -27,17 +28,18 @@ import com.sky.android.news.data.model.CategoryItemModel
 import com.sky.android.news.data.model.LineItemModel
 import com.sky.android.news.data.source.NewsDataRepository
 import com.sky.android.news.data.source.NewsSourceFactory
+import com.sky.android.news.databinding.FragmentNewsBinding
 import com.sky.android.news.presenter.HeadLinePresenter
-import com.sky.android.news.ui.adapter.NewsAdapter
 import com.sky.android.news.ui.base.NewsFragment
 import com.sky.android.news.ui.helper.RecyclerHelper
 import com.sky.android.news.util.ActivityUtil
-import kotlinx.android.synthetic.main.fragment_news.*
 
 /**
  * Created by sky on 17-9-21.
  */
 class NetNewsFragment : NewsFragment(), HeadLineContract.View, OnItemEventListener, RecyclerHelper.OnCallback {
+
+    private val binding: FragmentNewsBinding by viewbind()
 
     private lateinit var mHeadLinePresenter: HeadLineContract.Presenter
     private lateinit var mRecyclerHelper: RecyclerHelper
@@ -52,18 +54,20 @@ class NetNewsFragment : NewsFragment(), HeadLineContract.View, OnItemEventListen
         mNewsAdapter = NewsAdapter(context)
         mNewsAdapter.onItemEventListener = this
 
-        swipe_refresh_layout.setColorSchemeResources(R.color.colorPrimary)
+        binding.swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
 
-        recycler_view.layoutManager = LinearLayoutManager(context)
-        recycler_view.setHasFixedSize(true)
-        recycler_view.itemAnimator = DefaultItemAnimator()
-        recycler_view.adapter = mNewsAdapter
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            itemAnimator = DefaultItemAnimator()
+            adapter = mNewsAdapter
+        }
 
         val repository = NewsDataRepository(NewsSourceFactory(context))
         mHeadLinePresenter = HeadLinePresenter(repository, this)
 
         // 刷新助手类
-        mRecyclerHelper = RecyclerHelper(swipe_refresh_layout, recycler_view, this)
+        mRecyclerHelper = RecyclerHelper(binding.swipeRefreshLayout, binding.recyclerView, this)
         mRecyclerHelper.setLoadMore(true)
         mRecyclerHelper.forceRefreshing()
 
