@@ -33,8 +33,7 @@ import com.sky.android.news.contract.DetailsContract
 import com.sky.android.news.data.model.ContentModel
 import com.sky.android.news.data.model.DetailsModel
 import com.sky.android.news.data.model.LineItemModel
-import com.sky.android.news.data.source.NewsDataRepository
-import com.sky.android.news.data.source.NewsSourceFactory
+import com.sky.android.news.data.source.RepositoryFactory
 import com.sky.android.news.databinding.FragmentDetailsBinding
 import com.sky.android.news.presenter.DetailsPresenter
 import com.sky.android.news.ui.base.NewsFragment
@@ -63,7 +62,7 @@ class DetailsFragment : NewsFragment(), DetailsContract.View, InitListener, Synt
 
 //        webView.settings.defaultTextEncodingName = "UTF -8"
 
-        val repository = NewsDataRepository(NewsSourceFactory(context))
+        val repository = RepositoryFactory.create(requireContext()).createNewsSource()
         mDetailsPresenter = DetailsPresenter(context, repository, this)
 
         mDetailsPresenter.setCategoryItem(args!!.getSerializable("item") as LineItemModel)

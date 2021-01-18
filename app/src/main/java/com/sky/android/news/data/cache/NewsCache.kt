@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2021 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,44 +16,66 @@
 
 package com.sky.android.news.data.cache
 
-import com.sky.android.news.data.model.CategoryModel
-import com.sky.android.news.data.model.DetailsModel
-import com.sky.android.news.data.model.HeadLineModel
+import com.sky.android.news.data.model.*
 
 /**
  * Created by sky on 17-9-21.
  */
-interface NewsCache {
+class NewsCache(private val mCacheManager: ICacheManager) : INewsCache {
 
-    /**
-     * 获取分类列表
-     */
-    fun getCategory(): CategoryModel?
+    private var mCategoryKey = mCacheManager.buildKey(
+            NewsCache::class.java.name + ":getCategory()")
 
-    /**
-     * 保存分类列表
-     */
-    fun saveCategory(model: CategoryModel)
+    override fun getCategory(): CategoryModel? =
+            mCacheManager.get(mCategoryKey, CategoryModel::class.java)
 
-    /**
-     * 获取新闻列表信息
-     */
-    fun getHeadLine(tid: String,
-                    start: Int, end: Int): HeadLineModel?
+    override fun saveCategory(model: CategoryModel) {
+        mCacheManager.put(mCategoryKey, model)
+    }
 
-    /**
-     * 保存新闻列表信息
-     */
-    fun saveHeadLine(tid: String,
-                     start: Int, end: Int, model: HeadLineModel)
+    override fun getHeadLine(tid: String, start: Int, end: Int): HeadLineModel? {
 
-    /**
-     * 获取详情信息
-     */
-    fun getDetails(docId: String): DetailsModel?
+        val key = mCacheManager.buildKey("$tid-$start-$end")
+        val model = mCacheManager.get(key, LinePackageModel::class.java)
 
-    /**
-     * 保存详情信息
-     */
-    fun saveDetails(docId: String, model: DetailsModel)
+        if (model != null
+                && !isExpired(model.lastTime, 1000 * 60 * 10)) {
+            // 返回缓存数据
+            return model.model
+        }
+        return null
+    }
+
+    override fun saveHeadLine(tid: String, start: Int, end: Int, model: HeadLineModel) {
+        mCacheManager.put(
+                mCacheManager.buildKey("$tid-$start-$end"),
+                LinePackageModel(System.currentTimeMillis(), model))
+    }
+
+    override fun getDetails(docId: String): DetailsModel? {
+
+        val key = mCacheManager.buildKey(docId)
+        var model = mCacheManager.get(key, DetailsPackageModel::class.java)
+
+        if (model != null
+                && !isExpired(model.lastTime, 1000 * 60 * 60 * 24)) {
+            // 返回缓存数据
+            return model.model
+        }
+        return null
+    }
+
+    override fun saveDetails(docId: String, model: DetailsModel) {
+        mCacheManager.put(
+                mCacheManager.buildKey(docId),
+                DetailsPackageModel(System.currentTimeMillis(), model))
+    }
+
+    private fun isExpired(lastTime: Long, timeout: Long): Boolean {
+
+        val curTime = System.currentTimeMillis()
+
+        // 当前时间-最后时间>=超时时间 || 异常情况: 当前时间 < 最后时间
+        return curTime - lastTime >= timeout || curTime < lastTime
+    }
 }

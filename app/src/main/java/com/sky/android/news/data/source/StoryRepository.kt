@@ -16,41 +16,40 @@
 
 package com.sky.android.news.data.source
 
-import com.sky.android.news.data.model.CategoryModel
-import com.sky.android.news.data.model.DetailsModel
-import com.sky.android.news.data.model.HeadLineModel
+import com.sky.android.news.data.model.StoryDetailsModel
+import com.sky.android.news.data.model.StoryListModel
 import io.reactivex.Observable
 
 /**
- * Created by sky on 17-9-21.
+ * Created by sky on 17-9-28.
  */
-class NewsDataRepository(sourceFactory: NewsSourceFactory) : NewsDataSource {
+class StoryRepository(
+        private val local: IStorySource,
+        private val remote: IStorySource
+) : IStorySource {
 
-    private val mLocal = sourceFactory.createLocalSource()
-    private val mRemote = sourceFactory.createRemoteSource()
+    override fun getLatestStories(): Observable<StoryListModel> {
 
-    override fun getCategory(): Observable<CategoryModel> {
-
-        val localObservable = mLocal.getCategory()
-        val remoteObservable = mRemote.getCategory()
-
-        return Observable
-                .concat(localObservable, remoteObservable)
-    }
-
-    override fun getHeadLine(tid: String, start: Int, end: Int): Observable<HeadLineModel> {
-
-        val localObservable = mLocal.getHeadLine(tid, start, end)
-        val remoteObservable = mRemote.getHeadLine(tid, start, end)
+        val localObservable = local.getLatestStories()
+        val remoteObservable = remote.getLatestStories()
 
         return Observable
                 .concat(localObservable, remoteObservable)
     }
 
-    override fun getDetails(docId: String): Observable<DetailsModel> {
+    override fun getStories(date: String): Observable<StoryListModel> {
 
-        val localObservable = mLocal.getDetails(docId)
-        val remoteObservable = mRemote.getDetails(docId)
+        val localObservable = local.getStories(date)
+        val remoteObservable = remote.getStories(date)
+
+        return Observable
+                .concat(localObservable, remoteObservable)
+    }
+
+    override fun getStory(id: String): Observable<StoryDetailsModel> {
+
+        val localObservable = local.getStory(id)
+        val remoteObservable = remote.getStory(id)
 
         return Observable
                 .concat(localObservable, remoteObservable)

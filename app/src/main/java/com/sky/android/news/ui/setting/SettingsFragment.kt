@@ -23,7 +23,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.bumptech.glide.Glide
 import com.sky.android.news.Constant
 import com.sky.android.news.R
-import com.sky.android.news.data.cache.impl.CacheManagerImpl
+import com.sky.android.news.data.cache.CacheManager
 
 /**
  * Created by sky on 17-10-11.
@@ -49,7 +49,7 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceClic
         when(preference.key) {
             Constant.Preference.CLEAR_NEWS_CACHE -> {
                 // 清除新闻缓存
-                CacheManagerImpl.getInstance(requireContext()).clear()
+                CacheManager.getInstance(requireContext()).clear()
                 Toast.makeText(activity, "清空缓存成功", Toast.LENGTH_SHORT).show()
             }
             Constant.Preference.CLEAR_IMAGE_CACHE -> {

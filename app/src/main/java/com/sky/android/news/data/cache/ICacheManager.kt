@@ -14,25 +14,22 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.service
-
-import com.sky.android.news.data.news.Details
-import com.sky.android.news.data.news.HeadLine
-import io.reactivex.Observable
-import retrofit2.http.GET
-import retrofit2.http.Path
+package com.sky.android.news.data.cache
 
 /**
  * Created by sky on 17-9-21.
  */
-interface NewsService {
+interface ICacheManager {
 
-//    fun getCategory(): Observable<Category>
+    fun <T> get(key: String, tClass: Class<T>): T?
 
-    @GET("nc/article/headline/{tid}/{start}-{end}.html")
-    fun getHeadLine(@Path("tid") tid: String,
-                    @Path("start") start: Int, @Path("end") end: Int): Observable<HeadLine>
+    fun <T> put(key: String, value: T): Boolean
 
-    @GET("nc/article/{docId}/full.html")
-    fun getDetails(@Path("docId") docId: String): Observable<Details>
+    fun remove(key: String): Boolean
+
+    fun clear()
+
+    fun close()
+
+    fun buildKey(value: String): String
 }

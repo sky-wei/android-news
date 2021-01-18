@@ -16,18 +16,12 @@
 
 package com.sky.android.news.data.source
 
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import android.util.Log
 import com.google.gson.Gson
 import org.junit.After
 import org.junit.Assert
-import org.junit.Test
-
-import org.junit.Assert.*
 import org.junit.Before
-import org.junit.runner.RunWith
-import rx.schedulers.Schedulers
+import org.junit.Test
 
 /**
  * Created by sky on 17-9-22.
@@ -36,13 +30,13 @@ class NewsDataRepositoryTest {
 
     private val TAG = "NewsDataRepositoryTest"
 
-    lateinit var source: NewsDataSource
+    lateinit var source: INewsSource
 
     @Before
     fun setUp() {
 
-        val appContext = androidx.test.platform.app.InstrumentationRegistry.getTargetContext()
-        source = NewsDataRepository(NewsSourceFactory(appContext))
+//        val appContext = InstrumentationRegistry.getTargetContext()
+//        source = RepositoryFactory.create(appContext).createNewsSource()
     }
 
     @After

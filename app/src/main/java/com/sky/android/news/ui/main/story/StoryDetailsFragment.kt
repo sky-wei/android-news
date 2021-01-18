@@ -28,8 +28,7 @@ import com.sky.android.news.R
 import com.sky.android.news.contract.StoryDetailsContract
 import com.sky.android.news.data.model.BaseItemModel
 import com.sky.android.news.data.model.StoryDetailsModel
-import com.sky.android.news.data.source.StoryDataRepository
-import com.sky.android.news.data.source.StorySourceFactory
+import com.sky.android.news.data.source.RepositoryFactory
 import com.sky.android.news.databinding.FragmentStoryDetailsBinding
 import com.sky.android.news.presenter.StoryDetailsPresenter
 import com.sky.android.news.ui.base.NewsFragment
@@ -56,7 +55,7 @@ class StoryDetailsFragment : NewsFragment(), StoryDetailsContract.View {
 
         val item = args!!.getSerializable("item") as BaseItemModel
 
-        val repository = StoryDataRepository(StorySourceFactory(context))
+        val repository = RepositoryFactory.create(requireContext()).createStorySource()
         mStoryDetailsPresenter = StoryDetailsPresenter(repository, this)
 
         // 加载详情

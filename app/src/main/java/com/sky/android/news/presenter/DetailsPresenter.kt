@@ -22,14 +22,14 @@ import com.sky.android.news.base.BaseSubscriber
 import com.sky.android.news.contract.DetailsContract
 import com.sky.android.news.data.model.DetailsModel
 import com.sky.android.news.data.model.LineItemModel
-import com.sky.android.news.data.source.NewsDataSource
+import com.sky.android.news.data.source.INewsSource
 import com.sky.android.news.ui.helper.DetailsHelper
 
 /**
  * Created by sky on 17-9-23.
  */
 class DetailsPresenter(val context: Context,
-                       val source: NewsDataSource,
+                       val source: INewsSource,
                        val view: DetailsContract.View) : AbstractPresenter(), DetailsContract.Presenter {
 
     private lateinit var mItem: LineItemModel

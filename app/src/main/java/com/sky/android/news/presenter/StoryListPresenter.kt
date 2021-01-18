@@ -23,13 +23,13 @@ import com.sky.android.news.data.model.BaseViewType
 import com.sky.android.news.data.model.NodeItemModel
 import com.sky.android.news.data.model.StoryListModel
 import com.sky.android.news.data.model.TopStoryListModel
-import com.sky.android.news.data.source.StoryDataSource
+import com.sky.android.news.data.source.IStorySource
 import com.sky.android.news.ui.helper.PageHelper
 
 /**
  * Created by sky on 17-9-28.
  */
-class StoryListPresenter(val source: StoryDataSource,
+class StoryListPresenter(val source: IStorySource,
                          val view: StoryListContract.View) : AbstractPresenter(), StoryListContract.Presenter {
 
     private val mPageHelper = PageHelper<BaseViewType>()

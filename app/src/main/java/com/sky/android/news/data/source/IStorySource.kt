@@ -14,25 +14,29 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.service
+package com.sky.android.news.data.source
 
-import com.sky.android.news.data.story.StoryDetails
-import com.sky.android.news.data.story.StoryList
+import com.sky.android.news.data.model.StoryDetailsModel
+import com.sky.android.news.data.model.StoryListModel
 import io.reactivex.Observable
-import retrofit2.http.GET
-import retrofit2.http.Path
 
 /**
  * Created by sky on 17-9-28.
  */
-interface StoryService {
+interface IStorySource {
 
-    @GET("api/4/stories/latest")
-    fun getLatestStories(): Observable<StoryList>
+    /**
+     * 获取最后一次列表
+     */
+    fun getLatestStories(): Observable<StoryListModel>
 
-    @GET("api/4/stories/before/{date}")
-    fun getStories(@Path("date") date: String): Observable<StoryList>
+    /**
+     * 获取指定日期的列表
+     */
+    fun getStories(date: String): Observable<StoryListModel>
 
-    @GET("api/4/story/{id}")
-    fun getStory(@Path("id") id: String): Observable<StoryDetails>
+    /**
+     * 获取指定id的详情
+     */
+    fun getStory(id: String): Observable<StoryDetailsModel>
 }

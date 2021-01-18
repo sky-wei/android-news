@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2021 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,19 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.contract
-
-import com.sky.android.news.base.BasePresenter
-import com.sky.android.news.base.BaseView
-import com.sky.android.news.data.model.CategoryModel
+package com.sky.android.news.data.service
 
 /**
- * Created by sky on 17-9-22.
+ * Created by sky on 2021-01-06.
  */
-interface CategoryContract {
+interface IServiceFactory {
+    /**
+     * 创建服务
+     * @param tClass
+     * @param <T>
+     * @return
+    </T> */
+    fun <T> createService(tClass: Class<T>): T
 
-    interface View : BaseView {
-
-        fun onLoadCategory(model: CategoryModel)
-
-        fun onLoadFailed(msg: String)
-    }
-
-    interface Presenter : BasePresenter {
-
-        fun loadCategory()
-    }
+    fun <T> createService(tClass: Class<T>, baseUrl: String): T
 }

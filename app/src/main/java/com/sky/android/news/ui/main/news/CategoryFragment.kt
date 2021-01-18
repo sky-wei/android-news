@@ -18,40 +18,40 @@ package com.sky.android.news.ui.main.news
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.hi.dhl.binding.viewbind
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentStatePagerItemAdapter
 import com.sky.android.news.R
-import com.sky.android.news.contract.CategoryContract
 import com.sky.android.news.data.model.CategoryModel
-import com.sky.android.news.data.source.NewsDataRepository
-import com.sky.android.news.data.source.NewsSourceFactory
 import com.sky.android.news.databinding.FragmentCategoryBinding
-import com.sky.android.news.presenter.CategoryPresenter
 import com.sky.android.news.ui.base.NewsFragment
 
 /**
  * Created by sky on 17-9-21.
  */
-class CategoryFragment : NewsFragment(), CategoryContract.View {
+class CategoryFragment : NewsFragment() {
 
     private val binding: FragmentCategoryBinding by viewbind()
-
-    private lateinit var mCategoryPresenter: CategoryContract.Presenter
+    private val viewModel by viewModels<CategoryViewModel>()
 
     override val layoutId: Int
         get() = R.layout.fragment_category
 
     override fun initView(view: View, args: Bundle?) {
 
-        val repository = NewsDataRepository(NewsSourceFactory(requireContext()))
-        mCategoryPresenter = CategoryPresenter(repository, this)
+        viewModel.message.observe(this) {
+            showMessage(it)
+        }
 
-        // 加载类别
-        mCategoryPresenter.loadCategory()
+        viewModel.category.observe(this) {
+            onLoadCategory(it)
+        }
+
+        viewModel.loadCategory()
     }
 
-    override fun onLoadCategory(model: CategoryModel) {
+    private fun onLoadCategory(model: CategoryModel) {
 
         val creator = FragmentPagerItems.with(context)
 
@@ -70,9 +70,5 @@ class CategoryFragment : NewsFragment(), CategoryContract.View {
 
         binding.viewpager.adapter = adapter
         binding.viewpagertab.setViewPager(binding.viewpager)
-    }
-
-    override fun onLoadFailed(msg: String) {
-        showMessage(msg)
     }
 }

@@ -14,33 +14,30 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.source.disk
+package com.sky.android.news.data.source.local
 
-import android.content.Context
-import com.sky.android.news.data.cache.StoryCache
+import com.sky.android.news.data.cache.IStoryCache
 import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.model.StoryListModel
-import com.sky.android.news.data.source.StoryDataSource
+import com.sky.android.news.data.source.IStorySource
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
-import org.reactivestreams.Subscriber
 
 /**
  * Created by sky on 17-9-28.
  */
-class DiskStoryDataSouce(private val mContext: Context, private val mCache: StoryCache) : StoryDataSource {
+class StoryLocalSource(
+        private val cache: IStoryCache
+) : IStorySource {
 
-    override fun getLatestStories(): Observable<StoryListModel> {
-        return Observable.create { handler(it, mCache.getLatestStories()) }
-    }
+    override fun getLatestStories(): Observable<StoryListModel> =
+            Observable.create { handler(it, cache.getLatestStories()) }
 
-    override fun getStories(date: String): Observable<StoryListModel> {
-        return Observable.create { handler(it, mCache.getStories(date)) }
-    }
+    override fun getStories(date: String): Observable<StoryListModel> =
+            Observable.create { handler(it, cache.getStories(date)) }
 
-    override fun getStory(id: String): Observable<StoryDetailsModel> {
-        return Observable.create { handler(it, mCache.getStory(id)) }
-    }
+    override fun getStory(id: String): Observable<StoryDetailsModel> =
+            Observable.create { handler(it, cache.getStory(id)) }
 
     private fun <T> handler(observableEmitter: ObservableEmitter<in T>, model: T?) {
 

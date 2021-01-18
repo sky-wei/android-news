@@ -20,7 +20,7 @@ import androidx.multidex.MultiDexApplication
 import com.iflytek.cloud.SpeechUtility
 import com.sky.android.common.util.Alog
 import com.sky.android.common.util.ToastUtil
-import com.sky.android.news.data.cache.impl.CacheManagerImpl
+import com.sky.android.news.data.cache.CacheManager
 
 /**
  * Created by sky on 17-9-21.
@@ -43,13 +43,13 @@ class App : MultiDexApplication() {
 //        Setting.setShowLog(BuildConfig.DEBUG)
 
         // 初始化...
-        CacheManagerImpl.getInstance(this)
+        CacheManager.getInstance(this)
     }
 
     override fun onTerminate() {
         super.onTerminate()
 
         // 关闭
-        CacheManagerImpl.getInstance(this).close()
+        CacheManager.getInstance(this).close()
     }
 }

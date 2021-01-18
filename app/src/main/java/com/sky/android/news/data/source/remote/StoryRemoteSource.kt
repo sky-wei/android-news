@@ -14,21 +14,26 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.source.cloud
+package com.sky.android.news.data.source.remote
 
 import com.sky.android.news.Constant
-import com.sky.android.news.data.cache.StoryCache
+import com.sky.android.news.data.cache.IStoryCache
 import com.sky.android.news.data.mapper.MapperFactory
 import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.model.StoryListModel
-import com.sky.android.news.data.service.StoryService
-import com.sky.android.news.data.source.StoryDataSource
+import com.sky.android.news.data.service.IServiceFactory
+import com.sky.android.news.data.service.IStoryService
+import com.sky.android.news.data.source.IStorySource
 import io.reactivex.Observable
+import io.reactivex.ObservableEmitter
 
 /**
  * Created by sky on 17-9-28.
  */
-class CloudStoryDataSouce(private val mCache: StoryCache) : CloudDataSource(), StoryDataSource {
+class StoryRemoteSource(
+        private val mServiceFactory : IServiceFactory,
+        private val mCache: IStoryCache
+) : IStorySource {
 
     override fun getLatestStories(): Observable<StoryListModel> {
 
@@ -66,7 +71,22 @@ class CloudStoryDataSouce(private val mCache: StoryCache) : CloudDataSource(), S
         }
     }
 
-    private fun buildZhiHuService(): StoryService {
-        return buildService(StoryService::class.java, Constant.Service.ZH_BASE_URL)
+    private fun buildZhiHuService(): IStoryService =
+            mServiceFactory.createService(IStoryService::class.java, Constant.Service.ZH_BASE_URL)
+
+    private fun <T> handler(observableEmitter: ObservableEmitter<in T>, model: T?) {
+
+        try {
+            if (model != null) {
+                // 处理下一步
+                observableEmitter.onNext(model)
+            }
+
+            // 完成
+            observableEmitter.onComplete()
+        } catch (e: Throwable) {
+            // 出错了
+            observableEmitter.onError(e)
+        }
     }
 }

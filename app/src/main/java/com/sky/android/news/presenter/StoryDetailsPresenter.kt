@@ -20,12 +20,12 @@ import com.sky.android.common.util.Alog
 import com.sky.android.news.base.BaseSubscriber
 import com.sky.android.news.contract.StoryDetailsContract
 import com.sky.android.news.data.model.StoryDetailsModel
-import com.sky.android.news.data.source.StoryDataSource
+import com.sky.android.news.data.source.IStorySource
 
 /**
  * Created by sky on 17-9-28.
  */
-class StoryDetailsPresenter(val source: StoryDataSource,
+class StoryDetailsPresenter(val source: IStorySource,
                             val view: StoryDetailsContract.View) : AbstractPresenter(), StoryDetailsContract.Presenter {
 
     override fun loadDetails(id: Long) {

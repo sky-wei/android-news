@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2021 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,46 +14,59 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.source.cloud
+package com.sky.android.news.data.service
 
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
-import com.sky.android.common.util.Alog
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.sky.android.news.Constant
 import com.sky.android.news.data.DataException
 import com.sky.android.news.data.news.Content
 import com.sky.android.news.data.news.Details
 import com.sky.android.news.data.news.HeadLine
 import com.sky.android.news.data.news.LineItem
-import io.reactivex.ObservableEmitter
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
-import org.reactivestreams.Subscriber
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Type
+import java.util.concurrent.TimeUnit
 
 /**
- * Created by sky on 17-9-21.
+ * Created by sky on 2021-01-06.
  */
-abstract class CloudDataSource {
+class ServiceFactory : IServiceFactory {
 
-    fun <T> buildService(tClass: Class<T>, baseUrl: String): T {
+    override fun <T> createService(tClass: Class<T>): T =
+            createService(tClass, Constant.Service.BASE_URL)
 
-        val client = OkHttpClient()
+    override fun <T> createService(tClass: Class<T>, baseUrl: String): T =
+            createRetrofit(createHttpClient(arrayListOf(baseUrl)), baseUrl).create(tClass)
+
+    /**
+     * 创建OkHttpClient
+     */
+    private fun createHttpClient(baseUrls: List<String>): OkHttpClient {
+        return OkHttpClient()
                 .newBuilder()
-                .addInterceptor(RequestInterceptor())
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .addInterceptor(NewsInterceptor())
                 .build()
+    }
 
-        val retrofit = Retrofit.Builder()
-                .client(client)
+    /**
+     * 创建Retrofit
+     */
+    private fun createRetrofit(client: OkHttpClient, baseUrl: String): Retrofit {
+        return Retrofit.Builder()
                 .baseUrl(baseUrl)
+                .client(client)
                 .addConverterFactory(GsonConverterFactory.create(newGosn()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .build()
-
-        return retrofit.create(tClass)
     }
 
     private fun newGosn(): Gson {
@@ -63,49 +76,13 @@ abstract class CloudDataSource {
                 .create()
     }
 
-    fun <T> handler(observableEmitter: ObservableEmitter<in T>, model: T?) {
-
-        try {
-            if (model != null) {
-                // 处理下一步
-                observableEmitter.onNext(model)
-            }
-
-            // 完成
-            observableEmitter.onComplete()
-        } catch (e: Throwable) {
-            // 出错了
-            observableEmitter.onError(e)
-        }
-    }
-
-    class RequestInterceptor : Interceptor {
-
-        override fun intercept(chain: Interceptor.Chain?): Response {
-
-            var request = chain!!.request()
-
-            val url = request.url().url()
-
-            Alog.d("RequestUrl: $url")
-
-            request = request.newBuilder()
-                    .addHeader("deviceplatform", "android")
-                    .removeHeader("User-Agent")
-                    .addHeader("User-Agent", "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:38.0) Gecko/20100101 Firefox/38.0")
-                    .build()
-
-            return chain.proceed(request)
-        }
-    }
-
     class HeadLineJsonDeserializer : JsonDeserializer<HeadLine> {
 
         override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): HeadLine {
 
             json.asJsonObject.entrySet().forEach {
                 // 转换
-                return HeadLine(context.deserialize<List<LineItem>>(
+                return HeadLine(context.deserialize(
                         it.value, object: TypeToken<List<LineItem>>() {}.type))
             }
             throw DataException("解析信息异常")
@@ -118,7 +95,7 @@ abstract class CloudDataSource {
 
             json.asJsonObject.entrySet().forEach {
                 // 转换
-                return Details(context.deserialize<Content>(
+                return Details(context.deserialize(
                         it.value, object: TypeToken<Content>() {}.type))
             }
             throw DataException("解析信息异常")

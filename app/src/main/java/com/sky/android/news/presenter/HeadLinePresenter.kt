@@ -23,13 +23,13 @@ import com.sky.android.news.contract.HeadLineContract
 import com.sky.android.news.data.model.CategoryItemModel
 import com.sky.android.news.data.model.HeadLineModel
 import com.sky.android.news.data.model.LineItemModel
-import com.sky.android.news.data.source.NewsDataSource
+import com.sky.android.news.data.source.INewsSource
 import com.sky.android.news.ui.helper.PageHelper
 
 /**
  * Created by sky on 17-9-22.
  */
-class HeadLinePresenter(val source: NewsDataSource,
+class HeadLinePresenter(val source: INewsSource,
                         val view: HeadLineContract.View) : AbstractPresenter(), HeadLineContract.Presenter {
 
     private lateinit var mItem: CategoryItemModel

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2021 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,40 +17,76 @@
 package com.sky.android.news.data.cache
 
 import com.sky.android.news.data.model.StoryDetailsModel
+import com.sky.android.news.data.model.StoryDetailsPackageModel
 import com.sky.android.news.data.model.StoryListModel
+import com.sky.android.news.data.model.StoryListPackageModel
 
 /**
  * Created by sky on 17-9-28.
  */
-interface StoryCache {
+class StoryCache(private val mCacheManager: ICacheManager) : IStoryCache {
 
-    /**
-     * 获取最后一次列表信息
-     */
-    fun getLatestStories(): StoryListModel?
+    private var mLatestStoriesKey = mCacheManager.buildKey(
+            StoryCache::class.java.name + ":getLatestStories()")
 
-    /**
-     * 保存最后一次列表信息
-     */
-    fun saveLatestStories(model: StoryListModel)
+    override fun getLatestStories(): StoryListModel? {
 
-    /**
-     * 获取指定日期的列表信息
-     */
-    fun getStories(date: String): StoryListModel?
+        val model = mCacheManager.get(mLatestStoriesKey, StoryListPackageModel::class.java)
 
-    /**
-     * 保存指定日期的列表信息
-     */
-    fun saveStories(date: String, model: StoryListModel)
+        if (model != null
+                && !isExpired(model.lastTime, 1000 * 60 * 60)) {
+            // 返回缓存数据
+            return model.model
+        }
+        return null
+    }
 
-    /**
-     * 获取指定id的详情
-     */
-    fun getStory(id: String): StoryDetailsModel?
+    override fun saveLatestStories(model: StoryListModel) {
+        mCacheManager.put(mLatestStoriesKey,
+                StoryListPackageModel(System.currentTimeMillis(), model))
+    }
 
-    /**
-     * 保存指定id的详情
-     */
-    fun saveStory(id: String, model: StoryDetailsModel)
+    override fun getStories(date: String): StoryListModel? {
+
+        val model = mCacheManager.get(
+                mCacheManager.buildKey(date), StoryListPackageModel::class.java)
+
+        if (model != null
+                && !isExpired(model.lastTime, 1000 * 60 * 60)) {
+            // 返回缓存数据
+            return model.model
+        }
+        return null
+    }
+
+    override fun saveStories(date: String, model: StoryListModel) {
+        mCacheManager.put(mCacheManager.buildKey(date),
+                StoryListPackageModel(System.currentTimeMillis(), model))
+    }
+
+    override fun getStory(id: String): StoryDetailsModel? {
+
+        val model = mCacheManager.get(
+                mCacheManager.buildKey(id), StoryDetailsPackageModel::class.java)
+
+        if (model != null
+                && !isExpired(model.lastTime, 1000 * 60 * 60 * 12)) {
+            // 返回缓存数据
+            return model.model
+        }
+        return null
+    }
+
+    override fun saveStory(id: String, model: StoryDetailsModel) {
+        mCacheManager.put(mCacheManager.buildKey(id),
+                StoryDetailsPackageModel(System.currentTimeMillis(), model))
+    }
+
+    private fun isExpired(lastTime: Long, timeout: Long): Boolean {
+
+        val curTime = System.currentTimeMillis()
+
+        // 当前时间-最后时间>=超时时间 || 异常情况: 当前时间 < 最后时间
+        return curTime - lastTime >= timeout || curTime < lastTime
+    }
 }

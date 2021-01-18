@@ -26,8 +26,7 @@ import com.sky.android.news.R
 import com.sky.android.news.contract.HeadLineContract
 import com.sky.android.news.data.model.CategoryItemModel
 import com.sky.android.news.data.model.LineItemModel
-import com.sky.android.news.data.source.NewsDataRepository
-import com.sky.android.news.data.source.NewsSourceFactory
+import com.sky.android.news.data.source.RepositoryFactory
 import com.sky.android.news.databinding.FragmentNewsBinding
 import com.sky.android.news.presenter.HeadLinePresenter
 import com.sky.android.news.ui.base.NewsFragment
@@ -63,7 +62,7 @@ class NetNewsFragment : NewsFragment(), HeadLineContract.View, OnItemEventListen
             adapter = mNewsAdapter
         }
 
-        val repository = NewsDataRepository(NewsSourceFactory(context))
+        val repository = RepositoryFactory.create(requireContext()).createNewsSource()
         mHeadLinePresenter = HeadLinePresenter(repository, this)
 
         // 刷新助手类

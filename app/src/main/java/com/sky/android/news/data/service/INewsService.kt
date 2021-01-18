@@ -14,32 +14,29 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.source
+package com.sky.android.news.data.service
 
-import com.sky.android.news.data.model.CategoryModel
-import com.sky.android.news.data.model.DetailsModel
-import com.sky.android.news.data.model.HeadLineModel
-import io.reactivex.Observable
+import com.sky.android.news.data.news.Details
+import com.sky.android.news.data.news.HeadLine
+import kotlinx.coroutines.Deferred
+import retrofit2.http.GET
+import retrofit2.http.Path
 
 /**
  * Created by sky on 17-9-21.
  */
+interface INewsService {
 
-interface NewsDataSource {
+    @GET("nc/article/headline/{tid}/{start}-{end}.html")
+    fun getHeadLine(
+            @Path("tid") tid: String,
+            @Path("start") start: Int,
+            @Path("end") end: Int
+    ): Deferred<HeadLine>
 
-    /**
-     * 获取分类列表
-     */
-    fun getCategory(): Observable<CategoryModel>
 
-    /**
-     * 获取新闻列表
-     */
-    fun getHeadLine(tid: String,
-                    start: Int, end: Int): Observable<HeadLineModel>
-
-    /**
-     * 获取详情信息
-     */
-    fun getDetails(docId: String): Observable<DetailsModel>
+    @GET("nc/article/{docId}/full.html")
+    fun getDetails(
+            @Path("docId") docId: String
+    ): Deferred<Details>
 }

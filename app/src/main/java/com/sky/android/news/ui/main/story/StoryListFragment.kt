@@ -25,8 +25,7 @@ import com.sky.android.core.interfaces.OnItemEventListener
 import com.sky.android.news.R
 import com.sky.android.news.contract.StoryListContract
 import com.sky.android.news.data.model.BaseViewType
-import com.sky.android.news.data.source.StoryDataRepository
-import com.sky.android.news.data.source.StorySourceFactory
+import com.sky.android.news.data.source.RepositoryFactory
 import com.sky.android.news.databinding.FragmentZhihuBinding
 import com.sky.android.news.presenter.StoryListPresenter
 import com.sky.android.news.ui.base.NewsFragment
@@ -63,7 +62,7 @@ class StoryListFragment : NewsFragment(), StoryListContract.View, OnItemEventLis
             adapter = mStoryAdapter
         }
 
-        val repository = StoryDataRepository(StorySourceFactory(context))
+        val repository = RepositoryFactory.create(requireContext()).createStorySource()
         mStoryListPresenter = StoryListPresenter(repository, this)
 
         // 刷新助手类
