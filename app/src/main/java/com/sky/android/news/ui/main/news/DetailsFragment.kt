@@ -25,17 +25,15 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.hi.dhl.binding.viewbind
 import com.iflytek.cloud.*
 import com.sky.android.common.util.ViewUtil
 import com.sky.android.news.R
-import com.sky.android.news.contract.DetailsContract
 import com.sky.android.news.data.model.ContentModel
 import com.sky.android.news.data.model.DetailsModel
 import com.sky.android.news.data.model.LineItemModel
-import com.sky.android.news.data.source.RepositoryFactory
 import com.sky.android.news.databinding.FragmentDetailsBinding
-import com.sky.android.news.presenter.DetailsPresenter
 import com.sky.android.news.ui.base.NewsFragment
 import com.sky.android.news.ui.helper.VImageGetter
 import com.sky.android.news.util.ActivityUtil
@@ -44,14 +42,14 @@ import com.sky.android.news.util.ActivityUtil
 /**
  * Created by sky on 17-9-23.
  */
-class DetailsFragment : NewsFragment(), DetailsContract.View, InitListener, SynthesizerListener {
+class DetailsFragment : NewsFragment(), InitListener, SynthesizerListener {
 
     private val binding: FragmentDetailsBinding by viewbind()
+    private val viewModel by viewModels<DetailsViewModel>()
 
     // 语音合成对象
 	private var mTts: SpeechSynthesizer? = null
     private lateinit var mContent: ContentModel
-    private lateinit var mDetailsPresenter: DetailsContract.Presenter
 
     override val layoutId: Int
         get() = R.layout.fragment_details
@@ -60,13 +58,19 @@ class DetailsFragment : NewsFragment(), DetailsContract.View, InitListener, Synt
 
         setHasOptionsMenu(true)
 
-//        webView.settings.defaultTextEncodingName = "UTF -8"
+        viewModel.apply {
+            loading.observe(this@DetailsFragment) {
+                ViewUtil.setVisibility(binding.tvLoading, it)
+            }
+            failure.observe(this@DetailsFragment) {
+                showMessage(it)
+            }
+            details.observe(this@DetailsFragment) {
+                onLoadDetails(it)
+            }
+        }
 
-        val repository = RepositoryFactory.create(requireContext()).createNewsSource()
-        mDetailsPresenter = DetailsPresenter(context, repository, this)
-
-        mDetailsPresenter.setCategoryItem(args!!.getSerializable("item") as LineItemModel)
-        mDetailsPresenter.loadDetails()
+        viewModel.loadDetails((args!!.getSerializable("item") as LineItemModel).docId)
     }
 
     override fun onDestroyView() {
@@ -116,7 +120,7 @@ class DetailsFragment : NewsFragment(), DetailsContract.View, InitListener, Synt
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onLoadDetails(model: DetailsModel) {
+    private fun onLoadDetails(model: DetailsModel) {
 
         mContent = model.models
 
@@ -127,18 +131,6 @@ class DetailsFragment : NewsFragment(), DetailsContract.View, InitListener, Synt
 
         // 使用WebView来处理
 //        webView.loadData(mContent.body, "text/html; charset=UTF-8", null)
-    }
-
-    override fun onLoadFailed(msg: String) {
-        showMessage(msg)
-    }
-
-    override fun showLoading() {
-        ViewUtil.setVisibility(binding.tvLoading, View.VISIBLE)
-    }
-
-    override fun cancelLoading() {
-        ViewUtil.setVisibility(binding.tvLoading, View.INVISIBLE)
     }
 
     override fun onInit(code: Int) {

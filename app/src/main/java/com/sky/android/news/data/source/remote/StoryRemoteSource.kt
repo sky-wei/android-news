@@ -21,11 +21,12 @@ import com.sky.android.news.data.cache.IStoryCache
 import com.sky.android.news.data.mapper.MapperFactory
 import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.model.StoryListModel
+import com.sky.android.news.data.model.XResult
 import com.sky.android.news.data.service.IServiceFactory
 import com.sky.android.news.data.service.IStoryService
 import com.sky.android.news.data.source.IStorySource
-import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
+import com.sky.android.news.ext.flowOfResult
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by sky on 17-9-28.
@@ -35,58 +36,51 @@ class StoryRemoteSource(
         private val mCache: IStoryCache
 ) : IStorySource {
 
-    override fun getLatestStories(): Observable<StoryListModel> {
+    override fun getLatestStories(): Flow<XResult<StoryListModel>> {
 
-        val service = buildZhiHuService()
+        return flowOfResult {
 
-        return service.getLatestStories().map { it ->
-            val model = MapperFactory.createStoryListMapper().transform(it)
-            // 保存到本地缓存
-            mCache.saveLatestStories(model)
-            model
+            val value = zhiHuService()
+                    .getLatestStories()
+                    .await()
+
+            MapperFactory
+                    .createStoryListMapper()
+                    .transform(value)
+                    .also { mCache.saveLatestStories(it) }
         }
     }
 
-    override fun getStories(date: String): Observable<StoryListModel> {
+    override fun getStories(date: String): Flow<XResult<StoryListModel>> {
 
-        val service = buildZhiHuService()
+        return flowOfResult {
 
-        return service.getStories(date).map { it ->
-            val model = MapperFactory.createStoryListMapper().transform(it)
-            // 保存到本地缓存
-            mCache.saveStories(date, model)
-            model
+            val value = zhiHuService()
+                    .getStories(date)
+                    .await()
+
+            MapperFactory
+                    .createStoryListMapper()
+                    .transform(value)
+                    .also { mCache.saveStories(date, it) }
         }
     }
 
-    override fun getStory(id: String): Observable<StoryDetailsModel> {
+    override fun getStory(id: String): Flow<XResult<StoryDetailsModel>> {
 
-        val service = buildZhiHuService()
+        return flowOfResult {
 
-        return service.getStory(id).map { it ->
-            val model = MapperFactory.createStoryDetailsMapper().transform(it)
-            // 保存到本地缓存
-            mCache.saveStory(id, model)
-            model
+            val value = zhiHuService()
+                    .getStory(id)
+                    .await()
+
+            MapperFactory
+                    .createStoryDetailsMapper()
+                    .transform(value)
+                    .also { mCache.saveStory(id, it) }
         }
     }
 
-    private fun buildZhiHuService(): IStoryService =
+    private fun zhiHuService(): IStoryService =
             mServiceFactory.createService(IStoryService::class.java, Constant.Service.ZH_BASE_URL)
-
-    private fun <T> handler(observableEmitter: ObservableEmitter<in T>, model: T?) {
-
-        try {
-            if (model != null) {
-                // 处理下一步
-                observableEmitter.onNext(model)
-            }
-
-            // 完成
-            observableEmitter.onComplete()
-        } catch (e: Throwable) {
-            // 出错了
-            observableEmitter.onError(e)
-        }
-    }
 }

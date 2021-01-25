@@ -80,7 +80,7 @@ class StoryAdapter(context: Context) : SimpleRecyclerAdapter<BaseViewType>(conte
     }
 
     inner class TopStoryHolder(itemView: View, adapter: BaseRecyclerAdapter<BaseViewType>)
-        : BaseRecyclerHolder<BaseViewType>(itemView, adapter), OnItemClickListener {
+        : BaseRecyclerHolder<BaseViewType>(itemView, adapter) {
 
         private val binding: ItemTopStoryBinding by viewbind()
         lateinit var convenientBanner: ConvenientBanner<TopStoryItemModel>
@@ -96,7 +96,7 @@ class StoryAdapter(context: Context) : SimpleRecyclerAdapter<BaseViewType>(conte
 
             convenientBanner.setOnItemClickListener {
                 val item = getItem(adapterPosition) as TopStoryListModel
-                callItemEvent(itemView, adapterPosition, item.topStories[position])
+                callItemEvent(1, itemView, adapterPosition, item.topStories[it])
             }
         }
 
@@ -106,10 +106,6 @@ class StoryAdapter(context: Context) : SimpleRecyclerAdapter<BaseViewType>(conte
 
             convenientBanner.setPages(BannerHolderCreator(), item.topStories)
             convenientBanner.notifyDataSetChanged()
-        }
-
-        override fun onItemClick(position: Int) {
-
         }
 
         override fun onAttachedToWindow() {

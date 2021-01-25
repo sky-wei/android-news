@@ -18,17 +18,14 @@ package com.sky.android.news.ui.main.news
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hi.dhl.binding.viewbind
 import com.sky.android.core.interfaces.OnItemEventListener
 import com.sky.android.news.R
-import com.sky.android.news.contract.HeadLineContract
 import com.sky.android.news.data.model.CategoryItemModel
-import com.sky.android.news.data.model.LineItemModel
-import com.sky.android.news.data.source.RepositoryFactory
 import com.sky.android.news.databinding.FragmentNewsBinding
-import com.sky.android.news.presenter.HeadLinePresenter
 import com.sky.android.news.ui.base.NewsFragment
 import com.sky.android.news.ui.helper.RecyclerHelper
 import com.sky.android.news.util.ActivityUtil
@@ -36,11 +33,11 @@ import com.sky.android.news.util.ActivityUtil
 /**
  * Created by sky on 17-9-21.
  */
-class NetNewsFragment : NewsFragment(), HeadLineContract.View, OnItemEventListener, RecyclerHelper.OnCallback {
+class NetNewsFragment : NewsFragment(), OnItemEventListener, RecyclerHelper.OnCallback {
 
     private val binding: FragmentNewsBinding by viewbind()
+    private val viewModel by viewModels<NetNewsViewModel>()
 
-    private lateinit var mHeadLinePresenter: HeadLineContract.Presenter
     private lateinit var mRecyclerHelper: RecyclerHelper
 
     private lateinit var mNewsAdapter: NewsAdapter
@@ -62,16 +59,28 @@ class NetNewsFragment : NewsFragment(), HeadLineContract.View, OnItemEventListen
             adapter = mNewsAdapter
         }
 
-        val repository = RepositoryFactory.create(requireContext()).createNewsSource()
-        mHeadLinePresenter = HeadLinePresenter(repository, this)
-
         // 刷新助手类
         mRecyclerHelper = RecyclerHelper(binding.swipeRefreshLayout, binding.recyclerView, this)
         mRecyclerHelper.setLoadMore(true)
         mRecyclerHelper.forceRefreshing()
 
-        mHeadLinePresenter.setCategoryItem(args!!.getSerializable("item") as CategoryItemModel)
-        mHeadLinePresenter.loadHeadLine()
+        viewModel.apply {
+
+            loading.observe(this@NetNewsFragment) {
+                if (!it) cancelLoading()
+            }
+            failure.observe(this@NetNewsFragment) {
+                showMessage(it)
+            }
+            lineItem.observe(this@NetNewsFragment) {
+                // 更新列表信息
+                mNewsAdapter.items = it
+                mNewsAdapter.notifyDataSetChanged()
+            }
+        }
+
+        viewModel.tid = (args!!.getSerializable("item") as CategoryItemModel).tid
+        viewModel.loadHeadLine()
     }
 
     override fun showLoading() {
@@ -79,17 +88,6 @@ class NetNewsFragment : NewsFragment(), HeadLineContract.View, OnItemEventListen
 
     override fun cancelLoading() {
         mRecyclerHelper.cancelRefreshing()
-    }
-
-    override fun onLoadHeadLine(model: List<LineItemModel>) {
-
-        // 更新列表信息
-        mNewsAdapter.items = model
-        mNewsAdapter.notifyDataSetChanged()
-    }
-
-    override fun onLoadFailed(msg: String) {
-        showMessage(msg)
     }
 
     override fun onItemEvent(event: Int, view: View, position: Int, vararg args: Any?): Boolean {
@@ -102,10 +100,10 @@ class NetNewsFragment : NewsFragment(), HeadLineContract.View, OnItemEventListen
 
     override fun onRefresh() {
         // 重新加载数据
-        mHeadLinePresenter.loadHeadLine()
+        viewModel.loadHeadLine()
     }
 
     override fun onLoadMore() {
-        mHeadLinePresenter.loadMoreHeadLine()
+        viewModel.loadMoreHeadLine()
     }
 }

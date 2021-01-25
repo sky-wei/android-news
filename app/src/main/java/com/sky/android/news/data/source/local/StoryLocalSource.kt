@@ -19,9 +19,10 @@ package com.sky.android.news.data.source.local
 import com.sky.android.news.data.cache.IStoryCache
 import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.model.StoryListModel
+import com.sky.android.news.data.model.XResult
 import com.sky.android.news.data.source.IStorySource
-import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
+import com.sky.android.news.ext.flowOfResultNull
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by sky on 17-9-28.
@@ -30,28 +31,12 @@ class StoryLocalSource(
         private val cache: IStoryCache
 ) : IStorySource {
 
-    override fun getLatestStories(): Observable<StoryListModel> =
-            Observable.create { handler(it, cache.getLatestStories()) }
+    override fun getLatestStories(): Flow<XResult<StoryListModel>> =
+            flowOfResultNull { cache.getLatestStories() }
 
-    override fun getStories(date: String): Observable<StoryListModel> =
-            Observable.create { handler(it, cache.getStories(date)) }
+    override fun getStories(date: String): Flow<XResult<StoryListModel>> =
+            flowOfResultNull { cache.getStories(date) }
 
-    override fun getStory(id: String): Observable<StoryDetailsModel> =
-            Observable.create { handler(it, cache.getStory(id)) }
-
-    private fun <T> handler(observableEmitter: ObservableEmitter<in T>, model: T?) {
-
-        try {
-            if (model != null) {
-                // 处理下一步
-                observableEmitter.onNext(model)
-            }
-
-            // 完成
-            observableEmitter.onComplete()
-        } catch (e: Throwable) {
-            // 出错了
-            observableEmitter.onError(e)
-        }
-    }
+    override fun getStory(id: String): Flow<XResult<StoryDetailsModel>> =
+            flowOfResultNull { cache.getStory(id) }
 }

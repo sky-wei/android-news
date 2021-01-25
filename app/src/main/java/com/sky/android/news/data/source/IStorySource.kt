@@ -18,7 +18,8 @@ package com.sky.android.news.data.source
 
 import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.model.StoryListModel
-import io.reactivex.Observable
+import com.sky.android.news.data.model.XResult
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by sky on 17-9-28.
@@ -28,15 +29,15 @@ interface IStorySource {
     /**
      * 获取最后一次列表
      */
-    fun getLatestStories(): Observable<StoryListModel>
+    fun getLatestStories(): Flow<XResult<StoryListModel>>
 
     /**
      * 获取指定日期的列表
      */
-    fun getStories(date: String): Observable<StoryListModel>
+    fun getStories(date: String): Flow<XResult<StoryListModel>>
 
     /**
      * 获取指定id的详情
      */
-    fun getStory(id: String): Observable<StoryDetailsModel>
+    fun getStory(id: String): Flow<XResult<StoryDetailsModel>>
 }

@@ -14,26 +14,24 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.ui.main.news
+package com.sky.android.news.ui.main.story
 
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.sky.android.news.data.model.DetailsModel
+import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.source.RepositoryFactory
 import com.sky.android.news.ext.doFailure
 import com.sky.android.news.ext.doSuccess
 import com.sky.android.news.ui.base.NewsViewModel
-import com.sky.android.news.ui.helper.DetailsHelper
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 
 /**
- * Created by sky on 2021-01-06.
+ * Created by sky on 2021-01-25.
  */
-class DetailsViewModel(
+class StoryDetailsViewModel(
         application: Application
 ) : NewsViewModel(application) {
 
@@ -43,33 +41,16 @@ class DetailsViewModel(
     private val mFailure = MutableLiveData<String>()
     val failure: LiveData<String> = mFailure
 
-    private val mDetails = MutableLiveData<DetailsModel>()
-    val details: LiveData<DetailsModel> = mDetails
+    private val mDetails = MutableLiveData<StoryDetailsModel>()
+    val details: LiveData<StoryDetailsModel> = mDetails
 
-    private val mRepository by lazy { RepositoryFactory.create(application).createNewsSource() }
-    private val mDetailsHelper = DetailsHelper(application)
+    private val mRepository by lazy { RepositoryFactory.create(application).createStorySource() }
 
-
-    fun loadDetails(docId: String) {
+    fun loadDetails(id: Long) {
 
         launchOnUI {
-            mRepository.getDetails(docId)
-                    .map {
-                        it.doSuccess {
-                            val content = it.models
 
-                            // 转换结果
-                            content.body = mDetailsHelper.replaceImage(content.body, content.img)
-                            content.body = mDetailsHelper.replaceVideo(content.body, content.video)
-
-                            // 截取时间
-                            val index = content.pTime.indexOf(" ")
-
-                            if (index != -1) {
-                                content.pTime = content.pTime.substring(0, index)
-                            }
-                        }
-                    }
+            mRepository.getStory(id.toString())
                     .onStart { mLoading.value = true }
                     .onCompletion { mLoading.value = false }
                     .collect {

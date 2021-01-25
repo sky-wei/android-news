@@ -17,23 +17,24 @@
 package com.sky.android.news.ui.main.news
 
 import android.app.Application
+import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.sky.android.news.data.model.DetailsModel
+import com.sky.android.news.data.model.LineItemModel
 import com.sky.android.news.data.source.RepositoryFactory
 import com.sky.android.news.ext.doFailure
 import com.sky.android.news.ext.doSuccess
 import com.sky.android.news.ui.base.NewsViewModel
-import com.sky.android.news.ui.helper.DetailsHelper
+import com.sky.android.news.ui.helper.PageHelper
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 
 /**
- * Created by sky on 2021-01-06.
+ * Created by sky on 2021-01-25.
  */
-class DetailsViewModel(
+class NetNewsViewModel(
         application: Application
 ) : NewsViewModel(application) {
 
@@ -43,40 +44,66 @@ class DetailsViewModel(
     private val mFailure = MutableLiveData<String>()
     val failure: LiveData<String> = mFailure
 
-    private val mDetails = MutableLiveData<DetailsModel>()
-    val details: LiveData<DetailsModel> = mDetails
+    private val mLineItem = MutableLiveData<List<LineItemModel>>()
+    val lineItem: LiveData<List<LineItemModel>> = mLineItem
+
 
     private val mRepository by lazy { RepositoryFactory.create(application).createNewsSource() }
-    private val mDetailsHelper = DetailsHelper(application)
+    private val mPageHelper = PageHelper<LineItemModel>()
 
+    var tid: String = ""
 
-    fun loadDetails(docId: String) {
+    fun loadHeadLine() {
+        // 加载
+        loadHeadLine(0, false)
+    }
+
+    fun loadMoreHeadLine() {
+
+        if (!mPageHelper.isNextPage()) {
+            mLoading.value = false
+            return
+        }
+
+        // 加载更多数据
+        loadHeadLine(mPageHelper.getCurPage() + 1, true)
+    }
+
+    private fun loadHeadLine(curPage: Int, loadMore: Boolean) {
 
         launchOnUI {
-            mRepository.getDetails(docId)
+
+            val start = curPage * PageHelper.PAGE_SIZE
+
+            mRepository.getHeadLine(tid, start, start + PageHelper.PAGE_SIZE)
                     .map {
                         it.doSuccess {
-                            val content = it.models
+                            // 删除不运行的新闻
+                            var tempList = ArrayList<LineItemModel>()
 
-                            // 转换结果
-                            content.body = mDetailsHelper.replaceImage(content.body, content.img)
-                            content.body = mDetailsHelper.replaceVideo(content.body, content.video)
-
-                            // 截取时间
-                            val index = content.pTime.indexOf(" ")
-
-                            if (index != -1) {
-                                content.pTime = content.pTime.substring(0, index)
+                            it.lineItems.forEach {
+                                // 添加有效的新闻
+                                if (TextUtils.isEmpty(it.template)) tempList.add(it)
                             }
+
+                            it.lineItems = tempList
                         }
                     }
                     .onStart { mLoading.value = true }
                     .onCompletion { mLoading.value = false }
                     .collect {
+
                         it.doFailure {
-                            mFailure.value = "加载详情内容失败"
+                            mFailure.value = "加载列表信息失败"
                         }.doSuccess {
-                            mDetails.value = it
+                            if (loadMore) {
+                                // 追加数据
+                                mPageHelper.appendData(it.lineItems)
+                            } else {
+                                // 设置数据
+                                mPageHelper.setData(it.lineItems)
+                            }
+                            mLineItem.value = mPageHelper.getData()
                         }
                     }
         }

@@ -18,16 +18,13 @@ package com.sky.android.news.ui.main.story
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hi.dhl.binding.viewbind
 import com.sky.android.core.interfaces.OnItemEventListener
 import com.sky.android.news.R
-import com.sky.android.news.contract.StoryListContract
-import com.sky.android.news.data.model.BaseViewType
-import com.sky.android.news.data.source.RepositoryFactory
 import com.sky.android.news.databinding.FragmentZhihuBinding
-import com.sky.android.news.presenter.StoryListPresenter
 import com.sky.android.news.ui.base.NewsFragment
 import com.sky.android.news.ui.helper.RecyclerHelper
 import com.sky.android.news.util.ActivityUtil
@@ -36,11 +33,11 @@ import java.io.Serializable
 /**
  * Created by sky on 17-9-28.
  */
-class StoryListFragment : NewsFragment(), StoryListContract.View, OnItemEventListener, RecyclerHelper.OnCallback {
+class StoryListFragment : NewsFragment(), OnItemEventListener, RecyclerHelper.OnCallback {
 
     private val binding: FragmentZhihuBinding by viewbind()
+    private val viewModel by viewModels<StoryListViewModel>()
 
-    private lateinit var mStoryListPresenter: StoryListContract.Presenter
     private lateinit var mRecyclerHelper: RecyclerHelper
 
     private lateinit var mStoryAdapter: StoryAdapter
@@ -62,16 +59,27 @@ class StoryListFragment : NewsFragment(), StoryListContract.View, OnItemEventLis
             adapter = mStoryAdapter
         }
 
-        val repository = RepositoryFactory.create(requireContext()).createStorySource()
-        mStoryListPresenter = StoryListPresenter(repository, this)
-
         // 刷新助手类
         mRecyclerHelper = RecyclerHelper(binding.swipeRefreshLayout, binding.recyclerView, this)
         mRecyclerHelper.setLoadMore(true)
         mRecyclerHelper.forceRefreshing()
 
+        viewModel.apply {
+
+            loading.observe(this@StoryListFragment) {
+                if (!it) cancelLoading()
+            }
+            failure.observe(this@StoryListFragment) {
+                showMessage(it)
+            }
+            storyList.observe(this@StoryListFragment) {
+                mStoryAdapter.items = it
+                mStoryAdapter.notifyDataSetChanged()
+            }
+        }
+
         // 加载最后一个信息
-        mStoryListPresenter.loadLastStories()
+        viewModel.loadLastStories()
     }
 
     override fun showLoading() {
@@ -96,22 +104,12 @@ class StoryListFragment : NewsFragment(), StoryListContract.View, OnItemEventLis
         return true
     }
 
-    override fun onLoadStories(model: List<BaseViewType>) {
-
-        mStoryAdapter.items = model
-        mStoryAdapter.notifyDataSetChanged()
-    }
-
-    override fun onLoadFailed(msg: String) {
-        showMessage(msg)
-    }
-
     override fun onRefresh() {
         // 重新加载数据
-        mStoryListPresenter.loadLastStories()
+        viewModel.loadLastStories()
     }
 
     override fun onLoadMore() {
-        mStoryListPresenter.loadMoreStories()
+        viewModel.loadMoreStories()
     }
 }

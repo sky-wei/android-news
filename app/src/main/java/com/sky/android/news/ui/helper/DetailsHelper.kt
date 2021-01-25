@@ -19,14 +19,11 @@ package com.sky.android.news.ui.helper
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.text.Html
-import android.text.Spanned
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.sky.android.common.util.CollectionUtil
-import com.sky.android.news.data.model.ContentModel
 import com.sky.android.news.data.model.ImageModel
 import com.sky.android.news.data.model.VideoModel
-import io.reactivex.Observable
 
 
 /**
@@ -64,19 +61,6 @@ class DetailsHelper(val context: Context) {
 
     private fun getImageTag(url: String): String {
         return "<img src=\"$url\" />"
-    }
-
-    fun test(textView: TextView, content: ContentModel): Observable<Spanned> {
-
-        return Observable.unsafeCreate<Spanned> {
-
-            try {
-                val body = replaceImage(content.body, content.img)
-                it.onNext(Html.fromHtml(body, Test(textView), null))
-            } catch (tr: Throwable) {
-                it.onError(tr)
-            }
-        }
     }
 
     inner class Test(private val textView: TextView) : Html.ImageGetter {

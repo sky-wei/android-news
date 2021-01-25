@@ -18,7 +18,11 @@ package com.sky.android.news.data.source
 
 import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.model.StoryListModel
-import io.reactivex.Observable
+import com.sky.android.news.data.model.XResult
+import com.sky.android.news.ext.concatResult
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 
 /**
  * Created by sky on 17-9-28.
@@ -28,30 +32,15 @@ class StoryRepository(
         private val remote: IStorySource
 ) : IStorySource {
 
-    override fun getLatestStories(): Observable<StoryListModel> {
+    override fun getLatestStories(): Flow<XResult<StoryListModel>> =
+            concatResult(local.getLatestStories()) { remote.getLatestStories() }
+                    .flowOn(Dispatchers.IO)
 
-        val localObservable = local.getLatestStories()
-        val remoteObservable = remote.getLatestStories()
+    override fun getStories(date: String): Flow<XResult<StoryListModel>> =
+            concatResult(local.getStories(date)) { remote.getStories(date) }
+                    .flowOn(Dispatchers.IO)
 
-        return Observable
-                .concat(localObservable, remoteObservable)
-    }
-
-    override fun getStories(date: String): Observable<StoryListModel> {
-
-        val localObservable = local.getStories(date)
-        val remoteObservable = remote.getStories(date)
-
-        return Observable
-                .concat(localObservable, remoteObservable)
-    }
-
-    override fun getStory(id: String): Observable<StoryDetailsModel> {
-
-        val localObservable = local.getStory(id)
-        val remoteObservable = remote.getStory(id)
-
-        return Observable
-                .concat(localObservable, remoteObservable)
-    }
+    override fun getStory(id: String): Flow<XResult<StoryDetailsModel>> =
+            concatResult(local.getStory(id)) { remote.getStory(id) }
+                    .flowOn(Dispatchers.IO)
 }

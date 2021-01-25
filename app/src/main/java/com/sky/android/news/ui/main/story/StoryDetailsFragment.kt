@@ -22,27 +22,25 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.hi.dhl.binding.viewbind
 import com.sky.android.news.R
-import com.sky.android.news.contract.StoryDetailsContract
 import com.sky.android.news.data.model.BaseItemModel
 import com.sky.android.news.data.model.StoryDetailsModel
-import com.sky.android.news.data.source.RepositoryFactory
 import com.sky.android.news.databinding.FragmentStoryDetailsBinding
-import com.sky.android.news.presenter.StoryDetailsPresenter
 import com.sky.android.news.ui.base.NewsFragment
 import com.sky.android.news.util.ActivityUtil
 
 /**
  * Created by sky on 17-9-28.
  */
-class StoryDetailsFragment : NewsFragment(), StoryDetailsContract.View {
+class StoryDetailsFragment : NewsFragment() {
 
     private val binding: FragmentStoryDetailsBinding by viewbind()
+    private val viewModel by viewModels<StoryDetailsViewModel>()
 
     private lateinit var mModel: StoryDetailsModel
-    private lateinit var mStoryDetailsPresenter: StoryDetailsContract.Presenter
 
     override val layoutId: Int
         get() = R.layout.fragment_story_details
@@ -55,11 +53,17 @@ class StoryDetailsFragment : NewsFragment(), StoryDetailsContract.View {
 
         val item = args!!.getSerializable("item") as BaseItemModel
 
-        val repository = RepositoryFactory.create(requireContext()).createStorySource()
-        mStoryDetailsPresenter = StoryDetailsPresenter(repository, this)
+        viewModel.apply {
+            failure.observe(this@StoryDetailsFragment) {
+                showMessage(it)
+            }
+            details.observe(this@StoryDetailsFragment) {
+                onLoadDetails(it)
+            }
+        }
 
         // 加载详情
-        mStoryDetailsPresenter.loadDetails(item.id)
+        viewModel.loadDetails(item.id)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -83,7 +87,7 @@ class StoryDetailsFragment : NewsFragment(), StoryDetailsContract.View {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onLoadDetails(model: StoryDetailsModel) {
+    private fun onLoadDetails(model: StoryDetailsModel) {
 
         mModel = model
 
@@ -95,10 +99,6 @@ class StoryDetailsFragment : NewsFragment(), StoryDetailsContract.View {
         // 使用WebView来处理
         binding.webView.loadDataWithBaseURL("file:///android_asset/",
                 stitching(model.body), "text/html", "UTF-8", null)
-    }
-
-    override fun onLoadFailed(msg: String) {
-        showMessage(msg)
     }
 
     /**
