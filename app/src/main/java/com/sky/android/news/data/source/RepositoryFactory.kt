@@ -24,12 +24,14 @@ import com.sky.android.news.data.source.local.NewsLocalSource
 import com.sky.android.news.data.source.local.StoryLocalSource
 import com.sky.android.news.data.source.remote.NewsRemoteSource
 import com.sky.android.news.data.source.remote.StoryRemoteSource
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
 /**
  * Created by sky on 2021-01-06.
  */
-class RepositoryFactory(
-        private val mContext: Context
+class RepositoryFactory @Inject constructor(
+        @ApplicationContext private val mContext: Context
 ) : IRepositoryFactory {
 
     companion object {

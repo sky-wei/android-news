@@ -22,23 +22,32 @@ import androidx.fragment.app.viewModels
 import com.hi.dhl.binding.viewbind
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentStatePagerItemAdapter
+import com.sky.android.common.util.Alog
 import com.sky.android.news.R
 import com.sky.android.news.data.model.CategoryModel
+import com.sky.android.news.data.source.INewsSource
 import com.sky.android.news.databinding.FragmentCategoryBinding
 import com.sky.android.news.ui.base.NewsFragment
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /**
  * Created by sky on 17-9-21.
  */
+@AndroidEntryPoint
 class CategoryFragment : NewsFragment() {
 
     private val binding: FragmentCategoryBinding by viewbind()
     private val viewModel by viewModels<CategoryViewModel>()
 
+    @Inject lateinit var source: INewsSource
+
     override val layoutId: Int
         get() = R.layout.fragment_category
 
     override fun initView(view: View, args: Bundle?) {
+
+        Alog.d(">>>>>>>>>>>>>>>>>>>> $source")
 
         viewModel.message.observe(this) {
             showMessage(it)

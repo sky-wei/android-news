@@ -19,17 +19,21 @@ package com.sky.android.news.ui.main.news
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.sky.android.news.data.model.CategoryModel
+import com.sky.android.news.data.source.IRepositoryFactory
 import com.sky.android.news.data.source.RepositoryFactory
 import com.sky.android.news.ext.doFailure
 import com.sky.android.news.ext.doSuccess
 import com.sky.android.news.ui.base.NewsViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 
 /**
  * Created by sky on 2021-01-06.
  */
-class CategoryViewModel(
-        application: Application
+@HiltViewModel
+class CategoryViewModel constructor (
+        application: Application,
+        private val mFactory: IRepositoryFactory
 ) : NewsViewModel(application) {
 
     private val mRepository by lazy { RepositoryFactory.create(application).createNewsSource() }

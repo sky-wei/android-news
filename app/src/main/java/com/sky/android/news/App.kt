@@ -21,10 +21,12 @@ import com.iflytek.cloud.SpeechUtility
 import com.sky.android.common.util.Alog
 import com.sky.android.common.util.ToastUtil
 import com.sky.android.news.data.cache.CacheManager
+import dagger.hilt.android.HiltAndroidApp
 
 /**
  * Created by sky on 17-9-21.
  */
+@HiltAndroidApp
 class App : MultiDexApplication() {
 
     override fun onCreate() {

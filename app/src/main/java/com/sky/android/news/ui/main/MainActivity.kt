@@ -37,7 +37,9 @@ import com.sky.android.news.ui.main.news.CategoryFragment
 import com.sky.android.news.ui.setting.SettingsFragment
 import com.sky.android.news.ui.main.story.StoryListFragment
 import com.sky.android.news.util.ActivityUtil
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : NewsActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private var mKeyTime: Long = 0

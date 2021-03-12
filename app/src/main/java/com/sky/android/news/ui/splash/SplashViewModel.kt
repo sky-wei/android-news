@@ -23,10 +23,12 @@ import androidx.lifecycle.MutableLiveData
 import com.sky.android.news.ui.base.NewsViewModel
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 /**
  * Created by sky on 2020-12-17.
  */
+@HiltViewModel
 class SplashViewModel(
         application: Application
 ) : NewsViewModel(application) {
