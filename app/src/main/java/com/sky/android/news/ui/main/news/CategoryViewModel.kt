@@ -19,24 +19,22 @@ package com.sky.android.news.ui.main.news
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.sky.android.news.data.model.CategoryModel
-import com.sky.android.news.data.source.IRepositoryFactory
-import com.sky.android.news.data.source.RepositoryFactory
+import com.sky.android.news.data.source.INewsSource
 import com.sky.android.news.ext.doFailure
 import com.sky.android.news.ext.doSuccess
 import com.sky.android.news.ui.base.NewsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
+import javax.inject.Inject
 
 /**
  * Created by sky on 2021-01-06.
  */
 @HiltViewModel
-class CategoryViewModel constructor (
+class CategoryViewModel @Inject constructor (
         application: Application,
-        private val mFactory: IRepositoryFactory
+        private val source: INewsSource
 ) : NewsViewModel(application) {
-
-    private val mRepository by lazy { RepositoryFactory.create(application).createNewsSource() }
 
     val category = MutableLiveData<CategoryModel>()
     val message = MutableLiveData<String>()
@@ -45,7 +43,7 @@ class CategoryViewModel constructor (
 
         launchOnUI{
             // 加载分类
-            mRepository.getCategory()
+            source.getCategory()
                     .collect {
                         it.doSuccess {
                             category.value = it

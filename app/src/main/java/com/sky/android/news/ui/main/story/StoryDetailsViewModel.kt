@@ -20,19 +20,23 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sky.android.news.data.model.StoryDetailsModel
-import com.sky.android.news.data.source.RepositoryFactory
+import com.sky.android.news.data.source.IStorySource
 import com.sky.android.news.ext.doFailure
 import com.sky.android.news.ext.doSuccess
 import com.sky.android.news.ui.base.NewsViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
+import javax.inject.Inject
 
 /**
  * Created by sky on 2021-01-25.
  */
-class StoryDetailsViewModel(
-        application: Application
+@HiltViewModel
+class StoryDetailsViewModel @Inject constructor(
+        application: Application,
+        private val source: IStorySource
 ) : NewsViewModel(application) {
 
     private val mLoading = MutableLiveData<Boolean>()
@@ -44,13 +48,11 @@ class StoryDetailsViewModel(
     private val mDetails = MutableLiveData<StoryDetailsModel>()
     val details: LiveData<StoryDetailsModel> = mDetails
 
-    private val mRepository by lazy { RepositoryFactory.create(application).createStorySource() }
-
     fun loadDetails(id: Long) {
 
         launchOnUI {
 
-            mRepository.getStory(id.toString())
+            source.getStory(id.toString())
                     .onStart { mLoading.value = true }
                     .onCompletion { mLoading.value = false }
                     .collect {

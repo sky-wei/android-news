@@ -25,10 +25,12 @@ import com.sky.android.news.databinding.AppBarFrameBinding
 import com.sky.android.news.ext.applyTo
 import com.sky.android.news.ui.common.CommonActivity
 import com.sky.android.news.ui.base.NewsActivity
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Created by sky on 17-9-23.
  */
+@AndroidEntryPoint
 class DetailsActivity : NewsActivity() {
 
     companion object {

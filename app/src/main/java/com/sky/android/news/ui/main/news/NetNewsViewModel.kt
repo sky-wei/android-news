@@ -21,21 +21,25 @@ import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sky.android.news.data.model.LineItemModel
-import com.sky.android.news.data.source.RepositoryFactory
+import com.sky.android.news.data.source.INewsSource
 import com.sky.android.news.ext.doFailure
 import com.sky.android.news.ext.doSuccess
 import com.sky.android.news.ui.base.NewsViewModel
 import com.sky.android.news.ui.helper.PageHelper
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
+import javax.inject.Inject
 
 /**
  * Created by sky on 2021-01-25.
  */
-class NetNewsViewModel(
-        application: Application
+@HiltViewModel
+class NetNewsViewModel @Inject constructor(
+        application: Application,
+        private val source: INewsSource
 ) : NewsViewModel(application) {
 
     private val mLoading = MutableLiveData<Boolean>()
@@ -48,7 +52,6 @@ class NetNewsViewModel(
     val lineItem: LiveData<List<LineItemModel>> = mLineItem
 
 
-    private val mRepository by lazy { RepositoryFactory.create(application).createNewsSource() }
     private val mPageHelper = PageHelper<LineItemModel>()
 
     var tid: String = ""
@@ -75,7 +78,7 @@ class NetNewsViewModel(
 
             val start = curPage * PageHelper.PAGE_SIZE
 
-            mRepository.getHeadLine(tid, start, start + PageHelper.PAGE_SIZE)
+            source.getHeadLine(tid, start, start + PageHelper.PAGE_SIZE)
                     .map {
                         it.doSuccess {
                             // 删除不运行的新闻

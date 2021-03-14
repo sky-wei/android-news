@@ -31,10 +31,12 @@ import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.databinding.FragmentStoryDetailsBinding
 import com.sky.android.news.ui.base.NewsFragment
 import com.sky.android.news.util.ActivityUtil
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Created by sky on 17-9-28.
  */
+@AndroidEntryPoint
 class StoryDetailsFragment : NewsFragment() {
 
     private val binding: FragmentStoryDetailsBinding by viewbind()

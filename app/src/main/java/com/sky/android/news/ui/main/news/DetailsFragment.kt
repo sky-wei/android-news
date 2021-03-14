@@ -37,11 +37,13 @@ import com.sky.android.news.databinding.FragmentDetailsBinding
 import com.sky.android.news.ui.base.NewsFragment
 import com.sky.android.news.ui.helper.VImageGetter
 import com.sky.android.news.util.ActivityUtil
+import dagger.hilt.android.AndroidEntryPoint
 
 
 /**
  * Created by sky on 17-9-23.
  */
+@AndroidEntryPoint
 class DetailsFragment : NewsFragment(), InitListener, SynthesizerListener {
 
     private val binding: FragmentDetailsBinding by viewbind()

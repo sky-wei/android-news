@@ -29,10 +29,12 @@ import com.sky.android.news.databinding.FragmentNewsBinding
 import com.sky.android.news.ui.base.NewsFragment
 import com.sky.android.news.ui.helper.RecyclerHelper
 import com.sky.android.news.util.ActivityUtil
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Created by sky on 17-9-21.
  */
+@AndroidEntryPoint
 class NetNewsFragment : NewsFragment(), OnItemEventListener, RecyclerHelper.OnCallback {
 
     private val binding: FragmentNewsBinding by viewbind()

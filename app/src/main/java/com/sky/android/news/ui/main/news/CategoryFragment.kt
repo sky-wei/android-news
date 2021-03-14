@@ -40,14 +40,14 @@ class CategoryFragment : NewsFragment() {
     private val binding: FragmentCategoryBinding by viewbind()
     private val viewModel by viewModels<CategoryViewModel>()
 
-    @Inject lateinit var source: INewsSource
+//    @Inject lateinit var source: INewsSource
 
     override val layoutId: Int
         get() = R.layout.fragment_category
 
     override fun initView(view: View, args: Bundle?) {
 
-        Alog.d(">>>>>>>>>>>>>>>>>>>> $source")
+//        Alog.d(">>>>>>>>>>>>>>>>>>>> $source")
 
         viewModel.message.observe(this) {
             showMessage(it)

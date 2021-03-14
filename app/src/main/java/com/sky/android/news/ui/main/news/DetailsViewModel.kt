@@ -20,21 +20,25 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sky.android.news.data.model.DetailsModel
-import com.sky.android.news.data.source.RepositoryFactory
+import com.sky.android.news.data.source.INewsSource
 import com.sky.android.news.ext.doFailure
 import com.sky.android.news.ext.doSuccess
 import com.sky.android.news.ui.base.NewsViewModel
 import com.sky.android.news.ui.helper.DetailsHelper
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
+import javax.inject.Inject
 
 /**
  * Created by sky on 2021-01-06.
  */
-class DetailsViewModel(
-        application: Application
+@HiltViewModel
+class DetailsViewModel @Inject constructor(
+        application: Application,
+        private val source: INewsSource
 ) : NewsViewModel(application) {
 
     private val mLoading = MutableLiveData<Boolean>()
@@ -46,14 +50,13 @@ class DetailsViewModel(
     private val mDetails = MutableLiveData<DetailsModel>()
     val details: LiveData<DetailsModel> = mDetails
 
-    private val mRepository by lazy { RepositoryFactory.create(application).createNewsSource() }
     private val mDetailsHelper = DetailsHelper(application)
 
 
     fun loadDetails(docId: String) {
 
         launchOnUI {
-            mRepository.getDetails(docId)
+            source.getDetails(docId)
                     .map {
                         it.doSuccess {
                             val content = it.models

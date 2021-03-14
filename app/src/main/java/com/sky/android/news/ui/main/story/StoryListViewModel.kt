@@ -22,20 +22,24 @@ import androidx.lifecycle.MutableLiveData
 import com.sky.android.news.data.model.BaseViewType
 import com.sky.android.news.data.model.NodeItemModel
 import com.sky.android.news.data.model.TopStoryListModel
-import com.sky.android.news.data.source.RepositoryFactory
+import com.sky.android.news.data.source.IStorySource
 import com.sky.android.news.ext.doFailure
 import com.sky.android.news.ext.doSuccess
 import com.sky.android.news.ui.base.NewsViewModel
 import com.sky.android.news.ui.helper.PageHelper
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
+import javax.inject.Inject
 
 /**
  * Created by sky on 2021-01-25.
  */
-class StoryListViewModel(
-        application: Application
+@HiltViewModel
+class StoryListViewModel @Inject constructor(
+        application: Application,
+        private val source: IStorySource
 ) : NewsViewModel(application) {
 
     private val mLoading = MutableLiveData<Boolean>()
@@ -46,8 +50,6 @@ class StoryListViewModel(
 
     private val mStoryList = MutableLiveData<List<BaseViewType>>()
     val storyList: LiveData<List<BaseViewType>> = mStoryList
-
-    private val mRepository by lazy { RepositoryFactory.create(application).createStorySource() }
 
     private val mPageHelper = PageHelper<BaseViewType>()
     private var mDate = ""
@@ -60,7 +62,7 @@ class StoryListViewModel(
 
         launchOnUI {
 
-            mRepository.getLatestStories()
+            source.getLatestStories()
                     .onStart { mLoading.value = true }
                     .onCompletion { mLoading.value = false }
                     .collect {
@@ -84,7 +86,7 @@ class StoryListViewModel(
 
         launchOnUI {
 
-            mRepository.getLatestStories()
+            source.getLatestStories()
                     .onStart { mLoading.value = true }
                     .onCompletion { mLoading.value = false }
                     .collect {

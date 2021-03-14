@@ -24,12 +24,13 @@ import com.sky.android.news.ui.base.NewsViewModel
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 /**
  * Created by sky on 2020-12-17.
  */
 @HiltViewModel
-class SplashViewModel(
+class SplashViewModel @Inject constructor(
         application: Application
 ) : NewsViewModel(application) {
 
