@@ -16,6 +16,7 @@
 
 package com.sky.android.news.ui.base
 
+import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import com.sky.android.common.util.ToastUtil
 import com.sky.android.core.activity.BaseActivity
@@ -28,6 +29,16 @@ import com.sky.android.news.ui.diglog.LoadingDialog
 abstract class NewsActivity : BaseActivity() {
 
     private var mLoadingDialog: LoadingDialog? = null
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
     open fun setSupportActionBar(toolbar: Toolbar, title: Int, homeAsUp: Boolean) {
         setSupportActionBar(toolbar, getString(title), homeAsUp)

@@ -39,9 +39,7 @@ class NewsLocalSource(
                 CategoryItemModel("军事", "T1348648141035"),
                 CategoryItemModel("要闻", "T1467284926140"),
                 CategoryItemModel("手机", "T1348649654285"),
-                CategoryItemModel("数码", "T1348649776727"),
-                CategoryItemModel("智能", "T1351233117091"),
-                CategoryItemModel("社会", "T1348648037603"))
+                CategoryItemModel("数码", "T1348649776727"))
 
         CategoryModel(itemModes)
     }

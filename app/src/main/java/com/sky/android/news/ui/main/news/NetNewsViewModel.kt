@@ -104,7 +104,7 @@ class NetNewsViewModel @Inject constructor(
                                 mPageHelper.appendData(it.lineItems)
                             } else {
                                 // 设置数据
-                                mPageHelper.setData(it.lineItems)
+                                mPageHelper.setData(100, it.lineItems)
                             }
                             mLineItem.value = mPageHelper.getData()
                         }
