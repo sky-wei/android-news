@@ -79,6 +79,8 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     kapt(libs.hilt.compiler)
 
+    implementation(libs.coil)
+
 //    implementation 'androidx.appcompat:appcompat:1.2.0'
 //    implementation 'androidx.recyclerview:recyclerview:1.2.0'
 //    implementation 'androidx.cardview:cardview:1.0.0'

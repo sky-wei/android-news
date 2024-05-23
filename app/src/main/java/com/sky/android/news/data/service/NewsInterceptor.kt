@@ -25,11 +25,11 @@ import okhttp3.Response
  */
 class NewsInterceptor : Interceptor {
 
-    override fun intercept(chain: Interceptor.Chain?): Response {
+    override fun intercept(chain: Interceptor.Chain): Response {
 
-        var request = chain!!.request()
+        var request = chain.request()
 
-        val url = request.url().url()
+        val url = request.url.toUrl()
 
         Alog.d("RequestUrl: $url")
 

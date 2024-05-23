@@ -17,7 +17,6 @@
 package com.sky.android.news.ui.theme
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -28,13 +27,9 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
 
 data class CustomColorScheme(
     val appThemeColor: Color,
@@ -44,14 +39,14 @@ data class CustomColorScheme(
 )
 
 private val CustomDartColorScheme = CustomColorScheme(
-    appThemeColor = Color.Black,
+    appThemeColor = ThemeColor,
     appContentColor = Color.White,
     titleColor = Color.White,
     itemBackgroundColor = BlueGrey900,
 )
 
 private val CustomLightColorScheme = CustomColorScheme(
-    appThemeColor = Color.White,
+    appThemeColor = ThemeColor,
     appContentColor = Color.Black,
     titleColor = Color.Black,
     itemBackgroundColor = Grey100,
@@ -64,9 +59,6 @@ val MaterialTheme.customScheme: CustomColorScheme
     @Composable
     @ReadOnlyComposable
     get() = CustomTheme.current
-
-
-
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -98,27 +90,17 @@ fun NewsTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
-        }
-    }
 
     CompositionLocalProvider(
-        CustomTheme provides if(darkTheme) CustomDartColorScheme else CustomDartColorScheme
+        CustomTheme provides if(darkTheme) CustomDartColorScheme else CustomLightColorScheme
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
@@ -127,28 +109,4 @@ fun NewsTheme(
             content = content
         )
     }
-}
-
-@Composable
-fun MyApplicationTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
-) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
-
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
 }

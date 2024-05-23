@@ -33,9 +33,9 @@ class App : Application() {
 
         if (BuildConfig.DEBUG) {
             Alog.setSingletonInstance(
-                    Alog.Builder()
-                            .setDebug(true)
-                            .build()
+                Alog.Builder()
+                    .setDebug(true)
+                    .build()
             )
         }
         ToastUtil.initialize(this)

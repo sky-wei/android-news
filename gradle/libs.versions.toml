@@ -1,5 +1,6 @@
 [versions]
 agp = "8.4.0"
+coil = "2.6.0"
 converterGson = "2.9.0"
 disklrucache = "2.0.2"
 kotlin = "1.9.0"
@@ -21,6 +22,7 @@ androidxHiltNavigationCompose = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 disklrucache = { module = "com.jakewharton:disklrucache", version.ref = "disklrucache" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
