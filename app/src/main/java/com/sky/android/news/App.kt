@@ -16,8 +16,7 @@
 
 package com.sky.android.news
 
-import androidx.multidex.MultiDexApplication
-import com.iflytek.cloud.SpeechUtility
+import android.app.Application
 import com.sky.android.common.util.Alog
 import com.sky.android.common.util.ToastUtil
 import com.sky.android.news.data.cache.CacheManager
@@ -27,10 +26,9 @@ import dagger.hilt.android.HiltAndroidApp
  * Created by sky on 17-9-21.
  */
 @HiltAndroidApp
-class App : MultiDexApplication() {
+class App : Application() {
 
     override fun onCreate() {
-        SpeechUtility.createUtility(this, "appid=59c8c734")
         super.onCreate()
 
         if (BuildConfig.DEBUG) {
@@ -41,8 +39,6 @@ class App : MultiDexApplication() {
             )
         }
         ToastUtil.initialize(this)
-
-//        Setting.setShowLog(BuildConfig.DEBUG)
 
         // 初始化...
         CacheManager.getInstance(this)

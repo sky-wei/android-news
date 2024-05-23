@@ -21,39 +21,11 @@ import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
 import com.sky.android.common.util.Alog
-import com.sky.android.core.fragment.BaseFragment
-import com.sky.android.news.ui.common.CommonActivity
-import com.sky.android.news.ui.main.details.DetailsActivity
-import java.io.Serializable
 
 /**
  * Created by sky on 17-9-21.
  */
 object ActivityUtil {
-
-    fun startDetailsActivity(context: Context, fClass: Class<out BaseFragment>, item: Serializable) {
-
-        val intent = Intent(context, DetailsActivity::class.java).apply {
-            putExtra(DetailsActivity.F_NAME, fClass.name)
-            putExtra("item", item)
-        }
-        // 进入详情界面
-        ActivityUtil.startActivity(context, intent)
-    }
-
-    fun startCommonActivity(context: Context, title: Int, fName: String): Boolean =
-            startCommonActivity(context, title, fName, true)
-
-    fun startCommonActivity(context: Context, title: Int, fName: String, supportFragment: Boolean): Boolean {
-
-        val intent = Intent(context, CommonActivity::class.java).apply {
-            putExtra(CommonActivity.TITLE, title)
-            putExtra(CommonActivity.F_NAME, fName)
-            putExtra(CommonActivity.SUPPORT_FRAGMENT, supportFragment)
-        }
-
-        return startActivity(context, intent)
-    }
 
     fun startActivity(context: Context, tClass: Class<*>): Boolean {
         return startActivity(context, Intent(context, tClass))

@@ -31,5 +31,10 @@
     <string name="clear_news_cache">清空新闻缓存</string>
     <string name="clear_image_cache">清空图片缓存</string>
     <string name="setting">设置</string>
+    <string name="news">网易新闻</string>
+    <string name="story">知乎日报</string>
+
+    <string name="open_drawer">Open Drawer</string>
+    <string name="menu_back">Back</string>
 
 </resources>
