@@ -20,11 +20,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
@@ -37,6 +40,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
@@ -89,8 +93,7 @@ private fun AppDrawerSheet(
     modifier: Modifier = Modifier
 ) {
     ModalDrawerSheet(
-        modifier = modifier,
-        drawerShape = RectangleShape
+        modifier = modifier
     ) {
         DrawerHeader()
         Spacer(modifier = Modifier.height(20.dp))
@@ -159,19 +162,22 @@ private fun DrawerHeader(
             horizontalAlignment = Alignment.Start,
         ) {
             Image(
-                modifier = Modifier.size(70.dp),
+                modifier = Modifier
+                    .size(76.dp)
+                    .clip(CircleShape),
                 painter = painterResource(id = R.drawable.ic_side_nav_head),
                 contentDescription = "Image",
+                contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                text = "Sky",
-                color = MaterialTheme.colorScheme.surface
+                text = stringResource(id = R.string.author),
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(6.dp))
             Text(
-                text = "jingcai.wei@163.com",
-                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)
+                text = stringResource(id = R.string.mail),
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
             )
         }
     }
@@ -186,7 +192,7 @@ private fun DrawerItem(
     modifier: Modifier = Modifier
 ) {
     val tintColor = if (isSelected) {
-        MaterialTheme.customScheme.appThemeColor
+        MaterialTheme.colorScheme.primary
     } else {
         MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
     }

@@ -16,6 +16,7 @@
 
 package com.sky.android.news.ui.navigation
 
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.sky.android.news.ui.navigation.NewsScreens.ABOUT
 import com.sky.android.news.ui.navigation.NewsScreens.NEWS
@@ -48,11 +49,23 @@ class NewsNavigationActions(
     }
 
     fun navigateToNews() {
-        navController.navigate(NEWS)
+        navController.navigate(NEWS) {
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
+        }
     }
 
     fun navigateToStory() {
-        navController.navigate(STORY)
+        navController.navigate(STORY) {
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
+        }
     }
 
     fun navigateToSettings() {

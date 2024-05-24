@@ -71,8 +71,8 @@ dependencies {
 //    implementation(libs.room.runtime)
 //    implementation(libs.room.ktx)
 //    ksp(libs.room.compiler)
-//    implementation(libs.androidx.lifecycle.runtimeCompose)
-//    implementation(libs.androidx.lifecycle.viewModelCompose)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
+    implementation(libs.androidx.lifecycle.viewModelCompose)
 
     // Hilt
     implementation(libs.hilt.android.core)

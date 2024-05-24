@@ -22,17 +22,20 @@
 
     <string name="exit_app">再按一次退出程序</string>
 
-    <string name="loading">加载中...</string>
+    <string name="loading">加载中…</string>
     <string name="about">关于</string>
-    <string name="version_x">版本 v%s</string>
-    <string name="mail">邮箱：jingcai.wei@163.com</string>
-    <string name="source">项目地址：<u>https://github.com/jingcai-wei</u></string>
+    <string name="version_x">版本 v%1s</string>
+    <string name="mail_x">邮箱：%1s</string>
+    <string name="source_address">项目地址：%1s</string>
+    <string name="author">Sky</string>
+    <string name="mail">jingcai.wei@163.com</string>
     <string name="storage_setting">存储</string>
     <string name="clear_news_cache">清空新闻缓存</string>
     <string name="clear_image_cache">清空图片缓存</string>
     <string name="setting">设置</string>
     <string name="news">网易新闻</string>
     <string name="story">知乎日报</string>
+
 
     <string name="open_drawer">Open Drawer</string>
     <string name="menu_back">Back</string>

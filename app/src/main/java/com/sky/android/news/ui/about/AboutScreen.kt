@@ -18,9 +18,6 @@ package com.sky.android.news.ui.about
 
 import android.content.Intent
 import android.net.Uri
-import android.view.textclassifier.TextLinks.TextLinkSpan
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,13 +26,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,13 +45,10 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContentProviderCompat.requireContext
-import com.sky.android.common.util.ToastUtil
 import com.sky.android.news.BuildConfig
 import com.sky.android.news.R
 import com.sky.android.news.ui.common.NewsBackTopAppBar
@@ -87,57 +86,84 @@ fun ProjectInfoItem(
     innerPadding: PaddingValues,
     onOpenLink: (String) -> Unit
 ) {
+    val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier
             .padding(innerPadding)
-            .fillMaxSize(),
+            .fillMaxSize()
+            .verticalScroll(state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(60.dp))
-        Image(
-            modifier = Modifier.size(76.dp),
-            painter = painterResource(id = R.drawable.ic_side_nav_head),
-            contentDescription = null
-        )
+        AppLogoWidget()
         Spacer(modifier = Modifier.height(20.dp))
-        Text(
-            text = stringResource(id = R.string.app_name),
-            color = MaterialTheme.customScheme.appThemeColor,
-            fontSize = 24.sp
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(
-            text = stringResource(id = R.string.mail),
-            fontSize = 14.sp
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        ClickableText(
-            text = buildAnnotatedString {
-                append(stringResource(id = R.string.source))
-            },
-            style = TextStyle(
-                textDecoration = TextDecoration.Underline,
-                fontSize = 14.sp
-            ),
-            onClick = {
-                onOpenLink("https://github.com/jingcai-wei/android-news")
-            }
-        )
-
+        AppInfoWidget(onOpenLink = onOpenLink)
         Spacer(modifier = Modifier.weight(1f))
-
-        Text(
-            text = stringResource(id = R.string.version_x, BuildConfig.VERSION_NAME),
-            fontSize = 10.sp
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = "Copyright © 2017 sky.All Rights Reserved.",
-            fontSize = 10.sp
-        )
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(20.dp))
+        CopyrightWidget()
     }
+}
+
+@Composable
+private fun AppLogoWidget() {
+    Image(
+        modifier = Modifier
+            .size(76.dp)
+            .clip(CircleShape),
+        painter = painterResource(id = R.drawable.ic_side_nav_head),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
+    )
+    Spacer(modifier = Modifier.height(20.dp))
+    Text(
+        text = stringResource(id = R.string.app_name),
+//        color = MaterialTheme.customScheme.appThemeColor,
+        fontSize = 24.sp
+    )
+}
+
+@Composable
+private fun AppInfoWidget(
+    onOpenLink: (String) -> Unit
+) {
+    Text(
+        text = stringResource(id = R.string.mail_x, stringResource(id = R.string.mail)),
+        fontSize = 14.sp
+    )
+    Spacer(modifier = Modifier.height(10.dp))
+    ClickableText(
+        text = buildAnnotatedString {
+            withStyle(
+                style = SpanStyle(
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            ) {
+                append(stringResource(id = R.string.source_address, "https://github.com/jingcai-wei"))
+            }
+        },
+        style = TextStyle(
+            textDecoration = TextDecoration.Underline,
+            fontSize = 14.sp
+        ),
+        onClick = {
+            onOpenLink("https://github.com/jingcai-wei/android-news")
+        }
+    )
+}
+
+@Composable
+private fun CopyrightWidget() {
+    Text(
+        text = stringResource(id = R.string.version_x, BuildConfig.VERSION_NAME),
+        fontSize = 10.sp
+    )
+    Spacer(modifier = Modifier.height(4.dp))
+    Text(
+        text = "Copyright © 2017 sky.All Rights Reserved.",
+        fontSize = 10.sp
+    )
+    Spacer(modifier = Modifier.height(10.dp))
 }
 
 @Preview
