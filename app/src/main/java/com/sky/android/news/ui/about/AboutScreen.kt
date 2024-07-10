@@ -53,7 +53,6 @@ import com.sky.android.news.BuildConfig
 import com.sky.android.news.R
 import com.sky.android.news.ui.common.NewsBackTopAppBar
 import com.sky.android.news.ui.theme.NewsTheme
-import com.sky.android.news.ui.theme.customScheme
 import com.sky.android.news.util.ActivityUtil
 
 @Composable
@@ -160,11 +159,12 @@ private fun CopyrightWidget() {
     )
     Spacer(modifier = Modifier.height(4.dp))
     Text(
-        text = "Copyright © 2017 sky.All Rights Reserved.",
+        text = "Copyright © 2024 sky.All Rights Reserved.",
         fontSize = 10.sp
     )
     Spacer(modifier = Modifier.height(10.dp))
 }
+
 
 @Preview
 @Composable

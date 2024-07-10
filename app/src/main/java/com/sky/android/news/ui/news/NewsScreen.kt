@@ -29,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sky.android.news.ui.common.NewsTopAppBar
 
 
@@ -46,6 +47,7 @@ private enum class DemoTabs(val value: String) {
 fun NewsScreen(
     openDrawer: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: NewsViewModel = hiltViewModel()
 ) {
 
     val tabsName = remember { DemoTabs.entries.map { it.value } }

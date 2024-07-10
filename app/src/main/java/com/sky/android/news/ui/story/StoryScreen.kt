@@ -22,12 +22,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sky.android.news.ui.common.NewsTopAppBar
 
 @Composable
 fun StoryScreen(
     openDrawer: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: StoryViewModel = hiltViewModel()
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),

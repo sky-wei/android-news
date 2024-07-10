@@ -35,6 +35,7 @@
     <string name="setting">设置</string>
     <string name="news">网易新闻</string>
     <string name="story">知乎日报</string>
+    <string name="clear_success">清空缓存成功</string>
 
 
     <string name="open_drawer">Open Drawer</string>

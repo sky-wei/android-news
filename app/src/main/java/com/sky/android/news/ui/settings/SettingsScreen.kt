@@ -31,8 +31,13 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -40,6 +45,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sky.android.news.R
 import com.sky.android.news.ui.common.NewsBackTopAppBar
 import com.sky.android.news.ui.theme.NewsTheme
@@ -50,6 +56,9 @@ fun SettingsScreen(
     onBack: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
+
+    val snackBarState = remember { SnackbarHostState() }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -57,17 +66,29 @@ fun SettingsScreen(
                 onBack = onBack,
                 title = stringResource(id = R.string.setting)
             )
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackBarState)
         }
     ) { innerPadding ->
-        val scrollState = rememberScrollState()
+
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .verticalScroll(state = scrollState),
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.Start
         ) {
             StorageSettingWidget(viewModel)
+        }
+
+        uiState.message?.let {
+            val message = stringResource(id = it)
+            LaunchedEffect(snackBarState, viewModel, message) {
+                snackBarState.showSnackbar(message)
+                viewModel.messageShown()
+            }
         }
     }
 }

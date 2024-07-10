@@ -41,6 +41,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
@@ -172,12 +173,12 @@ private fun DrawerHeader(
             Spacer(modifier = Modifier.height(10.dp))
             Text(
                 text = stringResource(id = R.string.author),
-                color = MaterialTheme.colorScheme.onSurface
+                color = Color.White.copy(alpha = 0.7f)
             )
             Spacer(modifier = Modifier.height(6.dp))
             Text(
                 text = stringResource(id = R.string.mail),
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                color = Color.White.copy(alpha = 0.7f)
             )
         }
     }
