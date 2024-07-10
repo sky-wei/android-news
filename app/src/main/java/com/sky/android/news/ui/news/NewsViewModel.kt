@@ -18,13 +18,66 @@ package com.sky.android.news.ui.news
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.sky.android.common.util.Alog
+import com.sky.android.news.R
+import com.sky.android.news.data.model.CategoryModel
+import com.sky.android.news.data.model.XResult
+import com.sky.android.news.data.source.INewsSource
+import com.sky.android.news.ext.doFailure
+import com.sky.android.news.ext.doSuccess
+import com.sky.android.news.util.WhileUiSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
+
+data class NewsUiState(
+    val category: CategoryModel? = null,
+    val isLoading: Boolean = false,
+    val message: Int? = null,
+)
 
 @HiltViewModel
 class NewsViewModel @Inject constructor(
-    application: Application
+    application: Application,
+    private val newsSource: INewsSource
 ) : AndroidViewModel(application) {
 
+    private val _isLoading = MutableStateFlow(false)
 
+    private val _loadCategory = newsSource.getCategory()
+
+    val uiState: StateFlow<NewsUiState> = combine(
+        _isLoading, _loadCategory
+    ) { isLoading, loadCategory ->
+        Alog.d(">>>>>>>>>>>>>>>>>>>>>> $isLoading  $loadCategory")
+        when(loadCategory) {
+            is XResult.Success -> {
+               NewsUiState(
+                   category = loadCategory.value,
+                   isLoading = isLoading
+               )
+            }
+            is XResult.Failure -> {
+                NewsUiState(
+                    message = R.string.loading
+                )
+            }
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = WhileUiSubscribed,
+        initialValue = NewsUiState(isLoading = true)
+    )
+
+    fun messageShown() {
+
+    }
+
+    fun pageChange(page: Int) {
+
+    }
 }

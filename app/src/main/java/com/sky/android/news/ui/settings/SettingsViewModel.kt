@@ -17,6 +17,7 @@
 package com.sky.android.news.ui.settings
 
 import android.app.Application
+import androidx.annotation.StringRes
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import coil.Coil
@@ -32,7 +33,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class SettingsUiState(
-    val message: Int? = null
+    @StringRes val message: Int? = null
 )
 
 @HiltViewModel
@@ -67,7 +68,7 @@ class SettingsViewModel @Inject constructor(
         _uiState.update { it.copy(message = null) }
     }
 
-    private fun showMessage(message: Int) {
+    private fun showMessage(@StringRes message: Int) {
         _uiState.update { it.copy(message = message) }
     }
 }

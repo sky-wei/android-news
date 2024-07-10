@@ -18,6 +18,7 @@ package com.sky.android.news.ext
 
 import com.sky.android.common.util.Alog
 import com.sky.android.news.data.model.XResult
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
@@ -59,6 +60,7 @@ fun <T> flowOfResultNull(block: suspend () -> T?): Flow<XResult<T>> = flow {
 
 fun <T> XResult<T>.asFlow(): Flow<XResult<T>> = flowOf(this)
 
+@OptIn(ExperimentalCoroutinesApi::class)
 fun <T> concatResult(
         source1: Flow<XResult<T>>,
         source2: () -> Flow<XResult<T>>
