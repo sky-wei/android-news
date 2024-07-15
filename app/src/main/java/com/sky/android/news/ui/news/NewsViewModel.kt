@@ -22,20 +22,29 @@ import androidx.lifecycle.viewModelScope
 import com.sky.android.common.util.Alog
 import com.sky.android.news.R
 import com.sky.android.news.data.model.CategoryModel
+import com.sky.android.news.data.model.HeadLineModel
 import com.sky.android.news.data.model.XResult
 import com.sky.android.news.data.source.INewsSource
 import com.sky.android.news.ext.doFailure
 import com.sky.android.news.ext.doSuccess
 import com.sky.android.news.util.WhileUiSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 data class NewsUiState(
     val category: CategoryModel? = null,
+    val headLine: HeadLineModel? = null,
     val isLoading: Boolean = false,
     val message: Int? = null,
 )
@@ -47,17 +56,19 @@ class NewsViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
 
     private val _isLoading = MutableStateFlow(false)
-
+    private val _headLine = MutableStateFlow<HeadLineModel?>(null)
     private val _loadCategory = newsSource.getCategory()
 
     val uiState: StateFlow<NewsUiState> = combine(
-        _isLoading, _loadCategory
-    ) { isLoading, loadCategory ->
+        _isLoading, _loadCategory, _headLine,
+    ) { isLoading, loadCategory, headLine ->
         Alog.d(">>>>>>>>>>>>>>>>>>>>>> $isLoading  $loadCategory")
+        Alog.d(">>>>>>>>>>>>>>>>>>>>>> $headLine")
         when(loadCategory) {
             is XResult.Success -> {
                NewsUiState(
                    category = loadCategory.value,
+                   headLine = headLine,
                    isLoading = isLoading
                )
             }
@@ -78,6 +89,16 @@ class NewsViewModel @Inject constructor(
     }
 
     fun pageChange(page: Int) {
-
+        viewModelScope.launch {
+            val value = withContext(Dispatchers.IO) {
+                newsSource.getHeadLine(
+                    uiState.value.category!!.items[page].tid, 0, 20
+                ).single()
+            }
+            value.doSuccess { data ->
+                Alog.d(">>>>>>>>>>yyy $data")
+                _headLine.value = data
+            }
+        }
     }
 }

@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
@@ -36,15 +35,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sky.android.common.util.Alog
+import com.sky.android.news.data.model.CategoryItemModel
 import com.sky.android.news.data.model.CategoryModel
+import com.sky.android.news.ui.common.LoadingBox
 import com.sky.android.news.ui.common.LoadingContent
 import com.sky.android.news.ui.common.NewsTopAppBar
+import com.sky.android.news.ui.common.NoDataContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -74,7 +74,7 @@ fun NewsScreen(
         NewsContent(
             loading = uiState.isLoading,
             category = uiState.category,
-            pageChange = { viewModel.pageChange(it) },
+            pageChange = viewModel::pageChange,
             modifier = modifier.padding(innerPadding)
         )
 
@@ -88,69 +88,90 @@ fun NewsScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun NewsContent(
     loading: Boolean,
     category: CategoryModel?,
-    pageChange: (page: Int) -> UInt,
-    coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    modifier: Modifier = Modifier
+    pageChange: (page: Int) -> Unit,
+    modifier: Modifier
 ) {
-
     LoadingContent(
         loading = loading,
-        loadingContent = {
-            CircularProgressIndicator()
-        }
+        loadingContent = { LoadingBox() }
+    ) {
+        category?.let {
+            NewsContent(
+                items = it.items,
+                pageChange = pageChange,
+                modifier = modifier
+            )
+        } ?: NoDataContent()
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun NewsContent(
+    items: List<CategoryItemModel>,
+    pageChange: (page: Int) -> Unit,
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    modifier: Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth(),
     ) {
 
-        if (category != null) {
+        val pagerState = rememberPagerState(initialPage = 0) {
+            items.size
+        }
 
-            Column(
-                modifier = modifier
-                    .fillMaxWidth(),
+        ScrollableTabRow(
+            selectedTabIndex = pagerState.currentPage,
+        ) {
+            TabItem(
+                items = items,
+                currentPage = pagerState.currentPage
             ) {
-
-                val pagerState = rememberPagerState(initialPage = 0) {
-                    category.items.size
-                }
-
-                ScrollableTabRow(
-                    selectedTabIndex = pagerState.currentPage,
-                ) {
-                    category.items.forEachIndexed { index, item ->
-                        Tab(
-                            selected = index == pagerState.currentPage,
-                            onClick = {
-                                coroutineScope.launch {
-                                    pagerState.scrollToPage(index)
-                                }
-                            },
-                            text = {
-                                Text(
-                                    item.name,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                                )
-                            }
-                        )
-                    }
-                }
-
-                HorizontalPager(state = pagerState) { page ->
-                    Column(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        Text(text = "Page: $page")
-                    }
-                }
-
-                LaunchedEffect(pagerState) {
-                    snapshotFlow { pagerState.currentPage }.collect { page ->
-                        pageChange(page)
-                    }
+                coroutineScope.launch {
+                    pagerState.scrollToPage(it)
                 }
             }
         }
+
+        HorizontalPager(state = pagerState) { page ->
+            NewsListPage(
+                item = items[page]
+            )
+        }
+
+//        LaunchedEffect(pagerState) {
+//            snapshotFlow { pagerState.currentPage }.collect { page ->
+//                pageChange(page)
+//            }
+//        }
+    }
+}
+
+
+@Composable
+private fun TabItem(
+    items: List<CategoryItemModel>,
+    currentPage: Int,
+    scrollToPage: (Int) -> Unit
+) {
+    items.forEachIndexed { index, item ->
+        Tab(
+            selected = index == currentPage,
+            onClick = {
+                scrollToPage(index)
+            },
+            text = {
+                Text(
+                    item.name,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            }
+        )
     }
 }
