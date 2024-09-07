@@ -39,12 +39,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun NewsNavGraph(
+fun NewsNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
-    startDestination: String = NewsDestinations.NEWS_ROUTE,
+    startDestination: String = Screen.News.route,
     navActions: NewsNavigationActions = remember(navController) {
         NewsNavigationActions(navController)
     }
@@ -59,12 +59,12 @@ fun NewsNavGraph(
         modifier = modifier
     ) {
         composable(
-            NewsDestinations.SPLASH_ROUTE
+            Screen.Splash.route
         ) {
             SplashScreen(navController = navController)
         }
         composable(
-            NewsDestinations.NEWS_ROUTE
+            Screen.News.route
         ) {
             AppModalDrawer(
                 drawerState = drawerState,
@@ -77,7 +77,7 @@ fun NewsNavGraph(
             }
         }
         composable(
-            NewsDestinations.STORY_ROUTE
+            Screen.Story.route
         ) {
             AppModalDrawer(
                 drawerState = drawerState,
@@ -90,14 +90,14 @@ fun NewsNavGraph(
             }
         }
         composable(
-            NewsDestinations.SETTINGS_ROUTE
+            Screen.Setting.route
         ) {
             SettingsScreen(
                 onBack = { coroutineScope.launch { navController.popBackStack() } }
             )
         }
         composable(
-            NewsDestinations.ABOUT_ROUTE
+            Screen.About.route
         ) {
             AboutScreen(
                 onBack = { coroutineScope.launch { navController.popBackStack() } }

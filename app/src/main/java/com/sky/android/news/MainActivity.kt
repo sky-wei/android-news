@@ -20,7 +20,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.sky.android.news.ui.navigation.NewsNavGraph
+import com.sky.android.news.ui.navigation.NewsNavHost
 import com.sky.android.news.ui.theme.NewsTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NewsTheme {
-                NewsNavGraph()
+                NewsNavHost()
             }
         }
     }

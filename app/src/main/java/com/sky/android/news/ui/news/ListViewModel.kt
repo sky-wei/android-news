@@ -18,15 +18,23 @@ package com.sky.android.news.ui.news
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.sky.android.common.util.Alog
 import com.sky.android.news.data.model.CategoryItemModel
 import com.sky.android.news.data.model.LineItemModel
 import com.sky.android.news.data.source.INewsSource
+import com.sky.android.news.ext.doSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 data class NewsListUiState(
@@ -34,21 +42,38 @@ data class NewsListUiState(
 )
 
 @HiltViewModel
-class NewsListViewModel @Inject constructor(
+class ListViewModel @Inject constructor(
     application: Application,
     private val newsSource: INewsSource
 ) : AndroidViewModel(application) {
+
+    private val _categoryItem = MutableLiveData<CategoryItemModel?>()
+    val categoryItem: LiveData<CategoryItemModel?>
+        get() = _categoryItem
 
     private val _lineItems = MutableStateFlow<List<LineItemModel>>(arrayListOf())
 
     private val _uiState: MutableStateFlow<NewsListUiState> = MutableStateFlow(NewsListUiState())
     val uiState: StateFlow<NewsListUiState> = _uiState.asStateFlow()
 
-    init {
-        Alog.d(">>>>>>>>>>>>>>>>>> $this")
+    fun initCategory(item: CategoryItemModel) {
+        Alog.d(">>>>>>>>>>>>>>> initCategory $item")
+        _categoryItem.value = item
+        loadData()
     }
 
-    fun loadData(item: CategoryItemModel) {
-        Alog.d(">>>>>>>>>>>>>>>>>>>>> $item")
+    private fun loadData() {
+        viewModelScope.launch {
+            val value = withContext(Dispatchers.IO) {
+                newsSource.getHeadLine(
+                    _categoryItem.value!!.tid, 0, 20
+                ).single()
+            }
+            value.doSuccess { data ->
+                Alog.d(">>>>>>>>>>yyy $data")
+                _uiState.update { it.copy(lineItems = data.lineItems) }
+            }
+        }
+        Alog.d(">>>>>>>>>>>>>>>>>>>>> ${_categoryItem.value}")
     }
 }

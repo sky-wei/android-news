@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
@@ -30,12 +31,14 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -48,6 +51,7 @@ import com.sky.android.news.ui.common.NoDataContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsScreen(
     openDrawer: () -> Unit,
@@ -56,11 +60,15 @@ fun NewsScreen(
 ) {
 
     val snackBarState = remember { SnackbarHostState() }
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             NewsTopAppBar(
+                scrollBehavior = scrollBehavior,
                 openDrawer = openDrawer
             )
         },
@@ -72,9 +80,8 @@ fun NewsScreen(
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
         NewsContent(
-            loading = uiState.isLoading,
+            loading = uiState.loading,
             category = uiState.category,
-            pageChange = viewModel::pageChange,
             modifier = modifier.padding(innerPadding)
         )
 
@@ -92,7 +99,6 @@ fun NewsScreen(
 private fun NewsContent(
     loading: Boolean,
     category: CategoryModel?,
-    pageChange: (page: Int) -> Unit,
     modifier: Modifier
 ) {
     LoadingContent(
@@ -102,7 +108,6 @@ private fun NewsContent(
         category?.let {
             NewsContent(
                 items = it.items,
-                pageChange = pageChange,
                 modifier = modifier
             )
         } ?: NoDataContent()
@@ -113,7 +118,6 @@ private fun NewsContent(
 @Composable
 private fun NewsContent(
     items: List<CategoryItemModel>,
-    pageChange: (page: Int) -> Unit,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     modifier: Modifier
 ) {
@@ -134,13 +138,13 @@ private fun NewsContent(
                 currentPage = pagerState.currentPage
             ) {
                 coroutineScope.launch {
-                    pagerState.scrollToPage(it)
+                    pagerState.animateScrollToPage(it)
                 }
             }
         }
 
         HorizontalPager(state = pagerState) { page ->
-            NewsListPage(
+            ListScreen(
                 item = items[page]
             )
         }

@@ -26,6 +26,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -34,10 +35,12 @@ import com.sky.android.news.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsTopAppBar(
+    scrollBehavior: TopAppBarScrollBehavior,
     openDrawer: () -> Unit
 ) {
     CenterAlignedTopAppBar(
         modifier = Modifier.fillMaxWidth(),
+        scrollBehavior = scrollBehavior,
         navigationIcon = {
             IconButton(onClick = openDrawer) {
                 Icon(Icons.Filled.Menu, stringResource(id = R.string.open_drawer))

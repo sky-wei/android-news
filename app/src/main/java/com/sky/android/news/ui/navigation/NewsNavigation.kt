@@ -16,28 +16,44 @@
 
 package com.sky.android.news.ui.navigation
 
+import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import com.sky.android.news.ui.navigation.NewsScreens.ABOUT
-import com.sky.android.news.ui.navigation.NewsScreens.NEWS
-import com.sky.android.news.ui.navigation.NewsScreens.SETTINGS
-import com.sky.android.news.ui.navigation.NewsScreens.SPLASH
-import com.sky.android.news.ui.navigation.NewsScreens.STORY
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 
-private object NewsScreens {
-    const val SPLASH = "splash"
-    const val NEWS = "news"
-    const val STORY = "story"
-    const val SETTINGS = "settings"
-    const val ABOUT = "about"
-}
+sealed class Screen(
+    val route: String,
+    val navArguments: List<NamedNavArgument> = emptyList()
+) {
 
-object NewsDestinations {
-    const val SPLASH_ROUTE = SPLASH
-    const val NEWS_ROUTE = NEWS
-    const val STORY_ROUTE = STORY
-    const val SETTINGS_ROUTE = SETTINGS
-    const val ABOUT_ROUTE = ABOUT
+    data object Splash: Screen("splash")
+
+    data object News: Screen("news")
+
+    data object NewsDetail: Screen(
+        route = "news/{tid}",
+        navArguments = listOf(navArgument("tid") {
+            type = NavType.StringType
+        })
+    ) {
+        fun createRoute(tid: String) = "news/$tid"
+    }
+
+    data object Story: Screen("story")
+
+    data object StoryDetail: Screen(
+        route = "story/{id}",
+        navArguments = listOf(navArgument("id") {
+            type = NavType.StringType
+        })
+    ) {
+        fun createRoute(id: String) = "story/$id"
+    }
+
+    data object Setting: Screen("setting")
+
+    data object About: Screen("about")
 }
 
 
@@ -45,21 +61,25 @@ class NewsNavigationActions(
     private val navController: NavHostController
 ) {
     fun navigateToSplash() {
-        navController.navigate(SPLASH)
+        navController.navigate(Screen.Splash.route)
     }
 
     fun navigateToNews() {
-        navController.navigate(NEWS) {
+        navController.navigate(Screen.News.route) {
             popUpTo(navController.graph.findStartDestination().id) {
                 saveState = true
             }
             launchSingleTop = true
             restoreState = true
         }
+    }
+
+    fun navigateToNewsDetail(tid: String) {
+        navController.navigate(Screen.NewsDetail.createRoute(tid))
     }
 
     fun navigateToStory() {
-        navController.navigate(STORY) {
+        navController.navigate(Screen.Story.route) {
             popUpTo(navController.graph.findStartDestination().id) {
                 saveState = true
             }
@@ -68,11 +88,15 @@ class NewsNavigationActions(
         }
     }
 
+    fun navigateToStoryDetail(id: String) {
+        navController.navigate(Screen.StoryDetail.createRoute(id))
+    }
+
     fun navigateToSettings() {
-        navController.navigate(SETTINGS)
+        navController.navigate(Screen.Setting.route)
     }
 
     fun navigateToAbout() {
-        navController.navigate(ABOUT)
+        navController.navigate(Screen.About.route)
     }
 }

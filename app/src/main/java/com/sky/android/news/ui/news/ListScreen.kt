@@ -21,28 +21,31 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sky.android.common.util.Alog
 import com.sky.android.news.data.model.CategoryItemModel
 
 
 @Composable
-fun NewsListPage(
+fun ListScreen(
     item: CategoryItemModel,
-    viewModel: NewsListViewModel = hiltViewModel(key = item.tid)
+    viewModel: ListViewModel = hiltViewModel(key = item.tid)
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val categoryItem = viewModel.categoryItem.observeAsState(null).value
 
     LaunchedEffect(item.tid) {
-        Alog.d(">>>>>>>>>>>>>>>>>>> yyyccc $item")
+        if (categoryItem == null) {
+            viewModel.initCategory(item)
+        }
     }
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         Text(text = "Page: $item")
-        Text(text = "Page: $uiState")
+        Text(text = "Page: ${uiState.value.lineItems}")
     }
 }

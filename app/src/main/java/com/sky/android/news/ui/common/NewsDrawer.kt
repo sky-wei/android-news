@@ -20,13 +20,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
@@ -42,7 +40,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
@@ -51,10 +48,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sky.android.news.R
-import com.sky.android.news.ui.navigation.NewsDestinations
 import com.sky.android.news.ui.navigation.NewsNavigationActions
+import com.sky.android.news.ui.navigation.Screen
 import com.sky.android.news.ui.theme.NewsTheme
-import com.sky.android.news.ui.theme.customScheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -101,7 +97,7 @@ private fun AppDrawerSheet(
         DrawerItem(
             painter = painterResource(id = R.drawable.ic_video_library_white),
             label = stringResource(id = R.string.news),
-            isSelected = currentRoute == NewsDestinations.NEWS_ROUTE,
+            isSelected = currentRoute == Screen.News.route,
             action = {
                 navigateToNews()
                 closeDrawer()
@@ -110,7 +106,7 @@ private fun AppDrawerSheet(
         DrawerItem(
             painter = painterResource(id = R.drawable.ic_video_library_white),
             label = stringResource(id = R.string.story),
-            isSelected = currentRoute == NewsDestinations.STORY_ROUTE,
+            isSelected = currentRoute == Screen.Story.route,
             action = {
                 navigateToStory()
                 closeDrawer()
@@ -122,7 +118,7 @@ private fun AppDrawerSheet(
         DrawerItem(
             painter = painterResource(id = R.drawable.ic_settings_applications_white),
             label = stringResource(id = R.string.setting),
-            isSelected = currentRoute == NewsDestinations.SETTINGS_ROUTE,
+            isSelected = currentRoute == Screen.Setting.route,
             action = {
                 navigateToSettings()
                 closeDrawer()
@@ -131,7 +127,7 @@ private fun AppDrawerSheet(
         DrawerItem(
             painter = painterResource(id = R.drawable.ic_info_white),
             label = stringResource(id = R.string.about),
-            isSelected = currentRoute == NewsDestinations.ABOUT_ROUTE,
+            isSelected = currentRoute == Screen.About.route,
             action = {
                 navigateToAbout()
                 closeDrawer()
