@@ -17,11 +17,14 @@
 package com.sky.android.news.data.cache
 
 import com.sky.android.news.data.model.*
+import javax.inject.Inject
 
 /**
  * Created by sky on 17-9-21.
  */
-class NewsCache(private val mCacheManager: ICacheManager) : INewsCache {
+class NewsCache @Inject constructor(
+    private val mCacheManager: ICacheManager
+) : INewsCache {
 
     private var mCategoryKey = mCacheManager.buildKey(
             NewsCache::class.java.name + ":getCategory()")

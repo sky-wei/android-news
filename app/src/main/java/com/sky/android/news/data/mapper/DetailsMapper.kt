@@ -21,15 +21,14 @@ import com.sky.android.common.util.ConversionUtil
 import com.sky.android.news.base.toExtString
 import com.sky.android.news.data.model.*
 import com.sky.android.news.data.news.*
+import javax.inject.Inject
 
 /**
  * Created by sky on 17-9-22.
  */
-class DetailsMapper {
+class DetailsMapper @Inject constructor() {
 
-    fun transform(details: Details): DetailsModel {
-        return DetailsModel(transform(details.content))
-    }
+    fun transform(details: Details): DetailsModel = DetailsModel(transform(details.content))
 
     private fun transform(content: Content): ContentModel {
 

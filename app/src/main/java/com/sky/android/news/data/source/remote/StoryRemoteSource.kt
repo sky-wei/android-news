@@ -16,38 +16,39 @@
 
 package com.sky.android.news.data.source.remote
 
-import com.sky.android.news.Constant
 import com.sky.android.news.data.cache.IStoryCache
-import com.sky.android.news.data.mapper.MapperFactory
+import com.sky.android.news.data.mapper.StoryDetailsMapper
+import com.sky.android.news.data.mapper.StoryListMapper
 import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.model.StoryListModel
 import com.sky.android.news.data.model.XResult
-import com.sky.android.news.data.service.IServiceFactory
 import com.sky.android.news.data.service.IStoryService
 import com.sky.android.news.data.source.IStorySource
 import com.sky.android.news.ext.flowOfResult
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 /**
  * Created by sky on 17-9-28.
  */
-class StoryRemoteSource(
-        private val mServiceFactory : IServiceFactory,
-        private val mCache: IStoryCache
+class StoryRemoteSource @Inject constructor(
+    private val mStoryService: IStoryService,
+    private val mCache: IStoryCache,
+    private val mStoryListMapper: StoryListMapper,
+    private val mStoryDetailsMapper: StoryDetailsMapper,
 ) : IStorySource {
 
     override fun getLatestStories(): Flow<XResult<StoryListModel>> {
 
         return flowOfResult {
 
-            val value = zhiHuService()
-                    .getLatestStories()
-                    .await()
+            val value = mStoryService
+                .getLatestStories()
+                .await()
 
-            MapperFactory
-                    .createStoryListMapper()
-                    .transform(value)
-                    .also { mCache.saveLatestStories(it) }
+            mStoryListMapper
+                .transform(value)
+                .also { mCache.saveLatestStories(it) }
         }
     }
 
@@ -55,14 +56,13 @@ class StoryRemoteSource(
 
         return flowOfResult {
 
-            val value = zhiHuService()
-                    .getStories(date)
-                    .await()
+            val value = mStoryService
+                .getStories(date)
+                .await()
 
-            MapperFactory
-                    .createStoryListMapper()
-                    .transform(value)
-                    .also { mCache.saveStories(date, it) }
+            mStoryListMapper
+                .transform(value)
+                .also { mCache.saveStories(date, it) }
         }
     }
 
@@ -70,17 +70,13 @@ class StoryRemoteSource(
 
         return flowOfResult {
 
-            val value = zhiHuService()
-                    .getStory(id)
-                    .await()
+            val value = mStoryService
+                .getStory(id)
+                .await()
 
-            MapperFactory
-                    .createStoryDetailsMapper()
-                    .transform(value)
-                    .also { mCache.saveStory(id, it) }
+            mStoryDetailsMapper
+                .transform(value)
+                .also { mCache.saveStory(id, it) }
         }
     }
-
-    private fun zhiHuService(): IStoryService =
-            mServiceFactory.createService(IStoryService::class.java, Constant.Service.ZH_BASE_URL)
 }

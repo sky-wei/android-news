@@ -23,7 +23,6 @@ android {
         }
         multiDexEnabled = true
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false

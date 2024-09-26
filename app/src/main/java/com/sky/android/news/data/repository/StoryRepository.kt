@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2024 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,27 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.source
+package com.sky.android.news.data.repository
 
 import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.model.StoryListModel
 import com.sky.android.news.data.model.XResult
+import com.sky.android.news.data.source.IStorySource
+import com.sky.android.news.di.LocalSource
+import com.sky.android.news.di.RemoteSource
 import com.sky.android.news.ext.concatResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
 
 /**
  * Created by sky on 17-9-28.
  */
-class StoryRepository(
-        private val local: IStorySource,
-        private val remote: IStorySource
-) : IStorySource {
+class StoryRepository @Inject constructor(
+    @LocalSource private val local: IStorySource,
+    @RemoteSource private val remote: IStorySource
+) : IStoryRepository {
 
     override fun getLatestStories(): Flow<XResult<StoryListModel>> =
             concatResult(local.getLatestStories()) { remote.getLatestStories() }

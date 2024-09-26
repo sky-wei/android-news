@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 The sky Authors.
+ * Copyright (c) 2024 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,28 +16,28 @@
 
 package com.sky.android.news.di
 
-import com.sky.android.news.data.repository.INewsRepository
-import com.sky.android.news.data.repository.IStoryRepository
-import com.sky.android.news.data.repository.NewsRepository
-import com.sky.android.news.data.repository.StoryRepository
+import com.sky.android.news.data.mapper.DetailsMapper
+import com.sky.android.news.data.mapper.HeadLineMapper
+import com.sky.android.news.data.mapper.StoryDetailsMapper
+import com.sky.android.news.data.mapper.StoryListMapper
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
-/**
- * Created by sky on 2021-03-12.
- */
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
+abstract class MapperModule {
 
     @Binds
-    @Singleton
-    abstract fun bindNewsRepository(repository: NewsRepository): INewsRepository
+    abstract fun bindHeadLineMapper(mapper: HeadLineMapper): HeadLineMapper
 
     @Binds
-    @Singleton
-    abstract fun bindStoryRepository(repository: StoryRepository): IStoryRepository
+    abstract fun bindDetailsMapper(mapper: DetailsMapper): DetailsMapper
+
+    @Binds
+    abstract fun bindStoryListMapper(mapper: StoryListMapper): StoryListMapper
+
+    @Binds
+    abstract fun bindStoryDetailsMapper(mapper: StoryDetailsMapper): StoryDetailsMapper
 }

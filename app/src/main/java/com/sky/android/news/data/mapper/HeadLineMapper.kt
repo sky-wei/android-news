@@ -22,11 +22,12 @@ import com.sky.android.news.data.model.HeadLineModel
 import com.sky.android.news.data.model.LineItemModel
 import com.sky.android.news.data.news.HeadLine
 import com.sky.android.news.data.news.LineItem
+import javax.inject.Inject
 
 /**
  * Created by sky on 17-9-22.
  */
-class HeadLineMapper {
+class HeadLineMapper @Inject constructor() {
 
     fun transform(headLine: HeadLine): HeadLineModel =
             HeadLineModel(transform(headLine.lineItems))

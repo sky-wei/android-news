@@ -37,7 +37,7 @@ interface INewsSource {
      * 获取新闻列表
      */
     fun getHeadLine(
-            tid: String, start: Int, end: Int
+        tid: String, start: Int, end: Int
     ): Flow<XResult<HeadLineModel>>
 
     /**

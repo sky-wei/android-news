@@ -16,26 +16,28 @@
 
 package com.sky.android.news.data.source.remote
 
-import com.sky.android.news.Constant
 import com.sky.android.news.data.cache.INewsCache
-import com.sky.android.news.data.mapper.MapperFactory
+import com.sky.android.news.data.mapper.DetailsMapper
+import com.sky.android.news.data.mapper.HeadLineMapper
 import com.sky.android.news.data.model.CategoryModel
 import com.sky.android.news.data.model.DetailsModel
 import com.sky.android.news.data.model.HeadLineModel
 import com.sky.android.news.data.model.XResult
 import com.sky.android.news.data.service.INewsService
-import com.sky.android.news.data.service.IServiceFactory
 import com.sky.android.news.data.source.INewsSource
 import com.sky.android.news.ext.asFlow
 import com.sky.android.news.ext.flowOfResult
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 /**
  * Created by sky on 17-9-21.
  */
-class NewsRemoteSource(
-        private val mServiceFactory : IServiceFactory,
-        private val mCache: INewsCache
+class NewsRemoteSource @Inject constructor(
+    private val mNewsService: INewsService,
+    private val mCache: INewsCache,
+    private val mHeadLineMapper: HeadLineMapper,
+    private val mDetailsMapper: DetailsMapper
 ) : INewsSource {
 
     override fun getCategory(): Flow<XResult<CategoryModel>> = XResult.Invalid.asFlow()
@@ -43,31 +45,26 @@ class NewsRemoteSource(
     override fun getHeadLine(tid: String, start: Int, end: Int): Flow<XResult<HeadLineModel>> {
         return flowOfResult {
 
-            val value = newsService()
-                    .getHeadLine(tid, start, end)
-                    .await()
+            val value = mNewsService
+                .getHeadLine(tid, start, end)
+                .await()
 
-            MapperFactory
-                    .createHeadLineMapper()
-                    .transform(value)
-                    .also { mCache.saveHeadLine(tid, start, end, it) }
+            mHeadLineMapper
+                .transform(value)
+                .also { mCache.saveHeadLine(tid, start, end, it) }
         }
     }
 
     override fun getDetails(docId: String): Flow<XResult<DetailsModel>> {
         return flowOfResult {
 
-            val value = newsService()
-                    .getDetails(docId)
-                    .await()
+            val value = mNewsService
+                .getDetails(docId)
+                .await()
 
-            MapperFactory
-                    .createDetailsMapper()
-                    .transform(value)
-                    .also { mCache.saveDetails(docId, it) }
+            mDetailsMapper
+                .transform(value)
+                .also { mCache.saveDetails(docId, it) }
         }
     }
-
-    private fun newsService(): INewsService =
-            mServiceFactory.createService(INewsService::class.java, Constant.Service.BASE_URL)
 }

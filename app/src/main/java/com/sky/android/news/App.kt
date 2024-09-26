@@ -19,14 +19,19 @@ package com.sky.android.news
 import android.app.Application
 import com.sky.android.common.util.Alog
 import com.sky.android.common.util.ToastUtil
-import com.sky.android.news.data.cache.CacheManager
+import com.sky.android.news.data.cache.ICacheManager
+import dagger.Lazy
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
 /**
  * Created by sky on 17-9-21.
  */
 @HiltAndroidApp
 class App : Application() {
+
+    @Inject
+    lateinit var mCacheManager: Lazy<ICacheManager>
 
     override fun onCreate() {
         super.onCreate()
@@ -41,13 +46,13 @@ class App : Application() {
         ToastUtil.initialize(this)
 
         // 初始化...
-        CacheManager.getInstance(this)
+        mCacheManager.get()
     }
 
     override fun onTerminate() {
         super.onTerminate()
 
         // 关闭
-        CacheManager.getInstance(this).close()
+        mCacheManager.get().close()
     }
 }

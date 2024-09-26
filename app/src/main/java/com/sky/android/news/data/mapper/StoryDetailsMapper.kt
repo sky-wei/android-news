@@ -22,11 +22,12 @@ import com.sky.android.news.data.model.SectionModel
 import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.story.Section
 import com.sky.android.news.data.story.StoryDetails
+import javax.inject.Inject
 
 /**
  * Created by sky on 17-9-28.
  */
-class StoryDetailsMapper {
+class StoryDetailsMapper @Inject constructor() {
 
     fun transform(storyDetails: StoryDetails): StoryDetailsModel {
 

@@ -17,17 +17,22 @@
 package com.sky.android.news.data.source.local
 
 import com.sky.android.news.data.cache.INewsCache
-import com.sky.android.news.data.model.*
+import com.sky.android.news.data.model.CategoryItemModel
+import com.sky.android.news.data.model.CategoryModel
+import com.sky.android.news.data.model.DetailsModel
+import com.sky.android.news.data.model.HeadLineModel
+import com.sky.android.news.data.model.XResult
 import com.sky.android.news.data.source.INewsSource
 import com.sky.android.news.ext.flowOfResult
 import com.sky.android.news.ext.flowOfResultNull
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 /**
  * Created by sky on 17-9-21.
  */
-class NewsLocalSource(
-        private val cache: INewsCache
+class NewsLocalSource @Inject constructor(
+    private val cache: INewsCache
 ) : INewsSource {
 
     override fun getCategory(): Flow<XResult<CategoryModel>> = flowOfResult {

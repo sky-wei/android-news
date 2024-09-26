@@ -16,12 +16,19 @@
 
 package com.sky.android.news.di
 
-import com.sky.android.news.data.service.NewsInterceptor
+import com.google.gson.Gson
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.sky.android.news.Constant
+import com.sky.android.news.data.service.INewsService
+import com.sky.android.news.data.service.IStoryService
+import com.sky.android.news.data.network.NewsInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 /**
@@ -42,13 +49,41 @@ object NetWorkModule {
                 .build()
     }
 
-//    @Provides
-//    fun provideRetrofit(client: OkHttpClient): Retrofit {
-//        return Retrofit.Builder()
-//                .baseUrl(Constant.Service.BASE_URL)
-//                .client(client)
-//                .addConverterFactory(GsonConverterFactory.create(newGosn()))
-//                .addCallAdapterFactory(CoroutineCallAdapterFactory())
-//                .build()
-//    }
+    @Provides
+    fun provideNewsService(
+        client: OkHttpClient,
+        converterFactory: GsonConverterFactory,
+        callAdapterFactory: CoroutineCallAdapterFactory
+    ): INewsService {
+        return Retrofit.Builder()
+            .baseUrl(Constant.Service.NEWS_URL)
+            .client(client)
+            .addConverterFactory(converterFactory)
+            .addCallAdapterFactory(callAdapterFactory)
+            .build()
+            .create(INewsService::class.java)
+    }
+
+    @Provides
+    fun provideStoryService(
+        client: OkHttpClient,
+        converterFactory: GsonConverterFactory,
+        callAdapterFactory: CoroutineCallAdapterFactory
+    ): IStoryService {
+        return Retrofit.Builder()
+            .baseUrl(Constant.Service.STORY_URL)
+            .client(client)
+            .addConverterFactory(converterFactory)
+            .addCallAdapterFactory(callAdapterFactory)
+            .build()
+            .create(IStoryService::class.java)
+    }
+
+    @Provides
+    fun provideGsonConverterFactory(gson: Gson): GsonConverterFactory =
+        GsonConverterFactory.create(gson)
+
+    @Provides
+    fun provideCoroutineCallAdapterFactory(): CoroutineCallAdapterFactory =
+        CoroutineCallAdapterFactory()
 }

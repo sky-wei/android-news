@@ -23,12 +23,13 @@ import com.sky.android.news.data.model.XResult
 import com.sky.android.news.data.source.IStorySource
 import com.sky.android.news.ext.flowOfResultNull
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 /**
  * Created by sky on 17-9-28.
  */
-class StoryLocalSource(
-        private val cache: IStoryCache
+class StoryLocalSource @Inject constructor(
+    private val cache: IStoryCache
 ) : IStorySource {
 
     override fun getLatestStories(): Flow<XResult<StoryListModel>> =

@@ -20,11 +20,14 @@ import com.sky.android.news.data.model.StoryDetailsModel
 import com.sky.android.news.data.model.StoryDetailsPackageModel
 import com.sky.android.news.data.model.StoryListModel
 import com.sky.android.news.data.model.StoryListPackageModel
+import javax.inject.Inject
 
 /**
  * Created by sky on 17-9-28.
  */
-class StoryCache(private val mCacheManager: ICacheManager) : IStoryCache {
+class StoryCache @Inject constructor(
+    private val mCacheManager: ICacheManager
+) : IStoryCache {
 
     private var mLatestStoriesKey = mCacheManager.buildKey(
             StoryCache::class.java.name + ":getLatestStories()")

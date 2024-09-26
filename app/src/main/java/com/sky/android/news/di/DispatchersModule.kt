@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 The sky Authors.
+ * Copyright (c) 2024 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,28 +16,33 @@
 
 package com.sky.android.news.di
 
-import com.sky.android.news.data.repository.INewsRepository
-import com.sky.android.news.data.repository.IStoryRepository
-import com.sky.android.news.data.repository.NewsRepository
-import com.sky.android.news.data.repository.StoryRepository
-import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import javax.inject.Qualifier
 
-/**
- * Created by sky on 2021-03-12.
- */
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class DefaultDispatcher
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class IODispatcher
+
+
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
+object DispatchersModule {
 
-    @Binds
-    @Singleton
-    abstract fun bindNewsRepository(repository: NewsRepository): INewsRepository
+    @Provides
+    @IODispatcher
+    fun providesIODispatcher(): CoroutineDispatcher = Dispatchers.IO
 
-    @Binds
-    @Singleton
-    abstract fun bindStoryRepository(repository: StoryRepository): IStoryRepository
+    @Provides
+    @DefaultDispatcher
+    fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 }
+

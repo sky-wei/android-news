@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2024 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,8 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.mapper
+package com.sky.android.news.data.repository
 
-/**
- * Created by sky on 17-9-22.
- */
-object MapperFactory {
+import com.sky.android.news.data.source.IStorySource
 
-    fun createHeadLineMapper()= HeadLineMapper()
-
-    fun createDetailsMapper()= DetailsMapper()
-
-    fun createStoryListMapper() = StoryListMapper()
-
-    fun createStoryDetailsMapper() = StoryDetailsMapper()
-}
+interface IStoryRepository : IStorySource

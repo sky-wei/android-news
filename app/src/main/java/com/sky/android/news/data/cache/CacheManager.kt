@@ -23,13 +23,17 @@ import com.sky.android.common.util.Alog
 import com.sky.android.common.util.FileUtil
 import com.sky.android.common.util.MD5Util
 import com.sky.android.news.BuildConfig
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  * Created by sky on 17-9-21.
  */
-class CacheManager private constructor(private val mContext: Context): ICacheManager {
+class CacheManager @Inject constructor(
+    @ApplicationContext private val mContext: Context
+): ICacheManager {
 
     private var mDiskLruCache: DiskLruCache? = null
     private var mGson: Gson = Gson()
@@ -39,21 +43,6 @@ class CacheManager private constructor(private val mContext: Context): ICacheMan
         private val TAG = CacheManager::class.java.simpleName
 
         private const val MAX_SIZE = 1024 * 1024 * 20
-
-        @Volatile
-        private var instance: ICacheManager? = null
-
-        fun getInstance(context: Context): ICacheManager {
-
-            if (instance == null) {
-                synchronized(CacheManager::class) {
-                    if (instance == null) {
-                        instance = CacheManager(context)
-                    }
-                }
-            }
-            return instance!!
-        }
     }
 
     init {

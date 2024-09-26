@@ -23,9 +23,9 @@ object Constant {
 
     object Service {
 
-        const val BASE_URL = "https://c.m.163.com/"
+        const val NEWS_URL = "https://c.m.163.com/"
 
-        const val ZH_BASE_URL = "https://news-at.zhihu.com/"
+        const val STORY_URL = "https://news-at.zhihu.com/"
     }
 
     object Category {

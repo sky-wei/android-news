@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2024 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,28 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.source
+package com.sky.android.news.data.repository
 
 import com.sky.android.news.data.model.CategoryModel
 import com.sky.android.news.data.model.DetailsModel
 import com.sky.android.news.data.model.HeadLineModel
 import com.sky.android.news.data.model.XResult
+import com.sky.android.news.data.source.INewsSource
+import com.sky.android.news.di.LocalSource
+import com.sky.android.news.di.RemoteSource
 import com.sky.android.news.ext.concatResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
 
 /**
  * Created by sky on 17-9-21.
  */
-class NewsRepository(
-        private val local: INewsSource,
-        private val remote: INewsSource
-) : INewsSource {
+class NewsRepository @Inject constructor(
+    @LocalSource private val local: INewsSource,
+    @RemoteSource private val remote: INewsSource
+) : INewsRepository {
 
     override fun getCategory(): Flow<XResult<CategoryModel>> =
             concatResult(local.getCategory()) { remote.getCategory() }

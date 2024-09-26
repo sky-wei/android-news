@@ -17,26 +17,47 @@
 package com.sky.android.news.di
 
 import com.sky.android.news.data.source.INewsSource
-import com.sky.android.news.data.source.IRepositoryFactory
 import com.sky.android.news.data.source.IStorySource
+import com.sky.android.news.data.source.local.NewsLocalSource
+import com.sky.android.news.data.source.local.StoryLocalSource
+import com.sky.android.news.data.source.remote.NewsRemoteSource
+import com.sky.android.news.data.source.remote.StoryRemoteSource
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import javax.inject.Qualifier
 
 /**
  * Created by sky on 2021-03-12.
  */
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class LocalSource
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class RemoteSource
+
+
 @Module
 @InstallIn(SingletonComponent::class)
-object SourceModule {
+abstract class SourceModule {
 
-    @Provides
-    @Singleton
-    fun provideNewsSource(factory: IRepositoryFactory): INewsSource = factory.createNewsSource()
+    @Binds
+    @LocalSource
+    abstract fun bindNewsLocalSource(source: NewsLocalSource): INewsSource
 
-    @Provides
-    @Singleton
-    fun provideStorySource(factory: IRepositoryFactory): IStorySource = factory.createStorySource()
+    @Binds
+    @LocalSource
+    abstract fun bindStoryLocalSource(source: StoryLocalSource): IStorySource
+
+    @Binds
+    @RemoteSource
+    abstract fun bindNewsRemoteSource(source: NewsRemoteSource): INewsSource
+
+    @Binds
+    @RemoteSource
+    abstract fun bindStoryRemoteSource(source: StoryRemoteSource): IStorySource
 }

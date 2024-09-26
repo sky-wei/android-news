@@ -38,14 +38,12 @@ interface INewsCache {
     /**
      * 获取新闻列表信息
      */
-    fun getHeadLine(tid: String,
-                    start: Int, end: Int): HeadLineModel?
+    fun getHeadLine(tid: String, start: Int, end: Int): HeadLineModel?
 
     /**
      * 保存新闻列表信息
      */
-    fun saveHeadLine(tid: String,
-                     start: Int, end: Int, model: HeadLineModel)
+    fun saveHeadLine(tid: String, start: Int, end: Int, model: HeadLineModel)
 
     /**
      * 获取详情信息

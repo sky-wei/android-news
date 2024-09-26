@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 The sky Authors.
+ * Copyright (c) 2024 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,8 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.service
+package com.sky.android.news.data.repository
 
-/**
- * Created by sky on 2021-01-06.
- */
-interface IServiceFactory {
-    /**
-     * 创建服务
-     * @param tClass
-     * @param <T>
-     * @return
-    </T> */
-    fun <T> createService(tClass: Class<T>): T
+import com.sky.android.news.data.source.INewsSource
 
-    fun <T> createService(tClass: Class<T>, baseUrl: String): T
-}
+interface INewsRepository : INewsSource

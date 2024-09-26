@@ -29,14 +29,14 @@ interface INewsService {
 
     @GET("nc/article/headline/{tid}/{start}-{end}.html")
     fun getHeadLine(
-            @Path("tid") tid: String,
-            @Path("start") start: Int,
-            @Path("end") end: Int
+        @Path("tid") tid: String,
+        @Path("start") start: Int,
+        @Path("end") end: Int
     ): Deferred<HeadLine>
 
 
     @GET("nc/article/{docId}/full.html")
     fun getDetails(
-            @Path("docId") docId: String
+        @Path("docId") docId: String
     ): Deferred<Details>
 }

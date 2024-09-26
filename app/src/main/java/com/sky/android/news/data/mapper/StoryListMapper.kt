@@ -24,11 +24,12 @@ import com.sky.android.news.data.model.TopStoryItemModel
 import com.sky.android.news.data.story.StoryItem
 import com.sky.android.news.data.story.StoryList
 import com.sky.android.news.data.story.TopStory
+import javax.inject.Inject
 
 /**
  * Created by sky on 17-9-28.
  */
-class StoryListMapper {
+class StoryListMapper @Inject constructor() {
 
     fun transform(storyList: StoryList): StoryListModel {
 
