@@ -20,7 +20,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.sky.android.news.R
-import com.sky.android.news.data.model.CategoryModel
+import com.sky.android.news.data.model.news.CategoryModel
 import com.sky.android.news.data.model.XResult
 import com.sky.android.news.data.source.INewsSource
 import com.sky.android.news.util.WhileUiSubscribed

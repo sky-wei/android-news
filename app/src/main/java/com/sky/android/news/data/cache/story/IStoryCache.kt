@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2024 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,30 +14,43 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.source
+package com.sky.android.news.data.cache.story
 
 import com.sky.android.news.data.model.story.StoryDetailsModel
 import com.sky.android.news.data.model.story.StoryListModel
-import com.sky.android.news.data.model.XResult
-import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by sky on 17-9-28.
  */
-interface IStorySource {
+interface IStoryCache {
 
     /**
-     * 获取最后一次列表
+     * 获取最后一次列表信息
      */
-    fun getLatestStories(): Flow<XResult<StoryListModel>>
+    fun getLatestStories(): StoryListModel?
 
     /**
-     * 获取指定日期的列表
+     * 保存最后一次列表信息
      */
-    fun getStories(date: String): Flow<XResult<StoryListModel>>
+    fun saveLatestStories(model: StoryListModel)
+
+    /**
+     * 获取指定日期的列表信息
+     */
+    fun getStories(date: String): StoryListModel?
+
+    /**
+     * 保存指定日期的列表信息
+     */
+    fun saveStories(date: String, model: StoryListModel)
 
     /**
      * 获取指定id的详情
      */
-    fun getStory(id: String): Flow<XResult<StoryDetailsModel>>
+    fun getStory(id: String): StoryDetailsModel?
+
+    /**
+     * 保存指定id的详情
+     */
+    fun saveStory(id: String, model: StoryDetailsModel)
 }

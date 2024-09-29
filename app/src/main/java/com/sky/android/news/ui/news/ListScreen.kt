@@ -25,7 +25,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sky.android.news.data.model.CategoryItemModel
+import com.sky.android.news.data.model.news.CategoryItemModel
 
 
 @Composable

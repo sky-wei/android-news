@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2024 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,16 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.service
+package com.sky.android.news.data.model.story
 
-import com.sky.android.news.data.model.story.StoryDetails
-import com.sky.android.news.data.model.story.StoryList
-import kotlinx.coroutines.Deferred
-import retrofit2.http.GET
-import retrofit2.http.Path
+import java.io.Serializable
 
 /**
  * Created by sky on 17-9-28.
  */
-interface IStoryService {
+data class StoryDetails(val body: String, val image_source: String, val title: String,
+                        val image: String, val share_url: String, val js: List<String>,
+                        val ga_prefix: String, val section: Section, val images: List<String>,
+                        val type: Int, val id: Long, val css: List<String>) : Serializable
 
-    @GET("api/4/stories/latest")
-    fun getLatestStories(): Deferred<StoryList>
-
-    @GET("api/4/stories/before/{date}")
-    fun getStories(@Path("date") date: String): Deferred<StoryList>
-
-    @GET("api/4/story/{id}")
-    fun getStory(@Path("id") id: String): Deferred<StoryDetails>
-}
+data class Section(val thumbnail: String, val id: Long, val name: String) : Serializable

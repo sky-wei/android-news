@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2024 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,34 +14,44 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.source
+package com.sky.android.news.data.cache.news
 
 import com.sky.android.news.data.model.news.CategoryModel
 import com.sky.android.news.data.model.news.DetailsModel
 import com.sky.android.news.data.model.news.HeadLineModel
-import com.sky.android.news.data.model.XResult
-import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by sky on 17-9-21.
  */
-
-interface INewsSource {
+interface INewsCache {
 
     /**
      * 获取分类列表
      */
-    fun getCategory(): Flow<XResult<CategoryModel>>
+    fun getCategory(): CategoryModel?
 
     /**
-     * 获取新闻列表
+     * 保存分类列表
      */
-    fun getHeadLine(
-        tid: String, start: Int, end: Int
-    ): Flow<XResult<HeadLineModel>>
+    fun saveCategory(model: CategoryModel)
+
+    /**
+     * 获取新闻列表信息
+     */
+    fun getHeadLine(tid: String, start: Int, end: Int): HeadLineModel?
+
+    /**
+     * 保存新闻列表信息
+     */
+    fun saveHeadLine(tid: String, start: Int, end: Int, model: HeadLineModel)
 
     /**
      * 获取详情信息
      */
-    fun getDetails(docId: String): Flow<XResult<DetailsModel>>
+    fun getDetails(docId: String): DetailsModel?
+
+    /**
+     * 保存详情信息
+     */
+    fun saveDetails(docId: String, model: DetailsModel)
 }

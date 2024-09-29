@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2024 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,30 +14,37 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.source.local
+package com.sky.android.news.data.repository.story
 
-import com.sky.android.news.data.cache.story.IStoryCache
 import com.sky.android.news.data.model.story.StoryDetailsModel
 import com.sky.android.news.data.model.story.StoryListModel
 import com.sky.android.news.data.model.XResult
 import com.sky.android.news.data.source.IStorySource
-import com.sky.android.news.ext.flowOfResultNull
+import com.sky.android.news.data.source.di.LocalSource
+import com.sky.android.news.data.source.di.RemoteSource
+import com.sky.android.news.ext.concatResult
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 /**
  * Created by sky on 17-9-28.
  */
-class StoryLocalSource @Inject constructor(
-    private val cache: IStoryCache
-) : IStorySource {
+class StoryRepository @Inject constructor(
+    @LocalSource private val local: IStorySource,
+    @RemoteSource private val remote: IStorySource
+) : IStoryRepository {
 
     override fun getLatestStories(): Flow<XResult<StoryListModel>> =
-            flowOfResultNull { cache.getLatestStories() }
+            concatResult(local.getLatestStories()) { remote.getLatestStories() }
+                    .flowOn(Dispatchers.IO)
 
     override fun getStories(date: String): Flow<XResult<StoryListModel>> =
-            flowOfResultNull { cache.getStories(date) }
+            concatResult(local.getStories(date)) { remote.getStories(date) }
+                    .flowOn(Dispatchers.IO)
 
     override fun getStory(id: String): Flow<XResult<StoryDetailsModel>> =
-            flowOfResultNull { cache.getStory(id) }
+            concatResult(local.getStory(id)) { remote.getStory(id) }
+                    .flowOn(Dispatchers.IO)
 }

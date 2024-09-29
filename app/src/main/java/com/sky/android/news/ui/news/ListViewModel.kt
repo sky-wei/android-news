@@ -22,8 +22,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sky.android.common.util.Alog
-import com.sky.android.news.data.model.CategoryItemModel
-import com.sky.android.news.data.model.LineItemModel
+import com.sky.android.news.data.model.news.CategoryItemModel
+import com.sky.android.news.data.model.news.LineItemModel
 import com.sky.android.news.data.source.INewsSource
 import com.sky.android.news.ext.doSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel

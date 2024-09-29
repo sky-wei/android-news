@@ -42,8 +42,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sky.android.news.data.model.CategoryItemModel
-import com.sky.android.news.data.model.CategoryModel
+import com.sky.android.news.data.model.news.CategoryItemModel
+import com.sky.android.news.data.model.news.CategoryModel
 import com.sky.android.news.ui.common.LoadingBox
 import com.sky.android.news.ui.common.LoadingContent
 import com.sky.android.news.ui.common.NewsTopAppBar

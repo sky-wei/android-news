@@ -16,11 +16,11 @@
 
 package com.sky.android.news.data.source.local
 
-import com.sky.android.news.data.cache.INewsCache
-import com.sky.android.news.data.model.CategoryItemModel
-import com.sky.android.news.data.model.CategoryModel
-import com.sky.android.news.data.model.DetailsModel
-import com.sky.android.news.data.model.HeadLineModel
+import com.sky.android.news.data.cache.news.INewsCache
+import com.sky.android.news.data.model.news.CategoryItemModel
+import com.sky.android.news.data.model.news.CategoryModel
+import com.sky.android.news.data.model.news.DetailsModel
+import com.sky.android.news.data.model.news.HeadLineModel
 import com.sky.android.news.data.model.XResult
 import com.sky.android.news.data.source.INewsSource
 import com.sky.android.news.ext.flowOfResult
@@ -44,7 +44,8 @@ class NewsLocalSource @Inject constructor(
                 CategoryItemModel("军事", "T1348648141035"),
                 CategoryItemModel("要闻", "T1467284926140"),
                 CategoryItemModel("手机", "T1348649654285"),
-                CategoryItemModel("数码", "T1348649776727"))
+                CategoryItemModel("数码", "T1348649776727")
+        )
 
         CategoryModel(itemModes)
     }

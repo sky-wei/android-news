@@ -16,11 +16,11 @@
 
 package com.sky.android.news.data.source.remote
 
-import com.sky.android.news.data.cache.IStoryCache
-import com.sky.android.news.data.mapper.StoryDetailsMapper
-import com.sky.android.news.data.mapper.StoryListMapper
-import com.sky.android.news.data.model.StoryDetailsModel
-import com.sky.android.news.data.model.StoryListModel
+import com.sky.android.news.data.cache.story.IStoryCache
+import com.sky.android.news.data.mapper.story.StoryDetailsMapper
+import com.sky.android.news.data.mapper.story.StoryListMapper
+import com.sky.android.news.data.model.story.StoryDetailsModel
+import com.sky.android.news.data.model.story.StoryListModel
 import com.sky.android.news.data.model.XResult
 import com.sky.android.news.data.service.IStoryService
 import com.sky.android.news.data.source.IStorySource

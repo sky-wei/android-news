@@ -16,8 +16,8 @@
 
 package com.sky.android.news.data.service
 
-import com.sky.android.news.data.news.Details
-import com.sky.android.news.data.news.HeadLine
+import com.sky.android.news.data.model.news.Details
+import com.sky.android.news.data.model.news.HeadLine
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Path
