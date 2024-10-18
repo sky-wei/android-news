@@ -19,7 +19,6 @@ package com.sky.android.news.util
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.text.TextUtils
 import com.sky.android.common.util.Alog
 
 /**
@@ -27,45 +26,41 @@ import com.sky.android.common.util.Alog
  */
 object ActivityUtil {
 
-    fun startActivity(context: Context, tClass: Class<*>): Boolean {
-        return startActivity(context, Intent(context, tClass))
-    }
+    fun startActivity(context: Context, tClass: Class<*>): Boolean =
+        startActivity(context, Intent(context, tClass))
 
-    fun startActivity(context: Context, intent: Intent): Boolean {
-
-        try {
+    fun startActivity(
+        context: Context, intent: Intent
+    ): Boolean {
+        return try {
             // 获取目标包名
             val packageName = intent.`package`
 
             // 设置启动参数
-            if (!TextUtils.isEmpty(packageName)
-                    && !TextUtils.equals(packageName, context.packageName)) {
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            if (!packageName.isNullOrEmpty()
+                    && packageName != context.packageName) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
             // 启动Activity
             context.startActivity(intent)
-            return true
+            true
         } catch (e: Exception) {
             Alog.e("启动Activity异常", e)
+            false
         }
-        return false
     }
 
-    fun startActivityForResult(activity: Activity, intent: Intent, requestCode: Int): Boolean {
-
-        try {
-            // 添加参数
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-
+    fun startActivityForResult(
+        activity: Activity, intent: Intent, requestCode: Int
+    ): Boolean {
+        return try {
             // 启动Activity
             activity.startActivityForResult(intent, requestCode)
-            return true
+            true
         } catch (e: Exception) {
             Alog.e("启动Activity异常", e)
+            false
         }
-
-        return false
     }
 }
