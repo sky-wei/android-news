@@ -22,7 +22,7 @@ import androidx.lifecycle.viewModelScope
 import com.sky.android.news.R
 import com.sky.android.news.data.model.news.CategoryModel
 import com.sky.android.news.data.model.XResult
-import com.sky.android.news.data.source.INewsSource
+import com.sky.android.news.data.repository.news.INewsRepository
 import com.sky.android.news.util.WhileUiSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,12 +40,12 @@ data class NewsUiState(
 @HiltViewModel
 class NewsViewModel @Inject constructor(
     application: Application,
-    newsSource: INewsSource
+    newsRepository: INewsRepository
 ) : AndroidViewModel(application) {
 
     private val _loading = MutableStateFlow(false)
     private val _message = MutableStateFlow<Int?>(null)
-    private val _loadCategory = newsSource.getCategory()
+    private val _loadCategory = newsRepository.getCategory()
 
     val uiState: StateFlow<NewsUiState> = combine(
         _loading, _loadCategory, _message,

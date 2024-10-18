@@ -17,11 +17,11 @@
 package com.sky.android.news.data.mapper.news
 
 import com.sky.android.common.util.ConversionUtil
-import com.sky.android.news.ext.toExtString
-import com.sky.android.news.data.model.news.HeadLineModel
-import com.sky.android.news.data.model.news.LineItemModel
 import com.sky.android.news.data.model.news.HeadLine
+import com.sky.android.news.data.model.news.HeadLineModel
 import com.sky.android.news.data.model.news.LineItem
+import com.sky.android.news.data.model.news.LineItemModel
+import com.sky.android.news.ext.toExtString
 import javax.inject.Inject
 
 /**

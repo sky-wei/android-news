@@ -24,20 +24,25 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class MapperModule {
-
-    @Binds
-    abstract fun bindHeadLineMapper(mapper: HeadLineMapper): HeadLineMapper
-
-    @Binds
-    abstract fun bindDetailsMapper(mapper: DetailsMapper): DetailsMapper
-
-    @Binds
-    abstract fun bindStoryListMapper(mapper: StoryListMapper): StoryListMapper
-
-    @Binds
-    abstract fun bindStoryDetailsMapper(mapper: StoryDetailsMapper): StoryDetailsMapper
-}
+//@Module
+//@InstallIn(SingletonComponent::class)
+//abstract class MapperModule {
+//
+//    @Binds
+//    @Singleton
+//    abstract fun bindHeadLineMapper(mapper: HeadLineMapper): IHeadLineMapper
+//
+//    @Binds
+//    @Singleton
+//    abstract fun bindDetailsMapper(mapper: DetailsMapper): DetailsMapper
+//
+//    @Binds
+//    @Singleton
+//    abstract fun bindStoryListMapper(mapper: StoryListMapper): StoryListMapper
+//
+//    @Binds
+//    @Singleton
+//    abstract fun bindStoryDetailsMapper(mapper: StoryDetailsMapper): StoryDetailsMapper
+//}

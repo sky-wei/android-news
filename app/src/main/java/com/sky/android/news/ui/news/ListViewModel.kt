@@ -24,7 +24,7 @@ import androidx.lifecycle.viewModelScope
 import com.sky.android.common.util.Alog
 import com.sky.android.news.data.model.news.CategoryItemModel
 import com.sky.android.news.data.model.news.LineItemModel
-import com.sky.android.news.data.source.INewsSource
+import com.sky.android.news.data.repository.news.INewsRepository
 import com.sky.android.news.ext.doSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -44,7 +44,7 @@ data class NewsListUiState(
 @HiltViewModel
 class ListViewModel @Inject constructor(
     application: Application,
-    private val newsSource: INewsSource
+    private val newsRepository: INewsRepository
 ) : AndroidViewModel(application) {
 
     private val _categoryItem = MutableLiveData<CategoryItemModel?>()
@@ -65,7 +65,7 @@ class ListViewModel @Inject constructor(
     private fun loadData() {
         viewModelScope.launch {
             val value = withContext(Dispatchers.IO) {
-                newsSource.getHeadLine(
+                newsRepository.getHeadLine(
                     _categoryItem.value!!.tid, 0, 20
                 ).single()
             }

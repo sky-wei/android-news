@@ -23,7 +23,7 @@ import androidx.lifecycle.viewModelScope
 import coil.Coil
 import coil.annotation.ExperimentalCoilApi
 import com.sky.android.news.R
-import com.sky.android.news.data.cache.CacheManager
+import com.sky.android.news.data.cache.ICacheManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,7 +38,8 @@ data class SettingsUiState(
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    application: Application
+    application: Application,
+    private val cacheManager: ICacheManager
 ) : AndroidViewModel(application) {
 
     private val _uiState: MutableStateFlow<SettingsUiState> = MutableStateFlow(SettingsUiState())
@@ -47,7 +48,7 @@ class SettingsViewModel @Inject constructor(
     fun clearNewsCache() {
         viewModelScope.launch {
             // 清除新闻缓存
-            CacheManager.getInstance(getApplication()).clear()
+            cacheManager.clear()
             showMessage(R.string.clear_success)
         }
     }
