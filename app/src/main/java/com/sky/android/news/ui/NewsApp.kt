@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.ui.splash
+package com.sky.android.news.ui
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.navigation.NavHostController
-import com.sky.android.news.ui.theme.customScheme
+import androidx.compose.ui.Modifier
+import com.sky.android.news.ui.navigation.NewsNavHost
+
+/**
+ * Created by sky on 10/21/24.
+ */
 
 @Composable
-fun SplashScreen(navController: NavHostController) {
-
-//    val systemUiController = rememberSystemUiController()
-    val systemBarColor = MaterialTheme.customScheme.appThemeColor
-
-//    SideEffect {
-//        systemUiController.setStatusBarColor(
-//            color = systemBarColor
-//        )
-//    }
+fun NewsApp(
+    appState: NewsAppState,
+    modifier: Modifier = Modifier,
+) {
+    NewsNavHost(
+        appState = appState,
+        modifier = modifier
+    )
 }

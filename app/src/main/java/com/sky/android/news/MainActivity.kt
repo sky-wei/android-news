@@ -20,7 +20,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.sky.android.news.ui.NewsApp
 import com.sky.android.news.ui.navigation.NewsNavHost
+import com.sky.android.news.ui.rememberNewsAppState
 import com.sky.android.news.ui.theme.NewsTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,11 +31,19 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
+
         setContent {
+
+            val appState = rememberNewsAppState()
+
             NewsTheme {
-                NewsNavHost()
+                NewsApp(
+                    appState = appState
+                )
             }
         }
     }

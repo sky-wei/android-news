@@ -5,6 +5,7 @@ converterGson = "2.9.0"
 disklrucache = "2.0.2"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
+androidxCoreSplashscreen = "1.0.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
@@ -24,6 +25,7 @@ runtimeLivedata = "1.6.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxCoreSplashscreen" }
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 disklrucache = { module = "com.jakewharton:disklrucache", version.ref = "disklrucache" }

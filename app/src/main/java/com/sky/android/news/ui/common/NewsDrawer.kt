@@ -27,7 +27,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Divider
-import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
@@ -35,7 +34,6 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,30 +46,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sky.android.news.R
-import com.sky.android.news.ui.navigation.NewsNavigationActions
+import com.sky.android.news.ui.NewsAppState
 import com.sky.android.news.ui.navigation.Screen
 import com.sky.android.news.ui.theme.NewsTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @Composable
 fun AppModalDrawer(
-    drawerState: DrawerState,
+    appState: NewsAppState,
     currentRoute: String,
-    navigationActions: NewsNavigationActions,
-    coroutineScope: CoroutineScope = rememberCoroutineScope(),
     content: @Composable () -> Unit
 ) {
     ModalNavigationDrawer(
-        drawerState = drawerState,
+        drawerState = appState.drawerState,
         drawerContent = {
             AppDrawerSheet(
                 currentRoute = currentRoute,
-                navigateToNews = { navigationActions.navigateToNews() },
-                navigateToStory = { navigationActions.navigateToStory() },
-                navigateToSettings = { navigationActions.navigateToSettings() },
-                navigateToAbout = { navigationActions.navigateToAbout() },
-                closeDrawer = { coroutineScope.launch { drawerState.close() } }
+                navigateToNews = appState::navigateToNews,
+                navigateToStory = appState::navigateToStory,
+                navigateToSettings = appState::navigateToSettings,
+                navigateToAbout = appState::navigateToAbout,
+                closeDrawer = appState::closeDrawer
             )
         }
     ) {

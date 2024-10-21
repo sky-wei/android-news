@@ -17,8 +17,6 @@
 package com.sky.android.news.ui.navigation
 
 import androidx.navigation.NamedNavArgument
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 
@@ -26,8 +24,6 @@ sealed class Screen(
     val route: String,
     val navArguments: List<NamedNavArgument> = emptyList()
 ) {
-
-    data object Splash: Screen("splash")
 
     data object News: Screen("news")
 
@@ -54,49 +50,4 @@ sealed class Screen(
     data object Setting: Screen("setting")
 
     data object About: Screen("about")
-}
-
-
-class NewsNavigationActions(
-    private val navController: NavHostController
-) {
-    fun navigateToSplash() {
-        navController.navigate(Screen.Splash.route)
-    }
-
-    fun navigateToNews() {
-        navController.navigate(Screen.News.route) {
-            popUpTo(navController.graph.findStartDestination().id) {
-                saveState = true
-            }
-            launchSingleTop = true
-            restoreState = true
-        }
-    }
-
-    fun navigateToNewsDetail(tid: String) {
-        navController.navigate(Screen.NewsDetail.createRoute(tid))
-    }
-
-    fun navigateToStory() {
-        navController.navigate(Screen.Story.route) {
-            popUpTo(navController.graph.findStartDestination().id) {
-                saveState = true
-            }
-            launchSingleTop = true
-            restoreState = true
-        }
-    }
-
-    fun navigateToStoryDetail(id: String) {
-        navController.navigate(Screen.StoryDetail.createRoute(id))
-    }
-
-    fun navigateToSettings() {
-        navController.navigate(Screen.Setting.route)
-    }
-
-    fun navigateToAbout() {
-        navController.navigate(Screen.About.route)
-    }
 }
