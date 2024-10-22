@@ -53,6 +53,7 @@ import com.sky.android.news.BuildConfig
 import com.sky.android.news.R
 import com.sky.android.news.ui.common.NewsBackTopAppBar
 import com.sky.android.news.ui.theme.NewsTheme
+import com.sky.android.news.ui.theme.customScheme
 import com.sky.android.news.util.ActivityUtil
 
 @Composable
@@ -99,7 +100,6 @@ fun ProjectInfoItem(
         Spacer(modifier = Modifier.height(20.dp))
         AppInfoWidget(onOpenLink = onOpenLink)
         Spacer(modifier = Modifier.weight(1f))
-        Spacer(modifier = Modifier.height(20.dp))
         CopyrightWidget()
     }
 }
@@ -117,7 +117,7 @@ private fun AppLogoWidget() {
     Spacer(modifier = Modifier.height(20.dp))
     Text(
         text = stringResource(id = R.string.app_name),
-//        color = MaterialTheme.customScheme.appThemeColor,
+        color = MaterialTheme.customScheme.appThemeColor,
         fontSize = 24.sp
     )
 }
@@ -157,7 +157,6 @@ private fun CopyrightWidget() {
         text = stringResource(id = R.string.version_x, BuildConfig.VERSION_NAME),
         fontSize = 10.sp
     )
-    Spacer(modifier = Modifier.height(4.dp))
     Text(
         text = "Copyright © 2024 sky.All Rights Reserved.",
         fontSize = 10.sp

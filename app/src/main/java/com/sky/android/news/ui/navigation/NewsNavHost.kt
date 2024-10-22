@@ -29,7 +29,7 @@ import com.sky.android.news.ui.story.storyScreen
 fun NewsNavHost(
     appState: NewsAppState,
     modifier: Modifier = Modifier,
-    startDestination: String = Screen.News.route
+    startDestination: String = Screen.Story.route
 ) {
 
     val currentRoute = appState.currentRoute ?: startDestination
