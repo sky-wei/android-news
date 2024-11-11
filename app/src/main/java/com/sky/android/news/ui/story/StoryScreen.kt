@@ -143,7 +143,9 @@ private fun StoreContent(
             key = { index -> stories[index].id.toString() }
         ) { index ->
             VerticalListItem(stories[index])
-            ListItemDivider()
+            if (index + 1 != stories.size) {
+                ListItemDivider()
+            }
         }
     }
 }
