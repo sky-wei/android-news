@@ -18,18 +18,21 @@ package com.sky.android.news.ui.story
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -44,11 +47,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -57,10 +58,12 @@ import coil.compose.AsyncImage
 import com.sky.android.news.data.model.story.StoryItemModel
 import com.sky.android.news.data.model.story.StoryListModel
 import com.sky.android.news.data.model.story.TopStoryItemModel
-import com.sky.android.news.ui.common.LoadingBox
-import com.sky.android.news.ui.common.LoadingContent
-import com.sky.android.news.ui.common.NewsTopAppBar
-import com.sky.android.news.ui.common.NoDataContent
+import com.sky.android.news.ext.carouselTransition
+import com.sky.android.news.ui.component.LoadingBox
+import com.sky.android.news.ui.component.LoadingView
+import com.sky.android.news.ui.component.NewsTopAppBar
+import com.sky.android.news.ui.component.NoDataContent
+import com.sky.android.news.ui.component.StoryCarousel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -112,7 +115,7 @@ private fun StoryContent(
     storyList: StoryListModel?,
     modifier: Modifier
 ) {
-    LoadingContent(
+    LoadingView(
         loading = loading,
         loadingContent = { LoadingBox() }
     ) {
@@ -127,7 +130,6 @@ private fun StoryContent(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun StoreContent(
     data: String,
@@ -135,20 +137,39 @@ private fun StoreContent(
     stories: List<StoryItemModel>,
     modifier: Modifier
 ) {
-    LazyColumn(
-        modifier = modifier.padding(horizontal = 15.dp, vertical = 10.dp)
+    Column(
+        modifier = modifier
+            .fillMaxSize()
     ) {
-        items(
-            count = stories.size,
-            key = { index -> stories[index].id.toString() }
-        ) { index ->
-            VerticalListItem(stories[index])
-            if (index + 1 != stories.size) {
-                ListItemDivider()
+        StoryCarousel(
+            topStories = topStories,
+            onItemClicked = {  }
+        )
+
+        Spacer(
+            modifier = Modifier.height(15.dp)
+        )
+
+        LazyColumn(
+            modifier = Modifier
+                .padding(horizontal = 15.dp, vertical = 10.dp)
+        ) {
+            items(
+                count = stories.size,
+                key = { index -> stories[index].id.toString() }
+            ) { index ->
+                VerticalListItem(stories[index])
+                if (index + 1 != stories.size) {
+                    ListItemDivider()
+                }
             }
         }
     }
 }
+
+
+
+
 
 @Composable
 private fun VerticalListItem(

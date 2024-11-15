@@ -33,3 +33,5 @@ val BlueGrey900 = Color(0xFF263238)
 val Grey100 = Color(0xFFF5F5F5)
 
 val primaryDarkColor: Color = Color(0xFF263238)
+
+val ColorTranslucentBlack = Color(0xE6000000)

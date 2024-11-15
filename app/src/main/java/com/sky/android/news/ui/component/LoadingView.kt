@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.ui.common
+package com.sky.android.news.ui.component
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
@@ -34,7 +34,7 @@ import com.sky.android.news.R
 
 
 @Composable
-fun LoadingContent(
+fun LoadingView(
     loading: Boolean,
     loadingContent: @Composable () -> Unit,
     content: @Composable () -> Unit

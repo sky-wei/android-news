@@ -51,7 +51,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sky.android.news.BuildConfig
 import com.sky.android.news.R
-import com.sky.android.news.ui.common.NewsBackTopAppBar
+import com.sky.android.news.ui.component.NewsBackTopAppBar
 import com.sky.android.news.ui.theme.NewsTheme
 import com.sky.android.news.ui.theme.customScheme
 import com.sky.android.news.util.ActivityUtil

@@ -44,10 +44,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sky.android.news.data.model.news.CategoryItemModel
 import com.sky.android.news.data.model.news.CategoryModel
-import com.sky.android.news.ui.common.LoadingBox
-import com.sky.android.news.ui.common.LoadingContent
-import com.sky.android.news.ui.common.NewsTopAppBar
-import com.sky.android.news.ui.common.NoDataContent
+import com.sky.android.news.ui.component.LoadingBox
+import com.sky.android.news.ui.component.LoadingView
+import com.sky.android.news.ui.component.NewsTopAppBar
+import com.sky.android.news.ui.component.NoDataContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -101,7 +101,7 @@ private fun NewsContent(
     category: CategoryModel?,
     modifier: Modifier
 ) {
-    LoadingContent(
+    LoadingView(
         loading = loading,
         loadingContent = { LoadingBox() }
     ) {

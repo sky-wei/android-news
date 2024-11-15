@@ -41,4 +41,15 @@ object Constant {
 
         const val CLEAR_IMAGE_CACHE = "clear_image_cache"
     }
+
+    object Time {
+
+        const val CAROUSEL_AUTO_SCROLL_TIMER: Long = 3000L
+
+        const val ANIM_TIME_SHORT: Int = 300
+
+        const val ANIM_TIME_MEDIUM: Int = 500
+
+        const val ANIM_TIME_LONG: Int = 800
+    }
 }

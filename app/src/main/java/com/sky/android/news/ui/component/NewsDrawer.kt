@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.ui.common
+package com.sky.android.news.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box

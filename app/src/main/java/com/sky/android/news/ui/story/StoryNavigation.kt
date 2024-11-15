@@ -19,7 +19,7 @@ package com.sky.android.news.ui.story
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.sky.android.news.ui.NewsAppState
-import com.sky.android.news.ui.common.AppModalDrawer
+import com.sky.android.news.ui.component.AppModalDrawer
 import com.sky.android.news.ui.navigation.Screen
 
 /**
