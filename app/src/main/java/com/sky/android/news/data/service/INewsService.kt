@@ -18,7 +18,6 @@ package com.sky.android.news.data.service
 
 import com.sky.android.news.data.model.news.Details
 import com.sky.android.news.data.model.news.HeadLine
-import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -28,15 +27,14 @@ import retrofit2.http.Path
 interface INewsService {
 
     @GET("nc/article/headline/{tid}/{start}-{end}.html")
-    fun getHeadLine(
+    suspend fun getHeadLine(
         @Path("tid") tid: String,
         @Path("start") start: Int,
         @Path("end") end: Int
-    ): Deferred<HeadLine>
-
+    ): HeadLine
 
     @GET("nc/article/{docId}/full.html")
-    fun getDetails(
+    suspend fun getDetails(
         @Path("docId") docId: String
-    ): Deferred<Details>
+    ): Details
 }

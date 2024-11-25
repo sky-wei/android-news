@@ -16,20 +16,33 @@
 
 package com.sky.android.news.data.model.news
 
+import com.sky.android.news.data.model.IEmpty
 import java.io.Serializable
 
 /**
  * Created by sky on 17-9-22.
  */
-data class DetailsModel(val models: ContentModel) : Serializable
+data class DetailsModel(
+    val models: ContentModel
+) : Serializable, IEmpty {
 
-data class ContentModel(val template: String, val img: List<ImageModel>, val shareLink: String,
-                        val source: String, val threadVote: Int, val title: String,
-                        var body: String, val tid: String, val picNews: Boolean, val spInfo: List<SpInfoModel>,
-                        val relative: List<RelativeModel>, val articleType: String, val digest: String,
-                        var pTime: String, val ec: String, val docId: String, val threadAgainst: Int,
-                        val hasNext: String, val dKeys: String, val replyCount: Int, val voiceComment: String,
-                        val replyBoard: String, val category: String, val video: List<VideoModel>) : Serializable
+    companion object {
+
+        val EMPTY: DetailsModel = DetailsModel(ContentModel())
+    }
+
+    override val isEmpty: Boolean
+        get() = this == EMPTY
+}
+
+data class ContentModel(val template: String = "", val img: List<ImageModel> = emptyList(), val shareLink: String = "",
+                        val source: String = "", val threadVote: Int = 0, val title: String = "",
+                        var body: String = "", val tid: String = "", val picNews: Boolean = false, val spInfo: List<SpInfoModel> = emptyList(),
+                        val relative: List<RelativeModel> = emptyList(), val articleType: String = "", val digest: String = "",
+                        var pTime: String = "", val ec: String = "", val docId: String = "", val threadAgainst: Int = 0,
+                        val hasNext: String = "", val dKeys: String = "", val replyCount: Int = 0, val voiceComment: String = "",
+                        val replyBoard: String = "", val category: String = "", val video: List<VideoModel> = emptyList()
+) : Serializable
 
 data class ImageModel(val ref: String, val src: String, val alt: String, val pixel: String) : Serializable
 

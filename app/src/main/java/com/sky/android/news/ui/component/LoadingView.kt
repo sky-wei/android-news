@@ -47,10 +47,11 @@ fun LoadingView(
 }
 
 @Composable
-fun LoadingBox(
+fun LoadingView(
+    modifier: Modifier,
     @StringRes message: Int = R.string.loading,
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = modifier) {
         Column(
             modifier = Modifier.align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -78,7 +79,9 @@ fun NoDataContent(
 @Preview
 @Composable
 private fun LoadingBoxPreview() {
-    LoadingBox()
+    LoadingView(
+        modifier = Modifier
+    )
 }
 
 @Preview

@@ -63,17 +63,17 @@ class ListViewModel @Inject constructor(
     }
 
     private fun loadData() {
-        viewModelScope.launch {
-            val value = withContext(Dispatchers.IO) {
-                newsRepository.getHeadLine(
-                    _categoryItem.value!!.tid, 0, 20
-                ).single()
-            }
-            value.doSuccess { data ->
-                Alog.d(">>>>>>>>>>yyy $data")
-                _uiState.update { it.copy(lineItems = data.lineItems) }
-            }
-        }
-        Alog.d(">>>>>>>>>>>>>>>>>>>>> ${_categoryItem.value}")
+//        viewModelScope.launch {
+//            val value = withContext(Dispatchers.IO) {
+//                newsRepository.getHeadLine(
+//                    _categoryItem.value!!.tid, 0, 20
+//                ).single()
+//            }
+//            value.doSuccess { data ->
+//                Alog.d(">>>>>>>>>>yyy $data")
+//                _uiState.update { it.copy(lineItems = data.lineItems) }
+//            }
+//        }
+//        Alog.d(">>>>>>>>>>>>>>>>>>>>> ${_categoryItem.value}")
     }
 }

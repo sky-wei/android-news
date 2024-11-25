@@ -16,61 +16,50 @@
 
 package com.sky.android.news.ui.story
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sky.android.news.R
+import com.sky.android.news.data.exception.RemoteSourceException
 import com.sky.android.news.data.model.XResult
 import com.sky.android.news.data.model.story.StoryListModel
 import com.sky.android.news.data.repository.story.IStoryRepository
+import com.sky.android.news.ext.asResult
 import com.sky.android.news.util.WhileUiSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
-data class StoryUiState(
-    val storyList: StoryListModel? = null,
-    val loading: Boolean = false,
-    val message: Int? = null,
-)
+sealed interface StoryUiState {
+    data class Success(val storyList: StoryListModel) : StoryUiState
+    data class Error(val remoteSourceException: RemoteSourceException) : StoryUiState
+    data object Loading : StoryUiState
+}
 
 @HiltViewModel
 class StoryViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
     storyRepository: IStoryRepository
 ) : ViewModel() {
 
-    private val _loading = MutableStateFlow(false)
-    private val _message = MutableStateFlow<Int?>(null)
-    private val _loadStories = storyRepository.getLatestStories()
-
-    val uiState: StateFlow<StoryUiState> = combine(
-        _loading, _loadStories, _message,
-    ) { loading, loadStories, message ->
-        when(loadStories) {
-            is XResult.Success -> {
-                StoryUiState(
-                    storyList = loadStories.value,
-                    loading = loading,
-                    message = message
-                )
-            }
-            is XResult.Failure -> {
-                StoryUiState(
-                    message = R.string.loading
-                )
+    val uiState: StateFlow<StoryUiState> = storyRepository
+        .getLatestStories()
+        .asResult()
+        .map {
+            when(it) {
+                is XResult.Success -> {
+                    StoryUiState.Success(it.value)
+                }
+                is XResult.Error -> {
+                    StoryUiState.Error(it.remoteSourceException)
+                }
+                is XResult.Loading -> {
+                    StoryUiState.Loading
+                }
             }
         }
-    }.stateIn(
-        scope = viewModelScope,
-        started = WhileUiSubscribed,
-        initialValue = StoryUiState(loading = true)
-    )
-
-    fun messageShown() {
-        _message.value = null
-    }
+        .stateIn(
+            scope = viewModelScope,
+            started = WhileUiSubscribed,
+            initialValue = StoryUiState.Loading
+        )
 }

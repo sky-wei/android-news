@@ -16,12 +16,26 @@
 
 package com.sky.android.news.data.model.story
 
+import com.sky.android.news.data.model.IEmpty
 import java.io.Serializable
 
 /**
  * Created by sky on 17-9-28.
  */
-data class StoryListModel(val date: String, val stories: List<StoryItemModel>, val topStories: List<TopStoryItemModel>) : Serializable
+data class StoryListModel(
+    val date: String,
+    val stories: List<StoryItemModel>,
+    val topStories: List<TopStoryItemModel>
+) : Serializable, IEmpty {
+
+    companion object {
+
+        val EMPTY: StoryListModel = StoryListModel("", emptyList(), emptyList())
+    }
+
+    override val isEmpty: Boolean
+        get() = this == EMPTY
+}
 
 data class TopStoryListModel(val topStories: List<TopStoryItemModel>, override val viewType: Int = 0) :
     BaseViewType

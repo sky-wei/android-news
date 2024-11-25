@@ -18,7 +18,6 @@ package com.sky.android.news.data.source
 
 import com.sky.android.news.data.model.story.StoryDetailsModel
 import com.sky.android.news.data.model.story.StoryListModel
-import com.sky.android.news.data.model.XResult
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -29,15 +28,15 @@ interface IStorySource {
     /**
      * 获取最后一次列表
      */
-    fun getLatestStories(): Flow<XResult<StoryListModel>>
+    fun getLatestStories(): Flow<StoryListModel>
 
     /**
      * 获取指定日期的列表
      */
-    fun getStories(date: String): Flow<XResult<StoryListModel>>
+    fun getStories(date: String): Flow<StoryListModel>
 
     /**
      * 获取指定id的详情
      */
-    fun getStory(id: String): Flow<XResult<StoryDetailsModel>>
+    fun getStory(id: String): Flow<StoryDetailsModel>
 }

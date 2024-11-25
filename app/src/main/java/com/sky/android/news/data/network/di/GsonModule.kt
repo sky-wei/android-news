@@ -22,7 +22,7 @@ import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken
-import com.sky.android.news.data.DataException
+import com.sky.android.news.data.exception.DataException
 import com.sky.android.news.data.model.news.Content
 import com.sky.android.news.data.model.news.Details
 import com.sky.android.news.data.model.news.HeadLine

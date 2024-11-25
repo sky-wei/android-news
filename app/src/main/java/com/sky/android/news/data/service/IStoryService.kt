@@ -18,7 +18,6 @@ package com.sky.android.news.data.service
 
 import com.sky.android.news.data.model.story.StoryDetails
 import com.sky.android.news.data.model.story.StoryList
-import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -28,11 +27,11 @@ import retrofit2.http.Path
 interface IStoryService {
 
     @GET("api/4/stories/latest")
-    fun getLatestStories(): Deferred<StoryList>
+    suspend fun getLatestStories(): StoryList
 
     @GET("api/4/stories/before/{date}")
-    fun getStories(@Path("date") date: String): Deferred<StoryList>
+    suspend fun getStories(@Path("date") date: String): StoryList
 
     @GET("api/4/story/{id}")
-    fun getStory(@Path("id") id: String): Deferred<StoryDetails>
+    suspend fun getStory(@Path("id") id: String): StoryDetails
 }

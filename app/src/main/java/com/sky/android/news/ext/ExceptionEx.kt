@@ -14,25 +14,19 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.model.news
+package com.sky.android.news.ext
 
-import com.sky.android.news.data.model.IEmpty
-import java.io.Serializable
+import android.content.Context
+import com.sky.android.news.R
+import com.sky.android.news.data.exception.RemoteSourceException
 
 /**
- * Created by sky on 17-9-21.
+ * Created by sky on 11/25/24.
  */
-data class CategoryModel(
-    val items: List<CategoryItemModel>
-) : Serializable, IEmpty {
-
-    companion object {
-
-        val EMPTY: CategoryModel = CategoryModel(emptyList())
+fun RemoteSourceException.getError(context: Context): String {
+    return when (messageResource) {
+        is Int -> context.getString(messageResource)
+        is String -> messageResource
+        else -> context.getString(R.string.error_unexpected_message)
     }
-
-    override val isEmpty: Boolean
-        get() = this == EMPTY
 }
-
-data class CategoryItemModel(val name: String, val tid: String) : Serializable

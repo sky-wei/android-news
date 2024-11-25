@@ -16,55 +16,56 @@
 
 package com.sky.android.news.data.source.remote
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.sky.android.news.data.cache.news.INewsCache
 import com.sky.android.news.data.mapper.news.DetailsMapper
 import com.sky.android.news.data.mapper.news.HeadLineMapper
-import com.sky.android.news.data.model.XResult
 import com.sky.android.news.data.model.news.CategoryModel
 import com.sky.android.news.data.model.news.DetailsModel
-import com.sky.android.news.data.model.news.HeadLineModel
+import com.sky.android.news.data.model.news.LineItemModel
 import com.sky.android.news.data.service.INewsService
 import com.sky.android.news.data.source.INewsSource
-import com.sky.android.news.ext.asFlow
-import com.sky.android.news.ext.flowOfResult
+import com.sky.android.news.data.source.paging.NewsPagingRemoteSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 /**
  * Created by sky on 17-9-21.
  */
 class NewsRemoteSource @Inject constructor(
-    private val mNewsService: INewsService,
-    private val mCache: INewsCache,
-    private val mHeadLineMapper: HeadLineMapper,
-    private val mDetailsMapper: DetailsMapper
+    private val newsService: INewsService,
+    private val cache: INewsCache,
+    private val headLineMapper: HeadLineMapper,
+    private val detailsMapper: DetailsMapper
 ) : INewsSource {
 
-    override fun getCategory(): Flow<XResult<CategoryModel>> = XResult.Invalid.asFlow()
+    override fun getCategory(): Flow<CategoryModel> = flowOf(CategoryModel.EMPTY)
 
-    override fun getHeadLine(tid: String, start: Int, end: Int): Flow<XResult<HeadLineModel>> {
-        return flowOfResult {
+    override fun getHeadLine(tid: String): Flow<PagingData<LineItemModel>> =
+        Pager(
+            config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = {
+                NewsPagingRemoteSource(
+                    tid = tid,
+                    newsService = newsService,
+                    cache = cache,
+                    headLineMapper = headLineMapper
+                )
+            }
+        ).flow
 
-            val value = mNewsService
-                .getHeadLine(tid, start, end)
-                .await()
+    override fun getDetails(docId: String): Flow<DetailsModel> = flow {
 
-            mHeadLineMapper
-                .transform(value)
-                .also { mCache.saveHeadLine(tid, start, end, it) }
-        }
-    }
+        val result = newsService.getDetails(docId)
 
-    override fun getDetails(docId: String): Flow<XResult<DetailsModel>> {
-        return flowOfResult {
-
-            val value = mNewsService
-                .getDetails(docId)
-                .await()
-
-            mDetailsMapper
-                .transform(value)
-                .also { mCache.saveDetails(docId, it) }
-        }
+        emit(
+            detailsMapper
+                .transform(result)
+                .also { cache.saveDetails(docId, it) }
+        )
     }
 }

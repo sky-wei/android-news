@@ -19,9 +19,7 @@ package com.sky.android.news.ui.news
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.sky.android.news.R
 import com.sky.android.news.data.model.news.CategoryModel
-import com.sky.android.news.data.model.XResult
 import com.sky.android.news.data.repository.news.INewsRepository
 import com.sky.android.news.util.WhileUiSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -50,20 +48,21 @@ class NewsViewModel @Inject constructor(
     val uiState: StateFlow<NewsUiState> = combine(
         _loading, _loadCategory, _message,
     ) { loading, loadCategory, message ->
-        when(loadCategory) {
-            is XResult.Success -> {
-               NewsUiState(
-                   category = loadCategory.value,
-                   loading = loading,
-                   message = message
-               )
-            }
-            is XResult.Failure -> {
-                NewsUiState(
-                    message = R.string.loading
-                )
-            }
-        }
+//        when(loadCategory) {
+//            is XResult.Success -> {
+//               NewsUiState(
+//                   category = loadCategory.value,
+//                   loading = loading,
+//                   message = message
+//               )
+//            }
+//            is XResult.Error -> {
+//                NewsUiState(
+//                    message = R.string.loading
+//                )
+//            }
+//        }
+        NewsUiState(loading = true)
     }.stateIn(
         scope = viewModelScope,
         started = WhileUiSubscribed,

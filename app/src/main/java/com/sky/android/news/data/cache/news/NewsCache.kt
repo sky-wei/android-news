@@ -56,15 +56,15 @@ class NewsCache @Inject constructor(
 
     override fun saveHeadLine(tid: String, start: Int, end: Int, model: HeadLineModel) {
         mCacheManager.put(
-                mCacheManager.buildKey("$tid-$start-$end"),
-                LinePackageModel(System.currentTimeMillis(), model)
+            mCacheManager.buildKey("$tid-$start-$end"),
+            LinePackageModel(System.currentTimeMillis(), model)
         )
     }
 
     override fun getDetails(docId: String): DetailsModel? {
 
         val key = mCacheManager.buildKey(docId)
-        var model = mCacheManager.get(key, DetailsPackageModel::class.java)
+        val model = mCacheManager.get(key, DetailsPackageModel::class.java)
 
         if (model != null
                 && !isExpired(model.lastTime, 1000 * 60 * 60 * 24)) {
@@ -76,8 +76,8 @@ class NewsCache @Inject constructor(
 
     override fun saveDetails(docId: String, model: DetailsModel) {
         mCacheManager.put(
-                mCacheManager.buildKey(docId),
-                DetailsPackageModel(System.currentTimeMillis(), model)
+            mCacheManager.buildKey(docId),
+            DetailsPackageModel(System.currentTimeMillis(), model)
         )
     }
 

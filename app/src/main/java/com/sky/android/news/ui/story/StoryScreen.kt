@@ -16,11 +16,9 @@
 
 package com.sky.android.news.ui.story
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,10 +27,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -42,14 +37,12 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -58,8 +51,8 @@ import coil.compose.AsyncImage
 import com.sky.android.news.data.model.story.StoryItemModel
 import com.sky.android.news.data.model.story.StoryListModel
 import com.sky.android.news.data.model.story.TopStoryItemModel
-import com.sky.android.news.ext.carouselTransition
-import com.sky.android.news.ui.component.LoadingBox
+import com.sky.android.news.ext.getError
+import com.sky.android.news.ui.component.ErrorView
 import com.sky.android.news.ui.component.LoadingView
 import com.sky.android.news.ui.component.NewsTopAppBar
 import com.sky.android.news.ui.component.NoDataContent
@@ -93,41 +86,58 @@ fun StoryScreen(
 
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-        StoryContent(
-            uiState.loading,
-            uiState.storyList,
-            modifier = modifier.padding(innerPadding)
-        )
-
-        uiState.message?.let {
-            val message = stringResource(id = it)
-            LaunchedEffect(snackBarState, viewModel, message) {
-                snackBarState.showSnackbar(message)
-                viewModel.messageShown()
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            when(uiState) {
+                is StoryUiState.Loading -> {
+                    LoadingView(
+                        modifier = modifier.fillMaxSize()
+                    )
+                }
+                is StoryUiState.Success -> {
+                    StoryContent(
+                        (uiState as StoryUiState.Success).storyList,
+                        modifier = modifier.fillMaxSize()
+                    )
+                }
+                is StoryUiState.Error -> {
+                    val error = (uiState as StoryUiState.Error)
+                        .remoteSourceException
+                        .getError(LocalContext.current)
+                    ErrorView(
+                        errorText = error,
+                        modifier = modifier.fillMaxSize()
+                    )
+                }
             }
         }
+
+//        uiState.message?.let {
+//            val message = stringResource(id = it)
+//            LaunchedEffect(snackBarState, viewModel, message) {
+//                snackBarState.showSnackbar(message)
+//                viewModel.messageShown()
+//            }
+//        }
     }
 }
 
 @Composable
 private fun StoryContent(
-    loading: Boolean,
     storyList: StoryListModel?,
     modifier: Modifier
 ) {
-    LoadingView(
-        loading = loading,
-        loadingContent = { LoadingBox() }
-    ) {
-        storyList?.let {
-            StoreContent(
-                data = storyList.date,
-                topStories = storyList.topStories,
-                stories = storyList.stories,
-                modifier = modifier
-            )
-        } ?: NoDataContent()
-    }
+    storyList?.let {
+        StoreContent(
+            data = storyList.date,
+            topStories = storyList.topStories,
+            stories = storyList.stories,
+            modifier = modifier
+        )
+    } ?: NoDataContent()
 }
 
 @Composable
@@ -139,7 +149,6 @@ private fun StoreContent(
 ) {
     Column(
         modifier = modifier
-            .fillMaxSize()
     ) {
         StoryCarousel(
             topStories = topStories,

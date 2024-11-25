@@ -16,10 +16,10 @@
 
 package com.sky.android.news.data.source
 
+import androidx.paging.PagingData
 import com.sky.android.news.data.model.news.CategoryModel
 import com.sky.android.news.data.model.news.DetailsModel
-import com.sky.android.news.data.model.news.HeadLineModel
-import com.sky.android.news.data.model.XResult
+import com.sky.android.news.data.model.news.LineItemModel
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -31,17 +31,17 @@ interface INewsSource {
     /**
      * 获取分类列表
      */
-    fun getCategory(): Flow<XResult<CategoryModel>>
+    fun getCategory(): Flow<CategoryModel>
 
     /**
      * 获取新闻列表
      */
     fun getHeadLine(
-        tid: String, start: Int, end: Int
-    ): Flow<XResult<HeadLineModel>>
+        tid: String
+    ): Flow<PagingData<LineItemModel>>
 
     /**
      * 获取详情信息
      */
-    fun getDetails(docId: String): Flow<XResult<DetailsModel>>
+    fun getDetails(docId: String): Flow<DetailsModel>
 }

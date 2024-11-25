@@ -17,7 +17,6 @@
 package com.sky.android.news.data.network.di
 
 import com.google.gson.Gson
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.sky.android.news.Constant
 import com.sky.android.news.data.network.NewsInterceptor
 import com.sky.android.news.data.service.INewsService
@@ -52,14 +51,12 @@ object NetWorkModule {
     @Provides
     fun provideNewsService(
         client: OkHttpClient,
-        converterFactory: GsonConverterFactory,
-        callAdapterFactory: CoroutineCallAdapterFactory
+        converterFactory: GsonConverterFactory
     ): INewsService {
         return Retrofit.Builder()
             .baseUrl(Constant.Service.NEWS_URL)
             .client(client)
             .addConverterFactory(converterFactory)
-            .addCallAdapterFactory(callAdapterFactory)
             .build()
             .create(INewsService::class.java)
     }
@@ -67,14 +64,12 @@ object NetWorkModule {
     @Provides
     fun provideStoryService(
         client: OkHttpClient,
-        converterFactory: GsonConverterFactory,
-        callAdapterFactory: CoroutineCallAdapterFactory
+        converterFactory: GsonConverterFactory
     ): IStoryService {
         return Retrofit.Builder()
             .baseUrl(Constant.Service.STORY_URL)
             .client(client)
             .addConverterFactory(converterFactory)
-            .addCallAdapterFactory(callAdapterFactory)
             .build()
             .create(IStoryService::class.java)
     }
@@ -82,8 +77,4 @@ object NetWorkModule {
     @Provides
     fun provideGsonConverterFactory(gson: Gson): GsonConverterFactory =
         GsonConverterFactory.create(gson)
-
-    @Provides
-    fun provideCoroutineCallAdapterFactory(): CoroutineCallAdapterFactory =
-        CoroutineCallAdapterFactory()
 }

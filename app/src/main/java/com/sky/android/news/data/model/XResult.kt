@@ -16,6 +16,9 @@
 
 package com.sky.android.news.data.model
 
+import com.sky.android.news.R
+import com.sky.android.news.data.exception.RemoteSourceException
+
 /**
  * Created by sky on 2021-01-06.
  */
@@ -23,11 +26,13 @@ sealed class XResult<out T> {
 
     data class Success<out T>(val value: T) : XResult<T>()
 
-    data class Failure(val throwable: Throwable?) : XResult<Nothing>()
+    data class Error(val remoteSourceException: RemoteSourceException) : XResult<Nothing>()
+
+    data object Loading : XResult<Nothing>()
 
     companion object {
 
-        val Invalid = Failure(NullPointerException())
+        val Invalid = Error(RemoteSourceException.Unexpected(R.string.error_unexpected_message))
     }
 }
 

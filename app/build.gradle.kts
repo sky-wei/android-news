@@ -107,4 +107,7 @@ dependencies {
 //    kapt 'com.github.bumptech.glide:compiler:4.11.0'
 //    implementation(project(":base"))
 //    implementation(project(":core"))
+
+    implementation(libs.paging)
+    implementation(libs.paging.compose)
 }

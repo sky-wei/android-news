@@ -21,11 +21,10 @@ import com.sky.android.news.data.mapper.story.StoryDetailsMapper
 import com.sky.android.news.data.mapper.story.StoryListMapper
 import com.sky.android.news.data.model.story.StoryDetailsModel
 import com.sky.android.news.data.model.story.StoryListModel
-import com.sky.android.news.data.model.XResult
 import com.sky.android.news.data.service.IStoryService
 import com.sky.android.news.data.source.IStorySource
-import com.sky.android.news.ext.flowOfResult
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 /**
@@ -38,45 +37,36 @@ class StoryRemoteSource @Inject constructor(
     private val mStoryDetailsMapper: StoryDetailsMapper,
 ) : IStorySource {
 
-    override fun getLatestStories(): Flow<XResult<StoryListModel>> {
+    override fun getLatestStories(): Flow<StoryListModel> = flow {
 
-        return flowOfResult {
+        val result = mStoryService.getLatestStories()
 
-            val value = mStoryService
-                .getLatestStories()
-                .await()
-
+        emit(
             mStoryListMapper
-                .transform(value)
+                .transform(result)
                 .also { mCache.saveLatestStories(it) }
-        }
+        )
     }
 
-    override fun getStories(date: String): Flow<XResult<StoryListModel>> {
+    override fun getStories(date: String): Flow<StoryListModel> = flow {
 
-        return flowOfResult {
+        val result = mStoryService.getStories(date)
 
-            val value = mStoryService
-                .getStories(date)
-                .await()
-
+        emit(
             mStoryListMapper
-                .transform(value)
+                .transform(result)
                 .also { mCache.saveStories(date, it) }
-        }
+        )
     }
 
-    override fun getStory(id: String): Flow<XResult<StoryDetailsModel>> {
+    override fun getStory(id: String): Flow<StoryDetailsModel> = flow {
 
-        return flowOfResult {
+        val result = mStoryService.getStory(id)
 
-            val value = mStoryService
-                .getStory(id)
-                .await()
-
+        emit(
             mStoryDetailsMapper
-                .transform(value)
+                .transform(result)
                 .also { mCache.saveStory(id, it) }
-        }
+        )
     }
 }

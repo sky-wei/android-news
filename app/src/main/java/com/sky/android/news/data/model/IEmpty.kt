@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 The sky Authors.
+ * Copyright (c) 2024 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data
+package com.sky.android.news.data.model
 
 /**
- * Created by sky on 17-9-21.
+ * Created by sky on 11/24/24.
  */
-class DataException : Exception {
+interface IEmpty {
 
-    constructor(): super()
-
-    constructor(detailMessage: String): super(detailMessage)
-
-    constructor(detailMessage: String, throwable: Throwable): super(detailMessage, throwable)
-
-    constructor(throwable: Throwable): super(throwable)
+    val isEmpty: Boolean
 }

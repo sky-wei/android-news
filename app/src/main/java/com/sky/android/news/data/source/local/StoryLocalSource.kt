@@ -19,10 +19,9 @@ package com.sky.android.news.data.source.local
 import com.sky.android.news.data.cache.story.IStoryCache
 import com.sky.android.news.data.model.story.StoryDetailsModel
 import com.sky.android.news.data.model.story.StoryListModel
-import com.sky.android.news.data.model.XResult
 import com.sky.android.news.data.source.IStorySource
-import com.sky.android.news.ext.flowOfResultNull
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 /**
@@ -32,12 +31,15 @@ class StoryLocalSource @Inject constructor(
     private val cache: IStoryCache
 ) : IStorySource {
 
-    override fun getLatestStories(): Flow<XResult<StoryListModel>> =
-            flowOfResultNull { cache.getLatestStories() }
+    override fun getLatestStories(): Flow<StoryListModel> = flow {
+        emit(cache.getLatestStories() ?: StoryListModel.EMPTY)
+    }
 
-    override fun getStories(date: String): Flow<XResult<StoryListModel>> =
-            flowOfResultNull { cache.getStories(date) }
+    override fun getStories(date: String): Flow<StoryListModel> = flow {
+        emit(cache.getStories(date) ?: StoryListModel.EMPTY)
+    }
 
-    override fun getStory(id: String): Flow<XResult<StoryDetailsModel>> =
-            flowOfResultNull { cache.getStory(id) }
+    override fun getStory(id: String): Flow<StoryDetailsModel> = flow {
+        emit(cache.getStory(id) ?: StoryDetailsModel.EMPTY)
+    }
 }

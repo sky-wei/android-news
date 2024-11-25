@@ -18,14 +18,11 @@ package com.sky.android.news.data.repository.story
 
 import com.sky.android.news.data.model.story.StoryDetailsModel
 import com.sky.android.news.data.model.story.StoryListModel
-import com.sky.android.news.data.model.XResult
 import com.sky.android.news.data.source.IStorySource
 import com.sky.android.news.data.source.di.LocalSource
 import com.sky.android.news.data.source.di.RemoteSource
 import com.sky.android.news.ext.concatResult
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 /**
@@ -36,15 +33,18 @@ class StoryRepository @Inject constructor(
     @RemoteSource private val remote: IStorySource
 ) : IStoryRepository {
 
-    override fun getLatestStories(): Flow<XResult<StoryListModel>> =
-            concatResult(local.getLatestStories()) { remote.getLatestStories() }
-                    .flowOn(Dispatchers.IO)
+    override fun getLatestStories(): Flow<StoryListModel> =
+        remote.getLatestStories()
 
-    override fun getStories(date: String): Flow<XResult<StoryListModel>> =
-            concatResult(local.getStories(date)) { remote.getStories(date) }
-                    .flowOn(Dispatchers.IO)
+    override fun getStories(date: String): Flow<StoryListModel> {
+        return local.getStories(date).concatResult {
+            remote.getStories(date)
+        }
+    }
 
-    override fun getStory(id: String): Flow<XResult<StoryDetailsModel>> =
-            concatResult(local.getStory(id)) { remote.getStory(id) }
-                    .flowOn(Dispatchers.IO)
+    override fun getStory(id: String): Flow<StoryDetailsModel> {
+        return local.getStory(id).concatResult {
+            remote.getStory(id)
+        }
+    }
 }

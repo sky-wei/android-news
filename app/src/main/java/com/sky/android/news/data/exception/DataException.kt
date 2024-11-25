@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 The sky Authors.
+ * Copyright (c) 2017 The sky Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,18 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.model.news
-
-import com.sky.android.news.data.model.IEmpty
-import java.io.Serializable
+package com.sky.android.news.data.exception
 
 /**
  * Created by sky on 17-9-21.
  */
-data class CategoryModel(
-    val items: List<CategoryItemModel>
-) : Serializable, IEmpty {
+class DataException : Exception {
 
-    companion object {
+    constructor(): super()
 
-        val EMPTY: CategoryModel = CategoryModel(emptyList())
-    }
+    constructor(detailMessage: String): super(detailMessage)
 
-    override val isEmpty: Boolean
-        get() = this == EMPTY
+    constructor(detailMessage: String, throwable: Throwable): super(detailMessage, throwable)
+
+    constructor(throwable: Throwable): super(throwable)
 }
-
-data class CategoryItemModel(val name: String, val tid: String) : Serializable

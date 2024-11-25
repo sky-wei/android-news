@@ -16,16 +16,18 @@
 
 package com.sky.android.news.data.source.local
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.sky.android.news.data.cache.news.INewsCache
 import com.sky.android.news.data.model.news.CategoryItemModel
 import com.sky.android.news.data.model.news.CategoryModel
 import com.sky.android.news.data.model.news.DetailsModel
-import com.sky.android.news.data.model.news.HeadLineModel
-import com.sky.android.news.data.model.XResult
+import com.sky.android.news.data.model.news.LineItemModel
 import com.sky.android.news.data.source.INewsSource
-import com.sky.android.news.ext.flowOfResult
-import com.sky.android.news.ext.flowOfResultNull
+import com.sky.android.news.data.source.paging.NewsPagingLocalSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 /**
@@ -35,24 +37,35 @@ class NewsLocalSource @Inject constructor(
     private val cache: INewsCache
 ) : INewsSource {
 
-    override fun getCategory(): Flow<XResult<CategoryModel>> = flowOfResult {
+    override fun getCategory(): Flow<CategoryModel> = flow {
 
         val itemModes = listOf(
-                CategoryItemModel("头条", "T1348647909107"),
-                CategoryItemModel("科技", "T1348649580692"),
-                CategoryItemModel("历史", "T1368497029546"),
-                CategoryItemModel("军事", "T1348648141035"),
-                CategoryItemModel("要闻", "T1467284926140"),
-                CategoryItemModel("手机", "T1348649654285"),
-                CategoryItemModel("数码", "T1348649776727")
+            CategoryItemModel("头条", "T1348647909107"),
+            CategoryItemModel("科技", "T1348649580692"),
+            CategoryItemModel("历史", "T1368497029546"),
+            CategoryItemModel("军事", "T1348648141035"),
+            CategoryItemModel("要闻", "T1467284926140"),
+            CategoryItemModel("手机", "T1348649654285"),
+            CategoryItemModel("数码", "T1348649776727")
         )
 
-        CategoryModel(itemModes)
+        emit(CategoryModel(itemModes))
     }
 
-    override fun getHeadLine(tid: String, start: Int, end: Int): Flow<XResult<HeadLineModel>> =
-            flowOfResultNull { cache.getHeadLine(tid, start, end) }
+    override fun getHeadLine(
+        tid: String
+    ): Flow<PagingData<LineItemModel>> =
+        Pager(
+            config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = {
+                NewsPagingLocalSource(
+                    tid = tid,
+                    cache = cache
+                )
+            }
+        ).flow
 
-    override fun getDetails(docId: String): Flow<XResult<DetailsModel>> =
-            flowOfResultNull { cache.getDetails(docId) }
+    override fun getDetails(docId: String): Flow<DetailsModel> = flow {
+        emit(cache.getDetails(docId) ?: DetailsModel.EMPTY)
+    }
 }

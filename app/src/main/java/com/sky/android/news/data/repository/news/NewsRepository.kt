@@ -16,17 +16,15 @@
 
 package com.sky.android.news.data.repository.news
 
+import androidx.paging.PagingData
 import com.sky.android.news.data.model.news.CategoryModel
 import com.sky.android.news.data.model.news.DetailsModel
-import com.sky.android.news.data.model.news.HeadLineModel
-import com.sky.android.news.data.model.XResult
+import com.sky.android.news.data.model.news.LineItemModel
 import com.sky.android.news.data.source.INewsSource
 import com.sky.android.news.data.source.di.LocalSource
 import com.sky.android.news.data.source.di.RemoteSource
 import com.sky.android.news.ext.concatResult
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 /**
@@ -37,15 +35,18 @@ class NewsRepository @Inject constructor(
     @RemoteSource private val remote: INewsSource
 ) : INewsRepository {
 
-    override fun getCategory(): Flow<XResult<CategoryModel>> =
-            concatResult(local.getCategory()) { remote.getCategory() }
-                    .flowOn(Dispatchers.IO)
+    override fun getCategory(): Flow<CategoryModel> {
+        return local.getCategory().concatResult {
+            remote.getCategory()
+        }
+    }
 
-    override fun getHeadLine(tid: String, start: Int, end: Int): Flow<XResult<HeadLineModel>> =
-            concatResult(local.getHeadLine(tid, start, end)) { remote.getHeadLine(tid, start, end) }
-                    .flowOn(Dispatchers.IO)
+    override fun getHeadLine(tid: String): Flow<PagingData<LineItemModel>> =
+        remote.getHeadLine(tid)
 
-    override fun getDetails(docId: String): Flow<XResult<DetailsModel>> =
-            concatResult(local.getDetails(docId)) { remote.getDetails(docId) }
-                    .flowOn(Dispatchers.IO)
+    override fun getDetails(docId: String): Flow<DetailsModel> {
+        return local.getDetails(docId).concatResult {
+            remote.getDetails(docId)
+        }
+    }
 }

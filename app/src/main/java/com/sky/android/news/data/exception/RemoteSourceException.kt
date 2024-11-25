@@ -14,25 +14,17 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.data.model.news
-
-import com.sky.android.news.data.model.IEmpty
-import java.io.Serializable
+package com.sky.android.news.data.exception
 
 /**
- * Created by sky on 17-9-21.
+ * Created by sky on 11/25/24.
  */
-data class CategoryModel(
-    val items: List<CategoryItemModel>
-) : Serializable, IEmpty {
-
-    companion object {
-
-        val EMPTY: CategoryModel = CategoryModel(emptyList())
-    }
-
-    override val isEmpty: Boolean
-        get() = this == EMPTY
+sealed class RemoteSourceException(
+    val messageResource: Any?
+) : RuntimeException() {
+    class Connection(messageResource: Int) : RemoteSourceException(messageResource)
+    class Unexpected(messageResource: Int) : RemoteSourceException(messageResource)
+    class Timeout(messageResource: Int) : RemoteSourceException(messageResource)
+    class Client(messageResource: Int) : RemoteSourceException(messageResource)
+    class Server(messageResource: Any?) : RemoteSourceException(messageResource)
 }
-
-data class CategoryItemModel(val name: String, val tid: String) : Serializable
