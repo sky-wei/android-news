@@ -62,6 +62,7 @@ import com.sky.android.news.ui.component.StoryCarousel
 @Composable
 fun StoryScreen(
     openDrawer: () -> Unit,
+    openDetail: (Long) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: StoryViewModel = hiltViewModel()
 ) {
@@ -100,7 +101,8 @@ fun StoryScreen(
                 is StoryUiState.Success -> {
                     StoryContent(
                         (uiState as StoryUiState.Success).storyList,
-                        modifier = modifier.fillMaxSize()
+                        modifier = modifier.fillMaxSize(),
+                        openDetail = openDetail
                     )
                 }
                 is StoryUiState.Error -> {
@@ -128,14 +130,16 @@ fun StoryScreen(
 @Composable
 private fun StoryContent(
     storyList: StoryListModel?,
-    modifier: Modifier
+    modifier: Modifier,
+    openDetail: (Long) -> Unit,
 ) {
     storyList?.let {
         StoreContent(
             data = storyList.date,
             topStories = storyList.topStories,
             stories = storyList.stories,
-            modifier = modifier
+            modifier = modifier,
+            onClick = openDetail
         )
     } ?: NoDataContent()
 }
@@ -145,14 +149,15 @@ private fun StoreContent(
     data: String,
     topStories: List<TopStoryItemModel>,
     stories: List<StoryItemModel>,
-    modifier: Modifier
+    modifier: Modifier,
+    onClick: (Long) -> Unit
 ) {
     Column(
         modifier = modifier
     ) {
         StoryCarousel(
             topStories = topStories,
-            onItemClicked = {  }
+            onItemClicked = { onClick(it.id) }
         )
 
         Spacer(
@@ -167,7 +172,10 @@ private fun StoreContent(
                 count = stories.size,
                 key = { index -> stories[index].id.toString() }
             ) { index ->
-                VerticalListItem(stories[index])
+                VerticalListItem(
+                    stories[index],
+                    onClick = { onClick(it.id) }
+                )
                 if (index + 1 != stories.size) {
                     ListItemDivider()
                 }
@@ -182,13 +190,14 @@ private fun StoreContent(
 
 @Composable
 private fun VerticalListItem(
-    item: StoryItemModel
+    item: StoryItemModel,
+    onClick: (StoryItemModel) -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(3.dp))
-            .clickable {  }
+            .clickable { onClick(item) }
     ) {
         AsyncImage(
             modifier = Modifier

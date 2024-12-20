@@ -23,6 +23,7 @@ import com.sky.android.news.ui.NewsAppState
 import com.sky.android.news.ui.about.aboutScreen
 import com.sky.android.news.ui.news.newsScreen
 import com.sky.android.news.ui.settings.settingsScreen
+import com.sky.android.news.ui.story.detail.storyDetailScreen
 import com.sky.android.news.ui.story.storyScreen
 
 @Composable
@@ -46,6 +47,9 @@ fun NewsNavHost(
         storyScreen(
             appState = appState,
             currentRoute = currentRoute
+        )
+        storyDetailScreen(
+            appState = appState
         )
         settingsScreen(
             appState = appState

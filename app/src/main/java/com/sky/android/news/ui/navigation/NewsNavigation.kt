@@ -44,7 +44,7 @@ sealed class Screen(
             type = NavType.StringType
         })
     ) {
-        fun createRoute(id: String) = "story/$id"
+        fun createRoute(id: Long) = "story/$id"
     }
 
     data object Setting: Screen("setting")

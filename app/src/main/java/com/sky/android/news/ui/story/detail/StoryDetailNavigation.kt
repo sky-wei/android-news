@@ -14,33 +14,26 @@
  * limitations under the License.
  */
 
-package com.sky.android.news.ui.story
+package com.sky.android.news.ui.story.detail
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.sky.android.news.ui.NewsAppState
-import com.sky.android.news.ui.component.AppModalDrawer
 import com.sky.android.news.ui.navigation.Screen
 
 /**
- * Created by sky on 10/21/24.
+ * Created by sky on 11/25/24.
  */
 
-fun NavGraphBuilder.storyScreen(
-    appState: NewsAppState,
-    currentRoute: String
+fun NavGraphBuilder.storyDetailScreen(
+    appState: NewsAppState
 ) {
     composable(
-        Screen.Story.route
+        route = Screen.StoryDetail.route,
+        arguments = Screen.StoryDetail.navArguments
     ) {
-        AppModalDrawer(
-            appState = appState,
-            currentRoute = currentRoute
-        ) {
-            StoryScreen(
-                openDrawer = appState::openDrawer,
-                openDetail = appState::navigateToStoryDetail
-            )
-        }
+        StoryDetailScreen(
+            onBack = appState::popBack
+        )
     }
 }

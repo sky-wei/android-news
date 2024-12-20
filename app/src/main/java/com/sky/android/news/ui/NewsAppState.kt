@@ -93,7 +93,7 @@ class NewsAppState(
         }
     }
 
-    fun navigateToStoryDetail(id: String) {
+    fun navigateToStoryDetail(id: Long) {
         navController.navigate(Screen.StoryDetail.createRoute(id))
     }
 
