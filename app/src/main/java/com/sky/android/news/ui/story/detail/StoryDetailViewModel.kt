@@ -19,7 +19,6 @@ package com.sky.android.news.ui.story.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sky.android.common.util.Alog
 import com.sky.android.news.data.exception.RemoteSourceException
 import com.sky.android.news.data.model.XResult
 import com.sky.android.news.data.model.story.StoryDetailsModel
@@ -62,10 +61,6 @@ class StoryDetailViewModel @Inject constructor(
             started = WhileUiSubscribed,
             initialValue = StoryDetailUIState.Loading
         )
-
-    init {
-        Alog.d(">>>>>>>>>>>>>>>>. ${savedStateHandle.get<String>("id")}")
-    }
 }
 
 

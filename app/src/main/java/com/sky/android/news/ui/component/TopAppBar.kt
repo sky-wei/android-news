@@ -54,11 +54,13 @@ fun NewsTopAppBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsBackTopAppBar(
+    scrollBehavior: TopAppBarScrollBehavior? = null,
     onBack: () -> Unit,
     title: String
 ) {
     CenterAlignedTopAppBar(
         modifier = Modifier.fillMaxWidth(),
+        scrollBehavior = scrollBehavior,
         navigationIcon = {
             IconButton(onClick = onBack) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(id = R.string.menu_back))

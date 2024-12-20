@@ -16,17 +16,20 @@
 
 package com.sky.android.news.ui.story.detail
 
+import android.webkit.WebChromeClient
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,11 +40,13 @@ import com.sky.android.news.ext.getError
 import com.sky.android.news.ui.component.ErrorView
 import com.sky.android.news.ui.component.LoadingView
 import com.sky.android.news.ui.component.NewsBackTopAppBar
+import com.sky.android.news.ui.component.WebView
 
 /**
  * Created by sky on 11/25/24.
  */
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StoryDetailScreen(
     onBack: () -> Unit,
@@ -49,11 +54,15 @@ fun StoryDetailScreen(
     viewModel: StoryDetailViewModel = hiltViewModel()
 ) {
     val snackBarState = remember { SnackbarHostState() }
+//    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize(),
+//            .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             NewsBackTopAppBar(
+//                scrollBehavior = scrollBehavior,
                 onBack = onBack,
                 title = stringResource(R.string.story),
             )
@@ -101,7 +110,18 @@ fun StoryDetailsContent(
     detail: StoryDetailsModel,
     modifier: Modifier,
 ) {
-    Text(
-        detail.body
+    WebView(
+        webInit = { webView ->
+            webView.settings.defaultTextEncodingName = "UTF -8"
+            webView.webChromeClient = WebChromeClient()
+            webView.loadDataWithBaseURL(
+                "file:///android_asset/",
+                detail.stitching(),
+                "text/html",
+                "UTF-8",
+                null
+            )
+        },
+        modifier = modifier
     )
 }

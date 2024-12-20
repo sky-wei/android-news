@@ -37,6 +37,24 @@ data class StoryDetailsModel(
 
     override val isEmpty: Boolean
         get() = this == EMPTY
+
+    fun stitching(): String {
+        return "<html>\n" +
+                "<head>\n" +
+                "<meta charset=\"utf-8\" />\n" +
+                "<meta name=\"viewport\" content=\"width=device-width,user-scalable=no\" />\n" +
+                "<link href=\"news_qa.min.css\" rel=\"stylesheet\" />\n" +
+                "<script src=\"zepto.min.js\"></script>\n" +
+                "<script src=\"img_replace.js\"></script>\n" +
+                "<script src=\"video.js\"></script>\n" +
+                "</head>\n" +
+                "<body classname=\"\" onload=\"onLoaded()\">\n" +
+                body +
+                "<script src=\"show_bottom_link.js\"></script>\n" +
+                "<script>show('{\\\"theme_subscribed\\\":false}');</script>\n" +
+                "</body>\n" +
+                "</html>"
+    }
 }
 
 data class SectionModel(val thumbnail: String = "", val id: Long = 0, val name: String = "") : Serializable
